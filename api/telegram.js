@@ -6,6 +6,10 @@
 //                            weeks are read from memory.json and added to the prompt; new projects, agreements and
 //                            interests are extracted from the dialogue and saved with a timestamp.
 //  * /memory /history /forget /remember   look at, search, delete and add memory entries.
+//  * voice message           voice-to-voice: speech-to-text -> the same Claude conversation -> spoken answer.
+//                            STT: open-source Whisper in GitHub Actions (free, no key; agent/transcribe.py posts the
+//                            transcript back to this webhook) or, if GROQ_API_KEY is set, Groq's free tier (fast).
+//                            TTS: the free Google Translate voice (what gTTS uses), sent as MP3 through sendVoice.
 //
 // Environment variables (Vercel -> Project -> Settings -> Environment Variables):
 //   TELEGRAM_BOT_TOKEN, TELEGRAM_CHAT_ID (the ONLY chat obeyed), TELEGRAM_WEBHOOK_SECRET
@@ -21,11 +25,13 @@ const mem = require("./_lib/memory");
 const env = require("./_lib/env");
 const { createStore, MemoryDisabled } = require("./_lib/store");
 const { askClaude } = require("./_lib/claude");
+const voice = require("./_lib/voice");
 
 const START_TEXT =
   "👋 R Design Space · персональный агент\n\n" +
   "• Лидогенерация: ищу стартапы и SaaS по миру, пишу письма на языке фаундера. Письмо уходит только после вашей кнопки.\n" +
-  "• Диалог с памятью: пишите мне как ассистенту - я помню проекты, договорённости и интересы, даже спустя недели.\n\n" +
+  "• Диалог с памятью: пишите мне как ассистенту - я помню проекты, договорённости и интересы, даже спустя недели.\n" +
+  "• Голос: отправьте голосовое сообщение - отвечу голосом.\n\n" +
   "Команды:\n/search - поиск лидов сейчас (можно с запросом)\n/memory - что я помню\n/history - хронология\n" +
   "/remember <текст> - запомнить\n/forget <id> - забыть запись\n/help - справка";
 
@@ -37,6 +43,8 @@ const HELP_TEXT =
   "и сам сохраняю важное: проекты, договорённости со сроками, интересы. Пароли и ключи не сохраняются.\n" +
   "/memory - активные проекты и договорённости; /memory клуб - поиск по памяти\n/history 15 - последние записи\n" +
   "/remember <текст> - сохранить заметку\n/forget <id> - удалить запись (id в скобках)\n\n" +
+  "🎙 Голос. Отправьте голосовое (до 3 минут): я распознаю речь бесплатным Whisper и отвечу текстом и голосом. Ответ той же логикой " +
+  "и с той же памятью. Голосом команды не выполняются (письма и поиск - только кнопками и командами).\n\n" +
   "🧪 Пока в репозитории DRY_RUN=true, письма не отправляются.";
 
 const CHAT_SYSTEM =
@@ -81,9 +89,9 @@ async function sendLong(chat, text) {
   return tg("sendMessage", { chat_id: chat, text: rest, disable_web_page_preview: true });
 }
 
-async function dispatch(inputs) {
+async function dispatch(inputs, workflowName) {
   const repo = process.env.GITHUB_REPO || "rustams060575-bot/r_design_space";
-  const workflow = process.env.GITHUB_WORKFLOW || "outreach.yml";
+  const workflow = workflowName || process.env.GITHUB_WORKFLOW || "outreach.yml";
   const res = await fetch(`https://api.github.com/repos/${repo}/actions/workflows/${workflow}/dispatches`, {
     method: "POST",
     headers: {
@@ -151,7 +159,7 @@ async function onMemoryCommand(chat, cmd) {
 
 // ---------------------------------------------------------------- conversation with memory
 
-async function onChat(msg, updateId) {
+async function onChat(msg, updateId, opts = {}) {
   const chat = msg.chat.id;
   const text = (msg.text || "").trim();
   if (!env.get("ANTHROPIC_API_KEY")) {
@@ -207,7 +215,96 @@ async function onChat(msg, updateId) {
     }
   }
   const footer = saved.length ? `\n\n🧠 Запомнил: ${saved.map((i) => i.title).join("; ")}` : "";
-  return sendLong(chat, proposal.reply + footer + memoryNote);
+  await sendLong(chat, proposal.reply + footer + memoryNote); // text first: it is the reliable part
+  if (opts.voice) await speak(chat, proposal.reply);          // then the same answer as a voice message
+}
+
+// ---------------------------------------------------------------- voice
+
+const MAX_VOICE_SECONDS = 180;
+const MAX_VOICE_BYTES = 5 * 1024 * 1024;
+
+async function downloadTelegramFile(fileId) {
+  const token = env.get("TELEGRAM_BOT_TOKEN");
+  const info = await fetch(`https://api.telegram.org/bot${token}/getFile`, {
+    method: "POST",
+    headers: { "content-type": "application/json" },
+    body: JSON.stringify({ file_id: fileId }),
+  });
+  if (!info.ok) throw new Error(`getFile HTTP ${info.status}`);
+  const filePath = ((await info.json()).result || {}).file_path;
+  if (!filePath) throw new Error("getFile returned no file_path");
+  const file = await fetch(`https://api.telegram.org/file/bot${token}/${filePath}`);
+  if (!file.ok) throw new Error(`file download HTTP ${file.status}`);
+  const buffer = Buffer.from(await file.arrayBuffer());
+  if (buffer.length > MAX_VOICE_BYTES) throw new Error("voice file too large");
+  return buffer;
+}
+
+async function sendVoice(chat, mp3) {
+  // Telegram shows MP3 (as well as OGG/Opus and M4A) sent through sendVoice as a playable voice message.
+  const form = new FormData();
+  form.append("chat_id", String(chat));
+  form.append("voice", new Blob([mp3], { type: "audio/mpeg" }), "reply.mp3");
+  const res = await fetch(`https://api.telegram.org/bot${env.get("TELEGRAM_BOT_TOKEN")}/sendVoice`, { method: "POST", body: form });
+  if (!res.ok) console.error(`telegram sendVoice -> ${res.status}`);
+  return res.ok;
+}
+
+async function speak(chat, text) {
+  if (!voice.cleanForSpeech(text)) return false; // nothing worth reading aloud (only code or links)
+  try {
+    await tg("sendChatAction", { chat_id: chat, action: "record_voice" });
+    const mp3 = await voice.ttsMp3(text, voice.detectTtsLang(voice.cleanForSpeech(text), ""));
+    if (await sendVoice(chat, mp3)) return true;
+  } catch (err) {
+    console.error("tts error:", err && err.message);
+  }
+  await tg("sendMessage", { chat_id: chat, text: "🔇 Голосовой ответ не получился (синтезатор речи недоступен). Текст ответа выше." });
+  return false;
+}
+
+// A transcript (from Groq here, or posted by agent/transcribe.py) enters the normal conversation, never a command:
+// speech cannot trigger a search or send an email.
+async function onVoiceText(msg, updateId) {
+  const chat = msg.chat.id;
+  const text = (msg.text || "").trim();
+  if (!text) return tg("sendMessage", { chat_id: chat, text: "🎙 Не разобрал речь. Скажите ещё раз чётче или напишите текстом." });
+  await tg("sendMessage", { chat_id: chat, text: `🎙 Распознал: «${text.slice(0, 500)}»` });
+  return onChat({ chat: { id: chat }, text }, updateId, { voice: true });
+}
+
+async function onVoice(msg, updateId) {
+  const chat = msg.chat.id;
+  const v = msg.voice || msg.audio;
+  if (!v || !v.file_id) return;
+  if ((v.duration || 0) > MAX_VOICE_SECONDS) return tg("sendMessage", { chat_id: chat, text: "🎙 Голосовое длиннее 3 минут. Отправьте покороче." });
+  if ((v.file_size || 0) > MAX_VOICE_BYTES) return tg("sendMessage", { chat_id: chat, text: "🎙 Файл слишком большой (до 5 МБ)." });
+  if (!env.get("ANTHROPIC_API_KEY")) {
+    return tg("sendMessage", { chat_id: chat, text: "💬 Для голосового диалога нужен ANTHROPIC_API_KEY в настройках Vercel." });
+  }
+  await tg("sendChatAction", { chat_id: chat, action: "typing" });
+
+  // Fast path (optional): Groq's free Whisper tier. Any failure falls through to the key-less path below.
+  const groqKey = env.get("GROQ_API_KEY");
+  let transcript = null;
+  if (groqKey) {
+    try {
+      transcript = await voice.groqTranscribe(await downloadTelegramFile(v.file_id), groqKey);
+    } catch (err) {
+      console.error("groq stt error:", err && err.message);
+    }
+  }
+  if (transcript !== null) return onVoiceText({ chat: { id: chat }, text: transcript }, updateId); // outside the try: no double processing
+
+  // Fully free path: open-source Whisper in GitHub Actions; agent/transcribe.py posts the transcript back here.
+  const ok = env.get("GH_DISPATCH_TOKEN") && (await dispatch({ file_id: v.file_id, chat_id: String(chat) }, process.env.GITHUB_VOICE_WORKFLOW || "voice.yml"));
+  return tg("sendMessage", {
+    chat_id: chat,
+    text: ok
+      ? "🎙 Принял голосовое. Распознаю бесплатным Whisper в GitHub Actions - ответ придёт голосом через 1-2 минуты."
+      : "⚠️ Не удалось запустить распознавание голоса (GitHub Actions). Проверьте GH_DISPATCH_TOKEN и файл .github/workflows/voice.yml.",
+  });
 }
 
 // ---------------------------------------------------------------- updates
@@ -279,7 +376,9 @@ module.exports = async (req, res) => {
 
     // Only the owner's chat may run the bot; everyone else is ignored silently.
     if (chat !== undefined && chat !== null && String(chat) === env.get("TELEGRAM_CHAT_ID")) {
-      if (message && message.text) await onMessage(message, update.update_id);
+      if (message && message.rs_voice && message.text) await onVoiceText(message, 0); // transcript posted by agent/transcribe.py
+      else if (message && (message.voice || message.audio)) await onVoice(message, update.update_id);
+      else if (message && message.text) await onMessage(message, update.update_id);
       else if (callback) await onCallback(callback);
     }
   } catch (err) {

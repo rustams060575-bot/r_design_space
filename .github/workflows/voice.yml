@@ -1,0 +1,57 @@
+name: Voice transcription
+
+# Started by api/telegram.js when a voice message arrives and no GROQ_API_KEY is configured.
+# Open-source Whisper runs on the GitHub runner: free, no API key, the audio stays inside GitHub.
+
+on:
+  workflow_dispatch:
+    inputs:
+      file_id:
+        description: "Telegram file_id of the voice message"
+        type: string
+        required: true
+      chat_id:
+        description: "Chat that sent it (must be the owner's chat)"
+        type: string
+        required: true
+
+permissions:
+  contents: read
+
+concurrency:
+  group: voice
+  cancel-in-progress: false
+
+env:
+  WHISPER_MODEL: small    # tiny / base are faster, small is much better for Russian
+
+jobs:
+  transcribe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: agent/requirements-voice.txt
+
+      - run: pip install -r agent/requirements-voice.txt
+
+      - name: Cache Whisper model
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/huggingface
+          key: whisper-${{ env.WHISPER_MODEL }}-v1
+
+      - name: Transcribe and hand the text back to the bot
+        run: python agent/transcribe.py
+        env:
+          # Inputs go through env (never interpolated into the shell command) to avoid script injection.
+          FILE_ID: ${{ inputs.file_id }}
+          CHAT_ID: ${{ inputs.chat_id }}
+          WEBHOOK_URL: ${{ vars.WEBHOOK_URL }}
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
