@@ -28,6 +28,11 @@
     "hackernews_show": true,
     "extra_feeds": ["https://www.indiehackers.com/feed.xml"]
   },
+  "qualification": {
+    "min_score": 7,
+    "max_per_run": 25,
+    "enrich_site": true
+  },
   "limits": {
     "max_age_days": 7,
     "max_leads_per_run": 10,

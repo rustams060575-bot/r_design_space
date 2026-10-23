@@ -31,7 +31,8 @@ load_dotenv(ROOT / ".env")
 
 from email_sender import EMAIL_RE, send_email  # noqa: E402
 from pitch_writer import write_pitch  # noqa: E402
-from telegram_bot import send_alert  # noqa: E402
+from qualifier import qualify  # noqa: E402
+from telegram_bot import send_alert, send_report  # noqa: E402
 
 CONFIG_PATH = ROOT / "config.json"
 TRACKER_PATH = ROOT / "tracker.json"
@@ -273,6 +274,24 @@ def find_contact_email(website: str, timeout: int) -> str | None:
     return best if rank(best)[0] is False else None  # only addresses on the product's own domain
 
 
+def site_blurb(website: str, timeout: int) -> str:
+    """Title, meta description and commercial hints from the homepage - extra context for the qualifier."""
+    if not allowed_by_robots(website, timeout):
+        return ""
+    r = get(website, timeout)
+    if r is None:
+        return ""
+    page = r.text[:200_000]
+    title = re.search(r"<title[^>]*>(.*?)</title>", page, re.I | re.S)
+    desc = (re.search(r'<meta[^>]+(?:name|property)=["\'](?:og:)?description["\'][^>]+content=["\'](.*?)["\']', page, re.I | re.S)
+            or re.search(r'<meta[^>]+content=["\'](.*?)["\'][^>]+(?:name|property)=["\'](?:og:)?description["\']', page, re.I | re.S))
+    hints = sorted({h.lower() for h in re.findall(
+        r"\b(pricing|sign ?up|log ?in|book a demo|free trial|get started|dashboard|subscribe)\b", strip_html(page), re.I)})
+    parts = [strip_html(title.group(1)) if title else "", strip_html(desc.group(1)) if desc else "",
+             f"page mentions: {', '.join(hints)}" if hints else ""]
+    return " | ".join(p for p in parts if p)[:400]
+
+
 # ---------------------------------------------------------------- pipeline
 
 def run() -> int:
@@ -288,12 +307,35 @@ def run() -> int:
     timeout = cfg["limits"]["request_timeout"]
     print(f"[agent] mode: {'DRY RUN (no emails will be sent)' if dry_run else 'LIVE'}")
 
+    qcfg = cfg.get("qualification", {})
     fresh = [l for l in collect_leads(cfg) if l["id"] not in tracker["processed"]]
-    print(f"[agent] {len(fresh)} new matching leads")
+    print(f"[agent] {len(fresh)} new keyword-matching candidates")
 
+    stats = {"candidates": len(fresh), "checked": 0, "rejected": 0, "approved": 0, "emails": 0}
     emails_sent = 0
-    for lead in fresh[: cfg["limits"]["max_leads_per_run"]]:
+    for lead in fresh[: qcfg.get("max_per_run", 25)]:
+        if stats["approved"] >= cfg["limits"]["max_leads_per_run"]:
+            break
+
+        # 1. Strict qualification: only real startups / SaaS / products with a visible UI need pass.
         lead["website"] = resolve_website(lead, timeout)
+        if lead["website"] and qcfg.get("enrich_site", True):
+            lead["site_info"] = site_blurb(lead["website"], timeout)
+        lead["analysis"] = qualify(lead, cfg)
+        stats["checked"] += 1
+        if not lead["analysis"]["relevant"]:
+            stats["rejected"] += 1
+            tracker["processed"][lead["id"]] = {
+                "name": lead["name"],
+                "status": "rejected",
+                "score": lead["analysis"]["score"],
+                "at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
+            }
+            save_tracker(tracker)
+            print(f"[agent] {lead['name']}: rejected ({lead['analysis']['score']}/10)")
+            continue
+
+        # 2. Approved: find a public contact, write the pitch, send / preview.
         lead["email"] = find_contact_email(lead["website"], timeout) if lead["website"] else None
         pitch = write_pitch(lead, cfg)
 
@@ -316,16 +358,23 @@ def run() -> int:
                     print(f"[email] failed for {lead['name']}: {type(exc).__name__}")
                     status = "email_failed"
 
-        send_alert(lead, pitch, status)
+        send_alert(lead, pitch, status, dry_run)
+        stats["approved"] += 1
+        stats["emails"] = emails_sent
         # Failed emails stay unprocessed so the next run retries them; everything else is final.
         if status != "email_failed":
             tracker["processed"][lead["id"]] = {
                 "name": lead["name"],
                 "status": status,
+                "score": lead["analysis"]["score"],
                 "at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
             }
             save_tracker(tracker)
         print(f"[agent] {lead['name']}: {status}")
+
+    if stats["checked"]:
+        send_report(stats, dry_run)
+    print(f"[agent] done: {stats}")
     return 0
 
 
