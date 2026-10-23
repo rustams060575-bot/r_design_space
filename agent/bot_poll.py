@@ -22,7 +22,7 @@ sys.path.insert(0, str(ROOT))
 load_dotenv(ROOT / ".env")
 
 import scraper  # noqa: E402
-from telegram_bot import HELP_TEXT, START_TEXT, call, send_text  # noqa: E402
+from telegram_bot import HELP_TEXT, POLL_ONLY_NOTE, START_TEXT, call, send_text  # noqa: E402
 
 _busy = threading.Lock()
 
@@ -59,7 +59,9 @@ def handle_update(update: dict, cfg: dict) -> None:
     if msg and msg.get("text"):
         cmd = parse_command(msg["text"])
         if not cmd:
-            send_text("Не понял. Напишите /help")
+            send_text(POLL_ONLY_NOTE)  # free text = conversation with memory (webhook mode only)
+        elif cmd[0] in ("memory", "history", "forget", "remember"):
+            send_text(POLL_ONLY_NOTE)
         elif cmd[0] == "start":
             send_text(START_TEXT)
         elif cmd[0] == "help":

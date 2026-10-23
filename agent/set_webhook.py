@@ -22,6 +22,10 @@ from telegram_bot import call  # noqa: E402
 COMMANDS = [
     {"command": "start", "description": "О боте и команды"},
     {"command": "search", "description": "Поиск лидов прямо сейчас (можно с запросом)"},
+    {"command": "memory", "description": "Что я помню: проекты и договорённости"},
+    {"command": "history", "description": "Хронология памяти"},
+    {"command": "remember", "description": "Запомнить заметку"},
+    {"command": "forget", "description": "Забыть запись по id"},
     {"command": "help", "description": "Справка"},
 ]
 
