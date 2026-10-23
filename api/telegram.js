@@ -262,7 +262,11 @@ module.exports = async (req, res) => {
   if (req.method !== "POST") return res.status(405).end();
 
   const secret = process.env.TELEGRAM_WEBHOOK_SECRET;
-  if (!secret || req.headers["x-telegram-bot-api-secret-token"] !== secret) return res.status(401).end();
+  if (!secret || req.headers["x-telegram-bot-api-secret-token"] !== secret) {
+    // The reason header helps to debug deployments; it reveals only the configuration state, never the secret.
+    if (typeof res.setHeader === "function") res.setHeader("x-auth-reason", secret ? "secret-mismatch" : "secret-not-configured");
+    return res.status(401).end();
+  }
 
   try {
     const update = typeof req.body === "string" ? JSON.parse(req.body) : req.body || {};
