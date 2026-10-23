@@ -14,27 +14,27 @@ EMAIL_RE = re.compile(r"^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$")
 
 
 def load_credentials(cfg: dict) -> tuple[str, str]:
-    """Reads the Gmail login from the GMAIL_CREDENTIALS secret (GMAIL_APP_PASSWORD is a legacy fallback).
+    """Reads the Gmail login from the GMAIL_APP_PASSWORD secret.
 
     Accepted formats: a bare app password, "user@gmail.com:app-password", or
     JSON {"email": "...", "app_password": "..."}. Values are never printed.
     """
-    raw = (os.getenv("GMAIL_CREDENTIALS") or os.getenv("GMAIL_APP_PASSWORD") or "").strip()
+    raw = (os.getenv("GMAIL_APP_PASSWORD") or "").strip()
     if not raw:
-        raise RuntimeError("GMAIL_CREDENTIALS environment variable is not set")
+        raise RuntimeError("GMAIL_APP_PASSWORD environment variable is not set")
 
     user, password = cfg["owner"]["email"], raw
     if raw.startswith("{"):
         try:
             data = json.loads(raw)
         except json.JSONDecodeError as exc:
-            raise ValueError("GMAIL_CREDENTIALS looks like JSON but is not valid") from exc
+            raise ValueError("GMAIL_APP_PASSWORD looks like JSON but is not valid") from exc
         user = data.get("email") or data.get("user") or user
         password = data.get("app_password") or data.get("password") or ""
     elif "@" in raw.split(":", 1)[0] and ":" in raw:
         user, password = raw.split(":", 1)
     if not password:
-        raise ValueError("GMAIL_CREDENTIALS does not contain a password")
+        raise ValueError("GMAIL_APP_PASSWORD does not contain a password")
     return user.strip().lower(), password.replace(" ", "")  # app passwords are often pasted with spaces
 
 
