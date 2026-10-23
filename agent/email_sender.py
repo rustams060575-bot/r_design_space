@@ -14,12 +14,12 @@ EMAIL_RE = re.compile(r"^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$")
 
 
 def load_credentials(cfg: dict) -> tuple[str, str]:
-    """Reads the Gmail login from the GMAIL_APP_PASSWORD secret.
+    """Reads the Gmail login from the GMAIL_APP_PASSWORD secret (GMAIL_CREDENTIALS is accepted as an alias).
 
     Accepted formats: a bare app password, "user@gmail.com:app-password", or
     JSON {"email": "...", "app_password": "..."}. Values are never printed.
     """
-    raw = (os.getenv("GMAIL_APP_PASSWORD") or "").strip()
+    raw = (os.getenv("GMAIL_APP_PASSWORD") or os.getenv("GMAIL_CREDENTIALS") or "").strip()
     if not raw:
         raise RuntimeError("GMAIL_APP_PASSWORD environment variable is not set")
 

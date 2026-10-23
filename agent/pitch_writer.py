@@ -12,7 +12,8 @@ SYSTEM_PROMPT = (
     "Brand voice: calm, precise, premium and unhurried - quiet confidence, short sentences, no buzzwords, "
     "no exclamation marks, no emojis, no flattery. The studio promises pixel-perfect work, fast turnaround and "
     "transparent communication. "
-    "Rules: 90-130 words; plain text; open with one specific, honest observation based ONLY on the details "
+    "Rules: 90-130 words; plain text; name the project and refer to one concrete detail of it (what it does, "
+    "who it is for) within the first two sentences; the observation must be honest and based ONLY on the details "
     "given; connect it to one concrete way the studio could help (for example a clearer dashboard, a faster "
     "landing page, or a prototype); never invent metrics, clients, or claims that Rustam used the product; "
     "one clear low-pressure call to action (a short reply or a quick chat); do not add a signature or "
@@ -103,6 +104,8 @@ def fallback_pitch(lead: dict, cfg: dict, language: str = "en") -> dict:
 def write_pitch(lead: dict, cfg: dict) -> dict:
     """Returns {subject, body, gist_ru, language}; the language comes from the qualifier's analysis."""
     language = langs.normalize((lead.get("analysis") or {}).get("language"))
+    if lead["source"] in ("hackernews", "hackernews_ask"):
+        language = "en"  # Hacker News is an English-language community: pitch in English
     system = SYSTEM_PROMPT.replace("{language}", langs.LANG_NAMES[language])
     text = llm.complete(system, _prompt(lead, cfg, language), cfg)
     if text:

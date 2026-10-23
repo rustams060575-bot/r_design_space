@@ -30,9 +30,21 @@
     "MVP",
     "beta",
     "launch",
-    "Tilda"
+    "Tilda",
+    "design",
+    "landing"
   ],
   "hackernews": {
+    "max_age_hours": 24,
+    "overlap_hours": 2,
+    "keywords": [
+      "design",
+      "UI",
+      "UX",
+      "frontend",
+      "dashboard",
+      "landing"
+    ],
     "ask_queries": [
       "looking for a designer",
       "need a designer",

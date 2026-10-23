@@ -206,18 +206,23 @@ def fetch_feed(url: str, source: str, cfg: dict, region: str | None = None, lang
 
 
 def fetch_hackernews(cfg: dict, query: str | None = None) -> list[dict]:
-    """Targeted Hacker News scan through the public Algolia API.
+    """Targeted Hacker News scan through the public Algolia API (search_by_date).
 
-    Default run: Show HN per keyword + Ask HN design-help phrases. With a custom query: Show HN and Ask HN for it.
+    Daily run: the last 24 hours (+ a small overlap so a delayed cron never leaves a gap; the tracker removes
+    repeats) for Show HN and Ask HN, one search per keyword. With a custom query: that query over max_age_days.
     Show HN items carry the product's own website; Ask HN items are people asking for help (Telegram-only leads).
     """
     hn = cfg.get("hackernews", {})
-    cutoff = int(time.time() - cfg["limits"]["max_age_days"] * 86400)
     if query:
+        hours = cfg["limits"]["max_age_days"] * 24
         searches = [("show_hn", query), ("ask_hn", query)]
     else:
-        searches = [("show_hn", kw) for kw in cfg["keywords"]] if cfg["sources"].get("hackernews_show") else []
-        searches += [("ask_hn", q) for q in hn.get("ask_queries", [])]
+        hours = hn.get("max_age_hours", cfg["limits"]["max_age_days"] * 24) + hn.get("overlap_hours", 0)
+        terms = hn.get("keywords", [])
+        show = list(dict.fromkeys(cfg["keywords"] + terms)) if cfg["sources"].get("hackernews_show") else list(terms)
+        ask = list(dict.fromkeys(hn.get("ask_queries", []) + terms))
+        searches = [("show_hn", q) for q in show] + [("ask_hn", q) for q in ask]
+    cutoff = int(time.time() - hours * 3600)
 
     seen, leads = set(), []
     for tag, q in searches:
@@ -298,7 +303,7 @@ def collect_leads(cfg: dict, query: str | None = None) -> list[dict]:
             leads += fetch_feed(feed["url"], "feed", cfg, region=feed.get("region"), lang=feed.get("lang"),
                                 limit=src.get("feed_limit", 20))
 
-    keywords = cfg["keywords"] + query_terms(query)
+    keywords = cfg["keywords"] + cfg.get("hackernews", {}).get("keywords", []) + query_terms(query)
     signals = cfg.get("design_signals", [])
     unique = {}
     for lead in leads:
@@ -306,7 +311,7 @@ def collect_leads(cfg: dict, query: str | None = None) -> list[dict]:
         hits, sig = keyword_hits(text, keywords), keyword_hits(text, signals)
         relevant = (bool(hits)
                     or lead["source"] in NO_KEYWORD_GATE
-                    or (lead["source"] == "hackernews_ask" and bool(sig)))
+                    or (lead["source"] in ("hackernews", "hackernews_ask") and bool(sig)))
         if relevant and lead["id"] not in unique:
             lead["keywords"], lead["signals"] = hits, sig
             unique[lead["id"]] = lead
