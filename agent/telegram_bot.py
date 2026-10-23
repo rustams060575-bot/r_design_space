@@ -1,9 +1,10 @@
-"""Telegram cards, written for quick reading on a phone.
+"""Telegram layer: lead cards with confirmation buttons, run reports and the bot's static texts.
 
 Every approved lead produces two messages:
-  1. the analysis card (Russian): what the project is, why it fits, what to offer, status, link buttons;
-  2. the email draft (English, original text) so it can be copied or judged for style straight away.
-A short run report is sent at the end.
+  1. the analysis card (Russian): what the project is, why it fits, what to offer, language, status and buttons;
+  2. the email draft in the founder's language (original text, so the R Design Space style can be judged at once),
+     with a one-line Russian gist when the draft is not in Russian.
+Commands and button taps are received by api/telegram.js (webhook) or agent/bot_poll.py (local polling).
 """
 from __future__ import annotations
 
@@ -11,9 +12,11 @@ import os
 
 import requests
 
+import langs
 from qualifier import CATEGORY_RU
 
 STATUS_LABEL = {
+    "pending": "⏳ Ждёт вашего подтверждения - нажмите «Отправить письмо»",
     "sent": "✅ Письмо отправлено",
     "dry_run": "🧪 Письмо НЕ отправлено (тестовый режим)",
     "alert_only": "✋ Email не найден - напишите вручную",
@@ -25,23 +28,43 @@ SOURCE_LABEL = {
     "producthunt": "Product Hunt",
     "hackernews": "Hacker News · Show HN",
     "hackernews_ask": "Hacker News · Ask HN",
-    "feed": "RSS-лента",
+    "news": "Новости",
+    "feed": "Лента СМИ",
 }
 LINE = "━━━━━━━━━━━━━━"
+
+START_TEXT = (
+    "👋 R Design Space · бот лидогенерации\n\n"
+    "Ищу стартапы и SaaS по всему миру (США, Европа, СНГ, Азия, Латинская Америка), отбираю подходящие ИИ, "
+    "пишу письма на языке фаундера и присылаю карточки. Письмо уходит только после вашего нажатия на кнопку.\n\n"
+    "Команды:\n"
+    "/search - поиск прямо сейчас\n"
+    "/search fintech dashboard - поиск по своему запросу\n"
+    "/help - справка"
+)
+HELP_TEXT = (
+    "ℹ️ Как это работает\n\n"
+    "1. /search запускает сканирование в GitHub Actions - постоянный сервер не нужен.\n"
+    "2. Через 2-4 минуты придут карточки: анализ на русском и черновик письма.\n"
+    "3. Кнопка «✅ Отправить письмо» отправляет черновик с вашей почты, «⏭ Пропустить» убирает лид.\n\n"
+    "Свой запрос лучше писать по-английски: /search CRM startup. Каждый день в 09:00 UTC поиск идёт сам.\n\n"
+    "🧪 Пока в репозитории DRY_RUN=true, письма не отправляются - можно безопасно проверять карточки."
+)
 
 
 def mode_label(dry_run: bool) -> str:
     return "🧪 Режим: ТЕСТ (письма не уходят)" if dry_run else "🚀 Режим: БОЕВОЙ (письма уходят)"
 
 
-def build_card(lead: dict, status: str, dry_run: bool) -> str:
+def build_card(lead: dict, status: str, dry_run: bool, language: str = "en") -> str:
     a = lead.get("analysis") or {}
     why = [f"• {x}" for x in a.get("why_ru", [])] or ["• -"]
     lines = [
         f"🎯 {lead['name']}",
         LINE,
-        f"📍 {SOURCE_LABEL.get(lead['source'], lead['source'])}",
+        f"📍 {SOURCE_LABEL.get(lead['source'], lead['source'])}" + (f" · {lead['region']}" if lead.get("region") else ""),
         f"⭐ Оценка: {a.get('score', '?')}/10 · {CATEGORY_RU.get(a.get('category'), 'проект')}",
+        f"🌐 Язык письма: {langs.LANG_RU.get(language, language)}",
         mode_label(dry_run),
         STATUS_LABEL.get(status, status),
         "",
@@ -62,50 +85,70 @@ def build_card(lead: dict, status: str, dry_run: bool) -> str:
 
 
 def build_draft(pitch: dict) -> str:
-    return f"✉️ Черновик письма (EN)\n{LINE}\nSubject: {pitch['subject']}\n\n{pitch['body']}"
+    code = pitch.get("language", "en")
+    lines = [f"✉️ Черновик письма ({code.upper()})", LINE]
+    if pitch.get("gist_ru") and code != "ru":
+        lines += [f"О чём: {pitch['gist_ru']}", ""]
+    lines += [f"Subject: {pitch['subject']}", "", pitch["body"]]
+    return "\n".join(lines)
 
 
-def _buttons(lead: dict) -> list[list[dict]]:
-    row = []
-    for text, url in (("🔗 Пост", lead.get("url")), ("🌐 Сайт", lead.get("website"))):
-        if url and url.startswith(("http://", "https://")):
-            row.append({"text": text, "url": url})
-    return [row] if row else []
+def card_buttons(lead: dict, status: str) -> list[list[dict]]:
+    rows = []
+    if status == "pending":
+        rows.append([{"text": "✅ Отправить письмо", "callback_data": f"send:{lead['id']}"},
+                     {"text": "⏭ Пропустить", "callback_data": f"skip:{lead['id']}"}])
+    links = [{"text": text, "url": url} for text, url in (("🔗 Источник", lead.get("url")), ("🌐 Сайт", lead.get("website")))
+             if url and url.startswith(("http://", "https://"))]
+    if links:
+        rows.append(links)
+    return rows
 
 
-def _post(method: str, payload: dict, timeout: int) -> bool:
-    token, chat_id = os.getenv("TELEGRAM_BOT_TOKEN"), os.getenv("TELEGRAM_CHAT_ID")
-    if not token or not chat_id:
-        print("[telegram] TELEGRAM_BOT_TOKEN / TELEGRAM_CHAT_ID not set - message skipped")
-        return False
+def call(method: str, payload: dict, timeout: int = 15) -> dict | None:
+    """Telegram Bot API call. Returns the decoded response or None on failure (the token is never printed)."""
+    token = os.getenv("TELEGRAM_BOT_TOKEN")
+    if not token:
+        print("[telegram] TELEGRAM_BOT_TOKEN not set - call skipped")
+        return None
     try:
-        r = requests.post(f"https://api.telegram.org/bot{token}/{method}",
-                          json={"chat_id": chat_id, "disable_web_page_preview": True, **payload}, timeout=timeout)
+        r = requests.post(f"https://api.telegram.org/bot{token}/{method}", json=payload, timeout=timeout)
         r.raise_for_status()
-        return True
-    except requests.RequestException as exc:
-        print(f"[telegram] send failed: {type(exc).__name__}")  # the URL contains the bot token - never print it
+        return r.json()
+    except (requests.RequestException, ValueError) as exc:
+        print(f"[telegram] {method} failed: {type(exc).__name__}")
+        return None
+
+
+def send_text(text: str, reply_markup: dict | None = None, chat_id: str | None = None, timeout: int = 15) -> bool:
+    chat_id = chat_id or os.getenv("TELEGRAM_CHAT_ID")
+    if not chat_id:
+        print("[telegram] TELEGRAM_CHAT_ID not set - message skipped")
         return False
+    payload = {"chat_id": chat_id, "text": text[:4000], "disable_web_page_preview": True}
+    if reply_markup:
+        payload["reply_markup"] = reply_markup
+    return call("sendMessage", payload, timeout) is not None
 
 
-def send_alert(lead: dict, pitch: dict, status: str, dry_run: bool = True, timeout: int = 15) -> bool:
-    card = {"text": build_card(lead, status, dry_run)[:4000]}
-    buttons = _buttons(lead)
-    if buttons:
-        card["reply_markup"] = {"inline_keyboard": buttons}
-    ok = _post("sendMessage", card, timeout)
-    return _post("sendMessage", {"text": build_draft(pitch)[:4000]}, timeout) and ok
+def send_alert(lead: dict, pitch: dict, status: str, dry_run: bool = True) -> bool:
+    language = pitch.get("language", "en")
+    buttons = card_buttons(lead, status)
+    ok = send_text(build_card(lead, status, dry_run, language), {"inline_keyboard": buttons} if buttons else None)
+    return send_text(build_draft(pitch)) and ok
 
 
-def send_report(stats: dict, dry_run: bool, timeout: int = 15) -> bool:
-    text = "\n".join([
-        "📊 Отчёт запуска",
-        LINE,
-        mode_label(dry_run),
+def send_report(stats: dict, dry_run: bool, query: str | None = None) -> bool:
+    lines = ["📊 Отчёт запуска", LINE, mode_label(dry_run)]
+    if query:
+        lines.append(f"🔎 Запрос: {query}")
+    lines += [
         f"Новых кандидатов: {stats['candidates']}",
         f"Проверено ИИ/правилами: {stats['checked']}",
         f"Отсеяно как нерелевантные: {stats['rejected']}",
         f"Карточек отправлено: {stats['approved']}",
         f"Писем отправлено: {stats['emails']}",
-    ])
-    return _post("sendMessage", {"text": text}, timeout)
+    ]
+    if not stats["approved"]:
+        lines.append("\nПодходящих новых лидов не нашлось. Попробуйте другой запрос: /search <запрос>")
+    return send_text("\n".join(lines))

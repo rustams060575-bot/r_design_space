@@ -38,7 +38,18 @@ def load_credentials(cfg: dict) -> tuple[str, str]:
     return user.strip().lower(), password.replace(" ", "")  # app passwords are often pasted with spaces
 
 
-def build_footer(cfg: dict) -> str:
+OPT_OUT = {  # one-time-contact notice + opt-out line, localized like the email body
+    "en": 'I found your project through a public listing and am writing once. If this is not relevant, just reply "unsubscribe" and I will not contact you again.',
+    "ru": 'Я нашёл ваш проект в открытых источниках и пишу один раз. Если это неактуально, просто ответьте «отписаться», и я больше не побеспокою.',
+    "es": 'Encontré su proyecto en un listado público y escribo una sola vez. Si no es relevante, responda «baja» y no volveré a contactarles.',
+    "de": 'Ich habe Ihr Projekt in einem öffentlichen Verzeichnis gefunden und schreibe nur einmal. Wenn es nicht passt, antworten Sie einfach „abmelden“, dann melde ich mich nicht mehr.',
+    "fr": 'J\'ai trouvé votre projet dans un annuaire public et je n\'écris qu\'une fois. Si cela ne vous concerne pas, répondez « désinscription » et je ne vous recontacterai pas.',
+    "pt": 'Encontrei seu projeto em uma listagem pública e escrevo apenas uma vez. Se não for relevante, responda «cancelar» e não entrarei em contato novamente.',
+    "it": 'Ho trovato il vostro progetto in un elenco pubblico e scrivo una sola volta. Se non è pertinente, rispondete «annulla» e non vi contatterò più.',
+}
+
+
+def build_footer(cfg: dict, lang: str = "en") -> str:
     owner = cfg["owner"]
     parts = [
         "--",
@@ -51,13 +62,12 @@ def build_footer(cfg: dict) -> str:
         parts.append(owner["postal_address"])
     parts += [
         "",
-        "I found your project through a public listing and am writing once. "
-        "If this is not relevant, just reply \"unsubscribe\" and I will not contact you again.",
+        OPT_OUT.get(lang, OPT_OUT["en"]) + (f"\n{OPT_OUT['en']}" if lang not in OPT_OUT else ""),
     ]
     return "\n".join(parts)
 
 
-def send_email(to_addr: str, subject: str, body: str, cfg: dict) -> None:
+def send_email(to_addr: str, subject: str, body: str, cfg: dict, lang: str = "en") -> None:
     """Send one plain-text email. Raises on any failure so the caller can record it."""
     if not EMAIL_RE.match(to_addr):
         raise ValueError(f"invalid recipient address: {to_addr!r}")
@@ -69,7 +79,7 @@ def send_email(to_addr: str, subject: str, body: str, cfg: dict) -> None:
     msg["Reply-To"] = sender
     msg["Subject"] = subject
     msg["List-Unsubscribe"] = f"<mailto:{sender}?subject=unsubscribe>"
-    msg.set_content(f"{body.rstrip()}\n\n{build_footer(cfg)}\n")
+    msg.set_content(f"{body.rstrip()}\n\n{build_footer(cfg, lang)}\n")
 
     with smtplib.SMTP_SSL(SMTP_HOST, SMTP_PORT, context=ssl.create_default_context(), timeout=30) as smtp:
         smtp.login(sender, password)

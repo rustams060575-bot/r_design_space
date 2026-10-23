@@ -6,9 +6,32 @@
     "telegram_url": "https://t.me/r_design_space",
     "postal_address": ""
   },
-  "vercel_url": "",
-  "keywords": ["CRM", "SaaS", "Dashboard", "UI/UX", "Tilda Zero Block"],
   "brand": "R Design Space",
+  "vercel_url": "",
+  "keywords": [
+    "CRM",
+    "SaaS",
+    "Dashboard",
+    "UI/UX",
+    "Tilda Zero Block"
+  ],
+  "design_signals": [
+    "designer",
+    "design help",
+    "UI",
+    "UX",
+    "frontend",
+    "front-end",
+    "dashboard",
+    "landing page",
+    "redesign",
+    "prototype",
+    "Figma",
+    "MVP",
+    "beta",
+    "launch",
+    "Tilda"
+  ],
   "hackernews": {
     "ask_queries": [
       "looking for a designer",
@@ -19,19 +42,189 @@
       "landing page"
     ]
   },
-  "design_signals": [
-    "designer", "design help", "UI", "UX", "frontend", "front-end", "dashboard", "landing page",
-    "redesign", "prototype", "Figma", "MVP", "beta", "launch", "Tilda"
-  ],
   "sources": {
     "producthunt_feed": "https://www.producthunt.com/feed",
     "hackernews_show": true,
-    "extra_feeds": ["https://www.indiehackers.com/feed.xml"]
+    "extra_feeds": [
+      {
+        "url": "https://vc.ru/rss",
+        "region": "Россия и СНГ",
+        "lang": "ru"
+      },
+      {
+        "url": "https://www.eu-startups.com/feed/",
+        "region": "Европа",
+        "lang": "en"
+      }
+    ]
+  },
+  "global_search": {
+    "enabled": true,
+    "max_items_per_query": 6,
+    "regions": [
+      {
+        "name": "США",
+        "lang": "en",
+        "hl": "en-US",
+        "gl": "US",
+        "ceid": "US:en",
+        "queries": [
+          "SaaS startup launch",
+          "CRM startup funding"
+        ]
+      },
+      {
+        "name": "Великобритания и Ирландия",
+        "lang": "en",
+        "hl": "en-GB",
+        "gl": "GB",
+        "ceid": "GB:en",
+        "queries": [
+          "SaaS startup launches"
+        ]
+      },
+      {
+        "name": "Россия и СНГ",
+        "lang": "ru",
+        "hl": "ru",
+        "gl": "RU",
+        "ceid": "RU:ru",
+        "queries": [
+          "SaaS стартап",
+          "CRM стартап"
+        ]
+      },
+      {
+        "name": "Казахстан",
+        "lang": "ru",
+        "hl": "ru",
+        "gl": "KZ",
+        "ceid": "KZ:ru",
+        "queries": [
+          "SaaS стартап"
+        ]
+      },
+      {
+        "name": "Германия",
+        "lang": "de",
+        "hl": "de",
+        "gl": "DE",
+        "ceid": "DE:de",
+        "queries": [
+          "Startup SaaS Plattform",
+          "CRM Startup"
+        ]
+      },
+      {
+        "name": "Франция",
+        "lang": "fr",
+        "hl": "fr",
+        "gl": "FR",
+        "ceid": "FR:fr",
+        "queries": [
+          "startup SaaS plateforme"
+        ]
+      },
+      {
+        "name": "Испания",
+        "lang": "es",
+        "hl": "es",
+        "gl": "ES",
+        "ceid": "ES:es",
+        "queries": [
+          "startup SaaS plataforma"
+        ]
+      },
+      {
+        "name": "Латинская Америка",
+        "lang": "es",
+        "hl": "es-419",
+        "gl": "MX",
+        "ceid": "MX:es-419",
+        "queries": [
+          "startup SaaS plataforma"
+        ]
+      },
+      {
+        "name": "Бразилия",
+        "lang": "pt",
+        "hl": "pt-BR",
+        "gl": "BR",
+        "ceid": "BR:pt-419",
+        "queries": [
+          "startup SaaS plataforma"
+        ]
+      },
+      {
+        "name": "Турция",
+        "lang": "tr",
+        "hl": "tr",
+        "gl": "TR",
+        "ceid": "TR:tr",
+        "queries": [
+          "girişim SaaS platform"
+        ]
+      },
+      {
+        "name": "Индия",
+        "lang": "en",
+        "hl": "en-IN",
+        "gl": "IN",
+        "ceid": "IN:en",
+        "queries": [
+          "SaaS startup launch"
+        ]
+      },
+      {
+        "name": "Сингапур и ЮВА",
+        "lang": "en",
+        "hl": "en-SG",
+        "gl": "SG",
+        "ceid": "SG:en",
+        "queries": [
+          "SaaS startup raises"
+        ]
+      },
+      {
+        "name": "Япония",
+        "lang": "ja",
+        "hl": "ja",
+        "gl": "JP",
+        "ceid": "JP:ja",
+        "queries": [
+          "スタートアップ SaaS"
+        ]
+      },
+      {
+        "name": "Южная Корея",
+        "lang": "ko",
+        "hl": "ko",
+        "gl": "KR",
+        "ceid": "KR:ko",
+        "queries": [
+          "스타트업 SaaS"
+        ]
+      },
+      {
+        "name": "Китай и Тайвань",
+        "lang": "zh",
+        "hl": "zh-TW",
+        "gl": "TW",
+        "ceid": "TW:zh-Hant",
+        "queries": [
+          "新創 SaaS 平台"
+        ]
+      }
+    ],
+    "max_age_days": 30
   },
   "qualification": {
     "min_score": 7,
     "max_per_run": 25,
     "enrich_site": true
+  },
+  "outreach": {
+    "require_confirmation": true
   },
   "limits": {
     "max_age_days": 7,
@@ -43,6 +236,6 @@
     "provider": "auto",
     "anthropic_model": "claude-sonnet-5-5",
     "openai_model": "gpt-4o-mini",
-    "max_tokens": 600
+    "max_tokens": 700
   }
 }

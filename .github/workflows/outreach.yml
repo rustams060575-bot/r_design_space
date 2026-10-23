@@ -3,10 +3,24 @@ name: Outreach agent
 on:
   schedule:
     - cron: "0 9 * * *"     # every day at 09:00 UTC
-  workflow_dispatch:
+  workflow_dispatch:         # started from Telegram (api/telegram.js) or by hand
+    inputs:
+      action:
+        description: "search = scan and send cards, send = send one confirmed email"
+        type: choice
+        options: [search, send]
+        default: search
+      query:
+        description: "Optional custom search query (Telegram: /search <query>)"
+        type: string
+        default: ""
+      lead_id:
+        description: "Lead id for action=send (from the Telegram button)"
+        type: string
+        default: ""
 
 permissions:
-  contents: write            # needed to commit agent/tracker.json back
+  contents: write            # needed to commit agent/tracker.json and agent/pending.json back
 
 concurrency:
   group: outreach
@@ -38,9 +52,13 @@ jobs:
             if [ -n "${!name}" ]; then echo "$name: set"; else echo "::warning::$name is NOT set in repository secrets"; fi
           done
 
-      - name: Run lead hunter
+      - name: Run agent
         run: python agent/scraper.py
         env:
+          # Inputs go through env (never interpolated into the shell command) to avoid script injection.
+          ACTION: ${{ inputs.action || 'search' }}
+          SEARCH_QUERY: ${{ inputs.query }}
+          LEAD_ID: ${{ inputs.lead_id }}
           # Emails are only sent when the repository variable DRY_RUN is set to "false".
           DRY_RUN: ${{ vars.DRY_RUN || 'true' }}
           GMAIL_APP_PASSWORD: ${{ secrets.GMAIL_APP_PASSWORD }}
@@ -49,13 +67,13 @@ jobs:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
 
-      - name: Persist tracker (prevents duplicate outreach)
+      - name: Persist state (prevents duplicate outreach, keeps drafts for the Send button)
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add agent/tracker.json
+          git add agent/tracker.json agent/pending.json
           if ! git diff --cached --quiet; then
-            git commit -m "chore: update outreach tracker [skip ci]"
+            git commit -m "chore: update outreach state [skip ci]"
             git pull --rebase origin "${GITHUB_REF_NAME}"
             git push origin "HEAD:${GITHUB_REF_NAME}"
           fi
