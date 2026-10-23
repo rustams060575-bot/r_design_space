@@ -13,7 +13,11 @@
     "SaaS",
     "Dashboard",
     "UI/UX",
-    "Tilda Zero Block"
+    "Tilda Zero Block",
+    "React",
+    "Frontend",
+    "Web Design",
+    "Prototyping"
   ],
   "design_signals": [
     "designer",
@@ -32,7 +36,16 @@
     "launch",
     "Tilda",
     "design",
-    "landing"
+    "landing",
+    "product designer",
+    "web design",
+    "web designer",
+    "UI/UX",
+    "prototyping",
+    "React",
+    "JavaScript",
+    "luxury",
+    "premium"
   ],
   "hackernews": {
     "max_age_hours": 24,
@@ -246,5 +259,59 @@
     "anthropic_model": "claude-sonnet-5-5",
     "openai_model": "gpt-4o-mini",
     "max_tokens": 700
+  },
+  "job_boards": {
+    "enabled": true,
+    "per_source": 25,
+    "feeds": [
+      {
+        "name": "We Work Remotely",
+        "region": "Design",
+        "url": "https://weworkremotely.com/categories/remote-design-jobs.rss",
+        "company_prefix": true
+      },
+      {
+        "name": "We Work Remotely",
+        "region": "Front-end",
+        "url": "https://weworkremotely.com/categories/remote-front-end-programming-jobs.rss",
+        "company_prefix": true
+      },
+      {
+        "name": "Dribbble Jobs",
+        "region": "Design",
+        "url": "https://dribbble.com/jobs.rss"
+      }
+    ],
+    "remotive_categories": [
+      "design",
+      "software-dev"
+    ],
+    "jobicy": [
+      {
+        "tag": "designer",
+        "geo": "apac",
+        "label": "Азия и Океания (Япония, Корея, Китай)"
+      },
+      {
+        "tag": "figma",
+        "geo": "apac",
+        "label": "Азия и Океания (Япония, Корея, Китай)"
+      },
+      {
+        "tag": "frontend",
+        "geo": "apac",
+        "label": "Азия и Океания (Япония, Корея, Китай)"
+      },
+      {
+        "tag": "designer",
+        "geo": "usa",
+        "label": "США"
+      },
+      {
+        "tag": "designer",
+        "geo": "emea",
+        "label": "Европа"
+      }
+    ]
   }
 }

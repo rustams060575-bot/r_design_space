@@ -22,6 +22,7 @@ import sys
 import time
 import xml.etree.ElementTree as ET
 from datetime import datetime, timedelta, timezone
+from email.utils import parsedate_to_datetime
 from pathlib import Path
 from urllib.parse import quote_plus, urljoin, urlparse
 from urllib.robotparser import RobotFileParser
@@ -36,7 +37,7 @@ load_dotenv(ROOT / ".env")
 from email_sender import EMAIL_RE, send_email  # noqa: E402
 from pitch_writer import write_pitch  # noqa: E402
 from qualifier import is_noise, qualify  # noqa: E402
-from telegram_bot import send_alert, send_report, send_text  # noqa: E402
+from telegram_bot import send_alert, send_digest, send_report, send_text  # noqa: E402
 
 CONFIG_PATH = ROOT / "config.json"
 TRACKER_PATH = ROOT / "tracker.json"
@@ -50,6 +51,7 @@ PREFERRED_LOCALS = ("hello", "contact", "founders", "founder", "team", "hi", "in
 JUNK_EMAIL = re.compile(r"(example\.|sentry|wixpress|yourdomain|domain\.com|email\.com|\.(png|jpe?g|gif|svg|webp|js|css)$)", re.I)
 FOUND_EMAIL_RE = re.compile(r"[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}")
 LEAD_ID_RE = re.compile(r"^[a-z_]+:[A-Za-z0-9]{1,40}$")
+JOB_SOURCES = ("jobboard",)  # real job / contract postings: relevant only with a design or front-end signal
 NO_KEYWORD_GATE = ("news", "feed")  # regional sources are already topic-searched; the qualifier decides
 
 _session = requests.Session()
@@ -151,7 +153,7 @@ def parse_feed(xml_text: str) -> list[dict]:
     for el in ET.fromstring(xml_text).iter():
         if local(el.tag) not in ("entry", "item"):
             continue
-        d = {"title": "", "link": "", "summary": "", "id": ""}
+        d = {"title": "", "link": "", "summary": "", "id": "", "date": ""}
         for ch in el:
             name = local(ch.tag)
             if name == "title":
@@ -166,6 +168,8 @@ def parse_feed(xml_text: str) -> list[dict]:
                 d["summary"] = strip_html("".join(ch.itertext()))
             elif name in ("id", "guid"):
                 d["id"] = (ch.text or "").strip()
+            elif name in ("pubDate", "published", "updated") and not d["date"]:
+                d["date"] = (ch.text or "").strip()
         items.append(d)
     return items
 
@@ -253,6 +257,84 @@ def fetch_hackernews(cfg: dict, query: str | None = None) -> list[dict]:
     return leads
 
 
+def parse_date(value: str | None) -> datetime | None:
+    """RFC 822 (RSS) or ISO 8601 (APIs) -> aware datetime; None when unknown."""
+    if not value:
+        return None
+    try:
+        dt = parsedate_to_datetime(value)
+    except (TypeError, ValueError):
+        try:
+            dt = datetime.fromisoformat(value.replace("Z", "+00:00"))
+        except ValueError:
+            return None
+    return dt if dt.tzinfo else dt.replace(tzinfo=timezone.utc)
+
+
+def fetch_job_boards(cfg: dict) -> list[dict]:
+    """Fresh design / front-end postings from open job boards (public RSS and JSON APIs, no keys, no logins).
+
+    Platforms without a public feed (Upwork, Toptal, LinkedIn, Wellfound, RocketPunch, TokyoDev) block automated
+    access or forbid scraping in their terms, so they are not queried; see agent/README.md for the alternatives.
+    Remotive and Jobicy require a visible link back to the source: every card links to the original posting.
+    """
+    jb = cfg.get("job_boards", {})
+    if not jb.get("enabled"):
+        return []
+    timeout = cfg["limits"]["request_timeout"]
+    cutoff = datetime.now(timezone.utc) - timedelta(days=cfg["limits"]["max_age_days"])
+    leads: list[dict] = []
+
+    def add(platform: str, region: str, title: str, company: str, url: str, kind: str, place: str, text: str, date: str | None):
+        posted = parse_date(date)
+        if not url or (posted and posted < cutoff):
+            return
+        facts = " · ".join(x for x in (kind, place) if x)
+        leads.append({
+            "id": make_id("job", url.split("?")[0]),
+            "source": "jobboard",
+            "name": f"{title} - {company}" if company else title,
+            "summary": strip_html(f"[{facts}] {text}" if facts else text)[:500],
+            "url": url,
+            "website": None,
+            "region": f"{platform} · {region}" if region else platform,
+            "lang_hint": "en",
+        })
+
+    for feed in jb.get("feeds", []):  # RSS: We Work Remotely, Dribbble Jobs, NoDesk
+        r = get(feed["url"], timeout)
+        if r is None:
+            print(f"[jobs] {feed['name']}: unavailable")
+            continue
+        try:
+            entries = parse_feed(r.content)
+        except ET.ParseError:
+            print(f"[jobs] {feed['name']}: not valid XML")
+            continue
+        for e in entries[: jb.get("per_source", 25)]:
+            title, company = e["title"], ""
+            if ":" in title and feed.get("company_prefix"):  # We Work Remotely: "Company: Role"
+                company, title = [x.strip() for x in title.split(":", 1)]
+            add(feed["name"], feed.get("region", "Remote"), title, company, e["link"], "", "", e["summary"], e["date"])
+
+    for cat in jb.get("remotive_categories", []):  # Remotive JSON API
+        r = get("https://remotive.com/api/remote-jobs", timeout, params={"category": cat, "limit": jb.get("per_source", 25)})
+        for j in (r.json().get("jobs", []) if r is not None else []):
+            add("Remotive", "Remote", j.get("title", ""), j.get("company_name", ""), j.get("url", ""),
+                (j.get("job_type") or "").replace("_", " "), j.get("candidate_required_location", ""),
+                j.get("description", ""), j.get("publication_date"))
+
+    for q in jb.get("jobicy", []):  # Jobicy JSON API, per tag and region (APAC covers Japan, Korea, China-facing brands)
+        r = get("https://jobicy.com/api/v2/remote-jobs", timeout,
+                params={"count": jb.get("per_source", 25), "tag": q["tag"], "geo": q["geo"]})
+        for j in (r.json().get("jobs", []) if r is not None else []):
+            add("Jobicy", q.get("label", q["geo"].upper()), j.get("jobTitle", ""), j.get("companyName", ""), j.get("url", ""),
+                "/".join(j.get("jobType") or []), j.get("jobGeo", ""), j.get("jobExcerpt", ""), j.get("pubDate"))
+        time.sleep(0.3)
+    print(f"[scraper] job boards: {len(leads)} postings")
+    return leads
+
+
 def google_news_url(query: str, region: dict, days: int) -> str:
     q = quote_plus(f"{query} when:{days}d", safe=":")
     return (f"https://news.google.com/rss/search?q={q}&hl={region['hl']}&gl={region['gl']}"
@@ -297,6 +379,8 @@ def collect_leads(cfg: dict, query: str | None = None) -> list[dict]:
     if src.get("hackernews_show") or cfg.get("hackernews", {}).get("ask_queries") or query:
         leads += fetch_hackernews(cfg, query)
     leads += fetch_global_news(cfg, query)
+    if not query:  # job boards are scanned in the daily run; a custom /search stays on its own query
+        leads += fetch_job_boards(cfg)
     if not query:  # general startup media feeds are only useful for the broad daily scan
         for feed in src.get("extra_feeds", []):
             feed = {"url": feed} if isinstance(feed, str) else feed
@@ -314,7 +398,7 @@ def collect_leads(cfg: dict, query: str | None = None) -> list[dict]:
         hits, sig = keyword_hits(text, keywords), keyword_hits(text, signals)
         relevant = (bool(hits)
                     or lead["source"] in NO_KEYWORD_GATE
-                    or (lead["source"] in ("hackernews", "hackernews_ask") and bool(sig)))
+                    or (lead["source"] in ("hackernews", "hackernews_ask") + JOB_SOURCES and bool(sig)))
         if relevant and lead["id"] not in unique:
             lead["keywords"], lead["signals"] = hits, sig
             unique[lead["id"]] = lead
@@ -404,6 +488,8 @@ def run_search(cfg: dict, query: str | None = None) -> dict:
 
     fresh = [l for l in collect_leads(cfg, query) if l["id"] not in tracker["processed"]]
     print(f"[agent] {len(fresh)} new candidates")
+    if not query and os.getenv("GITHUB_EVENT_NAME", "") == "schedule":
+        send_digest(fresh, dry_run)  # morning header: what was scanned today
 
     stats = {"candidates": len(fresh), "checked": 0, "rejected": 0, "approved": 0, "emails": 0}
     for lead in fresh[: qcfg.get("max_per_run", 25)]:

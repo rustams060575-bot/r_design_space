@@ -9,6 +9,7 @@ Commands and button taps are received by api/telegram.js (webhook) or agent/bot_
 from __future__ import annotations
 
 import os
+from datetime import datetime, timezone
 
 import requests
 
@@ -30,6 +31,7 @@ SOURCE_LABEL = {
     "hackernews_ask": "Hacker News · Ask HN",
     "news": "Новости",
     "feed": "Лента СМИ",
+    "jobboard": "Биржа заказов",
 }
 LINE = "━━━━━━━━━━━━━━"
 
@@ -146,6 +148,20 @@ def send_alert(lead: dict, pitch: dict, status: str, dry_run: bool = True) -> bo
     buttons = card_buttons(lead, status)
     ok = send_text(build_card(lead, status, dry_run, language), {"inline_keyboard": buttons} if buttons else None)
     return send_text(build_draft(pitch)) and ok
+
+
+def send_digest(candidates: list[dict], dry_run: bool) -> bool:
+    """Morning header of the scheduled run: how many fresh postings came from which platform. Cards follow."""
+    counts: dict[str, int] = {}
+    for lead in candidates:
+        label = (lead.get("region") or SOURCE_LABEL.get(lead["source"], lead["source"])).split(" · ")[0]
+        counts[label] = counts.get(label, 0) + 1
+    today = datetime.now(timezone.utc).strftime("%d.%m.%Y")
+    lines = [f"☀️ Утренняя сводка лидов · {today}", LINE, mode_label(dry_run), f"Свежих кандидатов: {len(candidates)}"]
+    lines += [f"• {name}: {n}" for name, n in sorted(counts.items(), key=lambda x: -x[1])]
+    lines += ["", "Дальше придут карточки лидов с готовым черновиком письма под каждого клиента." if candidates
+              else "Новых объявлений нет. Следующая сводка завтра утром."]
+    return send_text("\n".join(lines))
 
 
 def send_report(stats: dict, dry_run: bool, query: str | None = None) -> bool:
