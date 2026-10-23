@@ -44,7 +44,7 @@ const HELP_TEXT =
   "и сам сохраняю важное: проекты, договорённости со сроками, интересы. Пароли и ключи не сохраняются.\n" +
   "/memory - активные проекты и договорённости; /memory клуб - поиск по памяти\n/history 15 - последние записи\n" +
   "/remember <текст> - сохранить заметку\n/forget <id> - удалить запись (id в скобках)\n\n" +
-  "🎙 Голос. Отправьте голосовое (до 3 минут): распознаю речь (Whisper), отвечу текстом и коротким голосовым. Логика и память те же. " +
+  "🎙 Голос. Отправьте голосовое (до 3 минут): распознаю речь (Whisper) и отвечу только голосовым. На текст отвечаю текстом. Логика и память те же. " +
   "Голосом команды не выполняются (письма и поиск - только кнопками и командами).\n\n" +
   "🧪 Пока в репозитории DRY_RUN=true, письма не отправляются.";
 
@@ -184,7 +184,7 @@ async function onMemoryCommand(chat, cmd) {
 
 // ---------------------------------------------------------------- conversation with memory
 
-// opts.voice: the answer is also spoken. opts.echo: a pending "recognised" message that must be delivered first.
+// opts.voice: the user spoke, so the answer is voice only. opts.replyTo: message id the voice answer replies to.
 // opts.trace collects step timings / the outcome for the Server-Timing and x-voice-result response headers.
 async function onChat(msg, updateId, opts = {}) {
   const chat = msg.chat.id;
@@ -225,7 +225,6 @@ async function onChat(msg, updateId, opts = {}) {
   } catch (err) {
     console.error("claude error:", err && err.message);
     if (opts.trace) opts.trace.result = "claude-failed";
-    if (opts.echo) await opts.echo;
     return tg("sendMessage", { chat_id: chat, text: "⚠️ Не удалось получить ответ от Claude. Попробуйте ещё раз через минуту." });
   }
 
@@ -249,10 +248,13 @@ async function onChat(msg, updateId, opts = {}) {
       memoryNote = "\n\n⚠️ Ответ не удалось сохранить в память (ошибка хранилища).";
     }
   }
+  if (opts.voice) {
+    // Voice in -> voice out: the chat stays clean, so the answer goes only as a voice message (replying to the user's one).
+    // The text is sent only as a fallback when no audio could be produced.
+    return deliverVoice(chat, spoken, opts.trace, opts.replyTo, proposal.reply);
+  }
   const footer = saved.length ? `\n\n🧠 Запомнил: ${saved.map((i) => i.title).join("; ")}` : "";
-  if (opts.echo) await opts.echo;                              // "recognised: ..." always comes before the answer
-  await sendLong(chat, proposal.reply + footer + memoryNote);  // text first: it is the reliable part
-  if (spoken) await deliverVoice(chat, spoken, opts.trace);    // then the same answer as a voice message
+  await sendLong(chat, proposal.reply + footer + memoryNote);  // text in -> text only, no audio
 }
 
 // ---------------------------------------------------------------- voice (OpenAI Whisper -> Claude -> OpenAI tts-1)
@@ -278,10 +280,11 @@ async function downloadTelegramFile(fileId) {
   return buffer;
 }
 
-async function sendVoice(chat, ogg) {
+async function sendVoice(chat, ogg, replyTo) {
   // OGG/Opus sent through sendVoice is displayed by Telegram as a playable voice message.
   const form = new FormData();
   form.append("chat_id", String(chat));
+  if (replyTo) form.append("reply_to_message_id", String(replyTo));
   form.append("voice", new Blob([ogg], { type: "audio/ogg" }), "reply.ogg");
   const res = await fetch(`https://api.telegram.org/bot${env.get("TELEGRAM_BOT_TOKEN")}/sendVoice`, {
     method: "POST",
@@ -301,15 +304,15 @@ function synthesize(text) {
     .then((audio) => ({ audio, ms: Date.now() - start }), (error) => ({ error, ms: Date.now() - start }));
 }
 
-async function deliverVoice(chat, spoken, trace) {
+async function deliverVoice(chat, spoken, trace, replyTo, fallbackText) {
   const result = await spoken;
   if (trace) trace.tts = result.ms;
   if (result.skip) {
     if (trace) trace.result = "ok-text-only";
-    return;
+    return sendLong(chat, fallbackText); // nothing speakable (code or links only): send it as text
   }
   try {
-    if (result.audio && (await sendVoice(chat, result.audio))) {
+    if (result.audio && (await sendVoice(chat, result.audio, replyTo))) {
       if (trace) trace.result = "ok";
       return;
     }
@@ -318,8 +321,7 @@ async function deliverVoice(chat, spoken, trace) {
   }
   if (trace) trace.result = result.error ? `tts-failed:${result.error.status || "error"}` : "sendvoice-failed";
   if (result.error) console.error("tts error:", result.error.message);
-  const why = result.error instanceof voice.ApiError ? ` (${result.error.hint})` : "";
-  await tg("sendMessage", { chat_id: chat, text: `🔇 Голосовой ответ не получился${why}. Текст ответа выше.` });
+  await sendLong(chat, fallbackText); // the voice could not be made: the user still gets the answer as text
 }
 
 // A transcript always enters the conversation and is never parsed as a command: speech cannot start a search or
@@ -350,9 +352,7 @@ async function onVoice(msg, updateId, trace = {}) {
   if (!text) trace.result = "no-speech";
   if (!text) return tg("sendMessage", { chat_id: chat, text: "🎙 Не разобрал речь. Скажите ещё раз чётче или напишите текстом." });
 
-  // The transcript is sent while Claude is thinking; onChat awaits it right before the first reply to keep the order.
-  const echo = tg("sendMessage", { chat_id: chat, text: `🎙 Распознал: «${text.slice(0, 500)}»` }).catch(() => false);
-  return onChat({ chat: { id: chat }, text }, updateId, { voice: true, echo, trace });
+  return onChat({ chat: { id: chat }, text }, updateId, { voice: true, replyTo: msg.message_id, trace });
 }
 
 // ---------------------------------------------------------------- updates

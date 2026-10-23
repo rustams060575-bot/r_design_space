@@ -265,6 +265,13 @@ function parseModelJson(text) {
       }
     } catch (_) { /* fall through */ }
   }
+  // Truncated or malformed JSON: never show raw JSON to the user, salvage the "reply" string if it is there.
+  const part = /"reply"\s*:\s*"((?:[^"\\]|\\.)*)/.exec(String(text || ""));
+  if (part) {
+    let reply = part[1];
+    try { reply = JSON.parse(`"${reply}"`); } catch (_) { reply = reply.replace(/\\n/g, "\n").replace(/\\"/g, '"'); }
+    if (reply.trim()) return { reply: reply.trim(), memories: [], project_summaries: {} };
+  }
   return { reply: String(text || "").trim() || "Не получилось сформулировать ответ, попробуйте ещё раз.", memories: [], project_summaries: {} };
 }
 
