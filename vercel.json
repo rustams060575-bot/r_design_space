@@ -1,5 +1,4 @@
 {
-  "ignoreCommand": "git diff --quiet HEAD^ HEAD -- index.html vercel.json api",
   "functions": {
     "api/telegram.js": { "maxDuration": 60 }
   }
