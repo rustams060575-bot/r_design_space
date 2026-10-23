@@ -262,10 +262,12 @@ module.exports = async (req, res) => {
   // Always answer 200 once the request is authentic, otherwise Telegram retries the update.
   if (req.method !== "POST") return res.status(405).end();
 
-  const secret = env.get("TELEGRAM_WEBHOOK_SECRET");
-  if (!secret || req.headers["x-telegram-bot-api-secret-token"] !== secret) {
-    // The reason header helps to debug deployments; it reveals only the configuration state, never the secret.
-    if (typeof res.setHeader === "function") res.setHeader("x-auth-reason", secret ? "secret-mismatch" : "secret-not-configured");
+  const accepted = [env.get("TELEGRAM_WEBHOOK_SECRET"), env.derivedWebhookSecret(env.get("TELEGRAM_BOT_TOKEN"))].filter(Boolean);
+  const given = String(req.headers["x-telegram-bot-api-secret-token"] || "");
+  const same = (a, b) => a.length === b.length && require("crypto").timingSafeEqual(Buffer.from(a), Buffer.from(b));
+  if (!accepted.some((secret) => same(secret, given))) {
+    // The reason header helps to debug deployments; it reveals only the configuration state, never a secret.
+    if (typeof res.setHeader === "function") res.setHeader("x-auth-reason", accepted.length ? "secret-mismatch" : "secret-not-configured");
     return res.status(401).end();
   }
 

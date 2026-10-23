@@ -4,6 +4,8 @@
 
 "use strict";
 
+const crypto = require("crypto");
+
 const INVISIBLE = /[\s­​-‏‪-‮⁠-⁤﻿]/g;
 
 function clean(value) {
@@ -19,4 +21,10 @@ function storeEnv() {
   return env;
 }
 
-module.exports = { clean, get, storeEnv };
+// Webhook secret derived from the bot token: nothing extra to copy between Telegram, Vercel and .env.
+// The same formula lives in agent/set_webhook.py. An explicit TELEGRAM_WEBHOOK_SECRET is still accepted.
+function derivedWebhookSecret(token) {
+  return token ? crypto.createHmac("sha256", token).update("telegram-webhook").digest("base64url").slice(0, 43) : "";
+}
+
+module.exports = { clean, get, storeEnv, derivedWebhookSecret };

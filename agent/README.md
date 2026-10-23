@@ -42,7 +42,7 @@ Product Hunt, Hacker News (Show HN и Ask HN), **Google News RSS** на 15 ре�
 2. **Токен для запуска Actions из Vercel:** GitHub → Settings → Developer settings → Fine-grained tokens →
    только этот репозиторий, право **Actions: Read and write**.
 3. **Vercel → Project → Settings → Environment Variables:** `TELEGRAM_BOT_TOKEN`, `TELEGRAM_CHAT_ID`,
-   `TELEGRAM_WEBHOOK_SECRET` (любая случайная строка), `GH_DISPATCH_TOKEN` (токен из п. 2). После этого Redeploy.
+   `GH_DISPATCH_TOKEN` (токен из п. 2). `TELEGRAM_WEBHOOK_SECRET` больше не нужен: секрет вебхука вычисляется из токена бота. После этого Redeploy.
 4. **Регистрация webhook** (локально, один раз):
    `python agent/set_webhook.py https://<проект>.vercel.app/api/telegram`
 5. Напишите боту `/start`, затем `/search`.

@@ -2,11 +2,15 @@
 
     python agent/set_webhook.py https://<your-project>.vercel.app/api/telegram
 
-Reads TELEGRAM_BOT_TOKEN and TELEGRAM_WEBHOOK_SECRET from the environment (or agent/.env).
+Reads TELEGRAM_BOT_TOKEN from the environment (or agent/.env). The webhook secret is derived from the token
+(same formula as api/_lib/env.js), so there is no second value to keep in sync with Vercel.
 Use `python agent/set_webhook.py --delete` to go back to polling (agent/bot_poll.py).
 """
 from __future__ import annotations
 
+import base64
+import hashlib
+import hmac
 import os
 import sys
 from pathlib import Path
@@ -30,6 +34,11 @@ COMMANDS = [
 ]
 
 
+def derived_secret(token: str) -> str:
+    digest = hmac.new(token.encode(), b"telegram-webhook", hashlib.sha256).digest()
+    return base64.urlsafe_b64encode(digest).decode().rstrip("=")[:43]
+
+
 def main(argv: list[str]) -> int:
     if not os.getenv("TELEGRAM_BOT_TOKEN"):
         print("TELEGRAM_BOT_TOKEN is not set")
@@ -40,10 +49,7 @@ def main(argv: list[str]) -> int:
     if len(argv) != 1 or not argv[0].startswith("https://"):
         print(__doc__)
         return 1
-    secret = os.getenv("TELEGRAM_WEBHOOK_SECRET")
-    if not secret:
-        print("TELEGRAM_WEBHOOK_SECRET is not set (use a random string and put the same value in Vercel)")
-        return 1
+    secret = derived_secret(os.environ["TELEGRAM_BOT_TOKEN"].strip())
 
     print("setWebhook:", call("setWebhook", {
         "url": argv[0], "secret_token": secret, "allowed_updates": ["message", "callback_query"],
