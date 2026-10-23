@@ -175,6 +175,7 @@ async function onMemoryCommand(chat, cmd) {
 // ---------------------------------------------------------------- conversation with memory
 
 // opts.voice: the answer is also spoken. opts.echo: a pending "recognised" message that must be delivered first.
+// opts.trace collects step timings / the outcome for the Server-Timing and x-voice-result response headers.
 async function onChat(msg, updateId, opts = {}) {
   const chat = msg.chat.id;
   const text = (msg.text || "").trim();
@@ -200,6 +201,7 @@ async function onChat(msg, updateId, opts = {}) {
   if (updateId && updateId <= memory.last_update_id) return; // Telegram redelivered an update we already handled
 
   let proposal;
+  const claudeStart = Date.now();
   try {
     const raw = await askClaude({
       apiKey: env.get("ANTHROPIC_API_KEY"),
@@ -209,8 +211,10 @@ async function onChat(msg, updateId, opts = {}) {
       maxTokens: opts.voice ? 800 : 1200, // spoken answers are short: fewer tokens = faster
     });
     proposal = mem.parseModelJson(raw);
+    if (opts.trace) opts.trace.claude = Date.now() - claudeStart;
   } catch (err) {
     console.error("claude error:", err && err.message);
+    if (opts.trace) opts.trace.result = "claude-failed";
     if (opts.echo) await opts.echo;
     return tg("sendMessage", { chat_id: chat, text: "⚠️ Не удалось получить ответ от Claude. Попробуйте ещё раз через минуту." });
   }
@@ -238,7 +242,7 @@ async function onChat(msg, updateId, opts = {}) {
   const footer = saved.length ? `\n\n🧠 Запомнил: ${saved.map((i) => i.title).join("; ")}` : "";
   if (opts.echo) await opts.echo;                              // "recognised: ..." always comes before the answer
   await sendLong(chat, proposal.reply + footer + memoryNote);  // text first: it is the reliable part
-  if (spoken) await deliverVoice(chat, spoken);                // then the same answer as a voice message
+  if (spoken) await deliverVoice(chat, spoken, opts.trace);    // then the same answer as a voice message
 }
 
 // ---------------------------------------------------------------- voice (OpenAI Whisper -> Claude -> OpenAI tts-1)
@@ -281,19 +285,28 @@ async function sendVoice(chat, ogg) {
 // Never rejects: resolves to { audio } | { error } | { skip } so a failed synthesis cannot break the text answer.
 function synthesize(text) {
   if (!voice.cleanForSpeech(text)) return Promise.resolve({ skip: true }); // only code or links: nothing to read aloud
+  const start = Date.now();
   return voice
     .speech(text, env.get("OPENAI_API_KEY"), { model: env.get("OPENAI_TTS_MODEL") || "tts-1", voice: env.get("OPENAI_TTS_VOICE") || "alloy" })
-    .then((audio) => ({ audio }), (error) => ({ error }));
+    .then((audio) => ({ audio, ms: Date.now() - start }), (error) => ({ error, ms: Date.now() - start }));
 }
 
-async function deliverVoice(chat, spoken) {
+async function deliverVoice(chat, spoken, trace) {
   const result = await spoken;
-  if (result.skip) return;
+  if (trace) trace.tts = result.ms;
+  if (result.skip) {
+    if (trace) trace.result = "ok-text-only";
+    return;
+  }
   try {
-    if (result.audio && (await sendVoice(chat, result.audio))) return;
+    if (result.audio && (await sendVoice(chat, result.audio))) {
+      if (trace) trace.result = "ok";
+      return;
+    }
   } catch (err) {
     console.error("sendVoice error:", err && err.message);
   }
+  if (trace) trace.result = result.error ? `tts-failed:${result.error.status || "error"}` : "sendvoice-failed";
   if (result.error) console.error("tts error:", result.error.message);
   const why = result.error instanceof voice.ApiError ? ` (${result.error.hint})` : "";
   await tg("sendMessage", { chat_id: chat, text: `🔇 Голосовой ответ не получился${why}. Текст ответа выше.` });
@@ -301,7 +314,7 @@ async function deliverVoice(chat, spoken) {
 
 // A transcript always enters the conversation and is never parsed as a command: speech cannot start a search or
 // send an email (those need /search or the confirmation buttons).
-async function onVoice(msg, updateId) {
+async function onVoice(msg, updateId, trace = {}) {
   const chat = msg.chat.id;
   const v = msg.voice || msg.audio;
   if (!v || !v.file_id) return;
@@ -312,20 +325,24 @@ async function onVoice(msg, updateId) {
   if (!env.get("ANTHROPIC_API_KEY")) return tg("sendMessage", { chat_id: chat, text: "💬 Для диалога нужен ANTHROPIC_API_KEY в настройках Vercel." });
 
   let text;
+  const sttStart = Date.now();
   try {
     // The "recording" indicator and the download run in parallel.
     const [, audio] = await Promise.all([tg("sendChatAction", { chat_id: chat, action: "record_voice" }), downloadTelegramFile(v.file_id)]);
     text = await voice.transcribe(audio, openaiKey, { model: env.get("OPENAI_STT_MODEL") || "whisper-1" });
+    trace.stt = Date.now() - sttStart;
   } catch (err) {
     console.error("voice input error:", err && err.message);
+    trace.result = `stt-failed:${(err && err.status) || "error"}`;
     const why = err instanceof voice.ApiError ? err.hint : "не удалось скачать или распознать запись";
     return tg("sendMessage", { chat_id: chat, text: `⚠️ Не удалось распознать голосовое: ${why}.` });
   }
+  if (!text) trace.result = "no-speech";
   if (!text) return tg("sendMessage", { chat_id: chat, text: "🎙 Не разобрал речь. Скажите ещё раз чётче или напишите текстом." });
 
   // The transcript is sent while Claude is thinking; onChat awaits it right before the first reply to keep the order.
   const echo = tg("sendMessage", { chat_id: chat, text: `🎙 Распознал: «${text.slice(0, 500)}»` }).catch(() => false);
-  return onChat({ chat: { id: chat }, text }, updateId, { voice: true, echo });
+  return onChat({ chat: { id: chat }, text }, updateId, { voice: true, echo, trace });
 }
 
 // ---------------------------------------------------------------- updates
@@ -400,6 +417,7 @@ module.exports = async (req, res) => {
     return res.status(401).end();
   }
 
+  const trace = {}; // outcome and step timings of a voice request, exposed in response headers for debugging
   try {
     const update = typeof req.body === "string" ? JSON.parse(req.body) : req.body || {};
     const message = update.message;
@@ -409,12 +427,17 @@ module.exports = async (req, res) => {
     // Only the owner's chat may run the bot; everyone else is ignored silently.
     if (chat !== undefined && chat !== null && String(chat) === env.get("TELEGRAM_CHAT_ID")) {
       if (alreadyHandled(update.update_id)) return res.status(200).json({ ok: true });
-      if (message && (message.voice || message.audio)) await onVoice(message, update.update_id);
+      if (message && (message.voice || message.audio)) await onVoice(message, update.update_id, trace);
       else if (message && message.text) await onMessage(message, update.update_id);
       else if (callback) await onCallback(callback);
     }
   } catch (err) {
     console.error("webhook error:", err && err.message);
+  }
+  if (trace.result && typeof res.setHeader === "function") {
+    // Only an outcome code and millisecond timings: no text, ids or keys.
+    res.setHeader("x-voice-result", trace.result);
+    res.setHeader("Server-Timing", ["stt", "claude", "tts"].filter((k) => trace[k] !== undefined).map((k) => `${k};dur=${trace[k]}`).join(", ") || "none");
   }
   return res.status(200).json({ ok: true });
 };
