@@ -34,6 +34,156 @@
       "name": "A beautiful UI built upon Pavel Dobryakov's shader",
       "status": "alert_only",
       "at": "2026-10-23T10:15:08+00:00"
+    },
+    "producthunt:9fff645ebd5c0d0f": {
+      "name": "Whiteboard",
+      "status": "rejected",
+      "score": 3,
+      "at": "2026-10-23T12:59:21+00:00"
+    },
+    "hn:50197889": {
+      "name": "One setjmp call was eating 81% of Geolith's emulator frame time",
+      "status": "rejected",
+      "score": 2,
+      "at": "2026-10-23T12:59:24+00:00"
+    },
+    "news:331f407f38c71bf4": {
+      "name": "Global IT advisory firm Infotech acquires Bengaluru SaaS startup Zluri, launches CIO Analytics platform",
+      "status": "alert_only",
+      "score": 7,
+      "at": "2026-10-23T12:59:32+00:00"
+    },
+    "news:1ddc774230a2608a": {
+      "name": "Kradeos Launches to Improve AI Visibility of Software and SaaS Products on ChatGPT, Claude and Perplexity",
+      "status": "alert_only",
+      "score": 7,
+      "at": "2026-10-23T12:59:39+00:00"
+    },
+    "news:fba77e37aca0c60b": {
+      "name": "«Вдруг как в сказке навайбкодил Saas!» или что осталось за кадром успешного успеха Cal AI, Rork и Base44",
+      "status": "rejected",
+      "score": 2,
+      "at": "2026-10-23T12:59:43+00:00"
+    },
+    "news:a65b49fe9ced1ce9": {
+      "name": "Marktgröße für Software as a Service [SaaS], globaler Bericht, 2034",
+      "status": "rejected",
+      "score": 1,
+      "at": "2026-10-23T12:59:45+00:00"
+    },
+    "news:68008772cc238969": {
+      "name": "Startup Booster: Qualifio, plateforme SaaS de marketing interactif et de collecte de données - 10/03",
+      "status": "rejected",
+      "score": 5,
+      "at": "2026-10-23T12:59:51+00:00"
+    },
+    "news:797b672fa5385998": {
+      "name": "Ruit, el SaaS del recommerce, levanta 880.000 euros",
+      "status": "alert_only",
+      "score": 7,
+      "at": "2026-10-23T13:00:01+00:00"
+    },
+    "news:09f1c2d78ef3ea7f": {
+      "name": "Platomico, SaaS español de restaurantes, llega a Venezuela",
+      "status": "alert_only",
+      "score": 7,
+      "at": "2026-10-23T13:00:11+00:00"
+    },
+    "news:0d178e49ebb61b3f": {
+      "name": "Spendflo – Tedarik Platformu, SaaS Yönetimi ve Yapay Zeka Destekli Satıcı Harcama Kontrolü",
+      "status": "alert_only",
+      "score": 7,
+      "at": "2026-10-23T13:00:21+00:00"
+    },
+    "news:a6af0488b1f0c3e8": {
+      "name": "New FEMA Rules Explained: What Freelancers, Creators, And SaaS Startups Need To Know",
+      "status": "rejected",
+      "score": 1,
+      "at": "2026-10-23T13:00:24+00:00"
+    },
+    "news:f7b71a675a768c5a": {
+      "name": "Infotech Acquires Lightspeed-Backed SaaS Startup Zluri",
+      "status": "rejected",
+      "score": 5,
+      "at": "2026-10-23T13:00:31+00:00"
+    },
+    "news:428b2ee70337294f": {
+      "name": "[스타트업-ing] 차량마다 구축하던 eCall, 이제 SaaS 플랫폼으로 구독한다",
+      "status": "alert_only",
+      "score": 7,
+      "at": "2026-10-23T13:00:43+00:00"
+    },
+    "news:54fbe54fd38cceae": {
+      "name": "杜拜顧問揭 AI SEO 案例：助德 SaaS 平台 GenAI 曝光破 10 萬次",
+      "status": "rejected",
+      "score": 4,
+      "at": "2026-10-23T13:00:48+00:00"
+    },
+    "feed:28fa8de7f3b4b2e7": {
+      "name": "Unicorn NEURA Robotics reveals new robot along with a training facility for European robotics",
+      "status": "rejected",
+      "score": 4,
+      "at": "2026-10-23T13:00:52+00:00"
+    },
+    "news:109f10d260f7db18": {
+      "name": "Parte do ecossistema 99, Zesto busca profissionalizar a gestão dos restaurantes brasileiros",
+      "status": "alert_only",
+      "score": 7,
+      "at": "2026-10-23T13:01:02+00:00"
+    },
+    "news:102cce1d1dbf43d4": {
+      "name": "IPO市場の復活は？有望銘柄の共通点と「SaaSの死」のその後",
+      "status": "rejected",
+      "score": 1,
+      "at": "2026-10-23T13:01:05+00:00"
+    },
+    "feed:2dd6d2c9a3928f64": {
+      "name": "Правительство начало обсуждать досрочное завершение в 2026 году программы льготной ипотеки для ИТ-специалистов — РБК",
+      "status": "rejected",
+      "score": 0,
+      "at": "2026-10-23T13:01:09+00:00"
+    },
+    "hn:50206592": {
+      "name": "Flaksorama",
+      "status": "rejected",
+      "score": 6,
+      "at": "2026-10-23T13:01:19+00:00"
+    },
+    "hn:50201318": {
+      "name": "What do 'Creative Technologist' or 'Design Engineer' mean to you?",
+      "status": "rejected",
+      "score": 1,
+      "at": "2026-10-23T13:01:28+00:00"
+    },
+    "news:4aca97e68160c163": {
+      "name": "OpenAI Decisions API vs Jev AI Decision SaaS",
+      "status": "rejected",
+      "score": 3,
+      "at": "2026-10-23T13:01:32+00:00"
+    },
+    "news:44437eba96b71030": {
+      "name": "EMPIRE founder Ghazi launches B2B music infrastructure company Supply Chain globally, with Beatport-owned Ampsuite as launch partner",
+      "status": "alert_only",
+      "score": 7,
+      "at": "2026-10-23T13:01:41+00:00"
+    },
+    "news:fbf2bd52cb5bcf32": {
+      "name": "Кофейный конструктор и управление сетью по подписке: студент ЮФУ создаёт SaaS-платформу для независимых кофеен",
+      "status": "alert_only",
+      "score": 7,
+      "at": "2026-10-23T13:01:56+00:00"
+    },
+    "news:6d78f15ddbcbf3f7": {
+      "name": "Chargebee im Test: Abonnementabrechnung für SaaS und KI",
+      "status": "rejected",
+      "score": 4,
+      "at": "2026-10-23T13:01:59+00:00"
+    },
+    "news:c11bc1fd879dafdc": {
+      "name": "Taille du marché des logiciels en tant que service [SaaS], rapport mondial, 2034",
+      "status": "rejected",
+      "score": 0,
+      "at": "2026-10-23T13:02:02+00:00"
     }
   },
   "contacted_domains": []
