@@ -1,4 +1,40 @@
 {
-  "processed": {},
+  "processed": {
+    "hn:50205922": {
+      "name": "Pulse reached 8 contributors und 30 stars",
+      "status": "alert_only",
+      "at": "2026-10-23T10:14:21+00:00"
+    },
+    "hn:50198751": {
+      "name": "MintPage",
+      "status": "alert_only",
+      "at": "2026-10-23T10:14:29+00:00"
+    },
+    "hn:50174722": {
+      "name": "SchemaWright, learning database design in a gamified way",
+      "status": "alert_only",
+      "at": "2026-10-23T10:14:37+00:00"
+    },
+    "hn:50142443": {
+      "name": "A GitHub contribution for my newborn's feedings, turned into SaaS",
+      "status": "dry_run",
+      "at": "2026-10-23T10:14:43+00:00"
+    },
+    "hn:50195366": {
+      "name": "A scroll-through subway ride to show how GLP-1s work in your body",
+      "status": "alert_only",
+      "at": "2026-10-23T10:14:51+00:00"
+    },
+    "hn:50161054": {
+      "name": "SendReward",
+      "status": "dry_run",
+      "at": "2026-10-23T10:15:00+00:00"
+    },
+    "hn:50156472": {
+      "name": "A beautiful UI built upon Pavel Dobryakov's shader",
+      "status": "alert_only",
+      "at": "2026-10-23T10:15:08+00:00"
+    }
+  },
   "contacted_domains": []
 }
