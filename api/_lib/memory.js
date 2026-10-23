@@ -48,7 +48,7 @@ function hasSecret(text) {
 }
 
 function emptyMemory() {
-  return { version: 1, last_update_id: 0, items: [], projects: {}, history: [] };
+  return { version: 1, last_update_id: 0, items: [], projects: {}, history: [], lead_source: null };
 }
 
 function normalize(mem) {
@@ -59,7 +59,21 @@ function normalize(mem) {
     items: Array.isArray(m.items) ? m.items : [],
     projects: m.projects && typeof m.projects === "object" ? m.projects : {},
     history: Array.isArray(m.history) ? m.history : [],
+    lead_source: m.lead_source && typeof m.lead_source === "object" ? m.lead_source : null,
   };
+}
+
+// ---------------------------------------------------------------- lead source (deep-link /start <payload>)
+
+const SOURCE_PLATFORM = { ig: "Instagram", tt: "TikTok" };
+
+// "ig_reel_12" / "tt_reel_7" -> a reel, "ig_bio" / "tt_bio" -> a profile link. Anything else is ignored.
+function parseSource(payload) {
+  const m = /^(ig|tt)_(?:(reel)_(\d{1,5})|(bio))$/.exec(String(payload || "").trim().toLowerCase());
+  if (!m) return null;
+  const platform = SOURCE_PLATFORM[m[1]];
+  const code = m[2] ? `${m[1]}_reel_${Number(m[3])}` : `${m[1]}_bio`;
+  return { code, platform, reel: m[2] ? Number(m[3]) : null, label: m[2] ? `${platform}, ролик №${Number(m[3])}` : `${platform}, профиль (bio)` };
 }
 
 // ---------------------------------------------------------------- dates
@@ -211,6 +225,8 @@ function contextBlock(mem, query, now) {
   lines.push("", "Записи памяти, похожие на вопрос:", ...(relevant.length ? relevant.map(fmt) : ["(ничего подходящего)"]));
   if (recent.length) lines.push("", "Самые свежие записи:", ...recent.map(fmt));
 
+  if (mem.lead_source) lines.push("", `Источник обращения (deep-link /start, ${dateRu(mem.lead_source.at)}): ${mem.lead_source.label}. Учитывай тему этого ролика при квалификации.`);
+
   const dialog = mem.history.slice(-6);
   if (dialog.length) lines.push("", "Недавний диалог:", ...dialog.map((h) => `${h.role === "user" ? "Пользователь" : "Ассистент"}: ${h.text}`));
   return lines.join("\n");
@@ -276,6 +292,6 @@ function parseModelJson(text) {
 }
 
 module.exports = {
-  TYPES, emptyMemory, normalize, tokenize, hasSecret, retrieve, upsert, sanitize, forget, pushHistory, applyProposal,
+  TYPES, emptyMemory, normalize, parseSource, tokenize, hasSecret, retrieve, upsert, sanitize, forget, pushHistory, applyProposal,
   touchProject, contextBlock, renderOverview, renderTimeline, renderSearch, parseModelJson, dateRu, ageText,
 };

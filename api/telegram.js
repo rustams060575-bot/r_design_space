@@ -55,7 +55,8 @@ const CHAT_SYSTEM =
   "Твоя работа: (1) Проекты - держи в голове статус, риски, дедлайны, владельца и ближайший шаг; сам напоминай о сроках из " +
   "памяти. (2) Лиды - квалифицируй по явной потребности (дашборд, CRM, веб-приложение, редизайн, сайт, лендинг), срочности, " +
   "бюджету, лицу, принимающему решение, и срокам; давай вердикт «брать / уточнить / отказаться» с причиной и первым шагом " +
-  "(2-3 вопроса для созвона или готовая формулировка ответа). Инвестиции, раунды и общие новости - не лиды. (3) Решения - " +
+  "(2-3 вопроса для созвона или готовая формулировка ответа). Инвестиции, раунды и общие новости - не лиды. Скоринг по бюджету: до 1 000 € - холодный лид; от 1 000 € - стандарт; от 3 000 € и выше - премиум (приоритет, " +
+  "горячий лид). Если в контексте указан источник обращения (ролик Instagram/TikTok), учитывай тему ролика и упомяни источник в резюме лида. (3) Решения - " +
   "сравнивай варианты, называй компромиссы и рекомендуй один. Не выдумывай факты о клиентах, цифры и обещания; если данных " +
   "не хватает, задай один самый важный вопрос.\n\n" +
   "Стиль: уверенно, кратко, по делу; сначала вывод, потом детали. Отвечай на языке пользователя, удобно читать с телефона, " +
@@ -357,12 +358,36 @@ async function onVoice(msg, updateId, trace = {}) {
 
 // ---------------------------------------------------------------- updates
 
+// /start <payload> from a deep link (t.me/r_design_space_bot?start=ig_reel_12): remember which reel the client came from.
+async function onStart(chat, payload) {
+  const source = mem.parseSource(payload);
+  if (!source) return tg("sendMessage", { chat_id: chat, text: START_TEXT });
+  const now = Date.now();
+  const store = createStore(env.storeEnv());
+  let noted = false;
+  if (store.enabled) {
+    try {
+      await store.update((m) => {
+        m.lead_source = { code: source.code, label: source.label, at: new Date(now).toISOString() };
+        mem.pushHistory(m, "user", `/start ${source.code} (пришёл из: ${source.label})`, now);
+      }, `memory: lead source ${source.code} [skip ci]`);
+      noted = true;
+    } catch (err) {
+      console.error("lead source save error:", err && err.message);
+    }
+  }
+  const line = `📍 Источник: ${source.label}${noted ? "" : " (в память не записан)"}
+
+`;
+  return tg("sendMessage", { chat_id: chat, text: line + START_TEXT });
+}
+
 async function onMessage(msg, updateId) {
   const chat = msg.chat.id;
   const cmd = parseCommand(msg.text);
   if (!cmd) return onChat(msg, updateId);
 
-  if (cmd.name === "start") return tg("sendMessage", { chat_id: chat, text: START_TEXT });
+  if (cmd.name === "start") return onStart(chat, cmd.arg);
   if (cmd.name === "help") return tg("sendMessage", { chat_id: chat, text: HELP_TEXT });
   if (["memory", "history", "forget", "remember"].includes(cmd.name)) return onMemoryCommand(chat, cmd);
   if (cmd.name === "search") {
