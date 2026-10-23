@@ -1,0 +1,28 @@
+{
+  "owner": {
+    "name": "Rustam",
+    "email": "rustams060575@gmail.com",
+    "telegram_handle": "@r_design_space",
+    "telegram_url": "https://t.me/r_design_space",
+    "postal_address": ""
+  },
+  "vercel_url": "",
+  "keywords": ["CRM", "SaaS", "Dashboard", "UI/UX", "Tilda Zero Block"],
+  "sources": {
+    "producthunt_feed": "https://www.producthunt.com/feed",
+    "hackernews_show": true,
+    "extra_feeds": ["https://www.indiehackers.com/feed.xml"]
+  },
+  "limits": {
+    "max_age_days": 7,
+    "max_leads_per_run": 10,
+    "max_emails_per_run": 2,
+    "request_timeout": 15
+  },
+  "llm": {
+    "provider": "auto",
+    "anthropic_model": "claude-sonnet-5-5",
+    "openai_model": "gpt-4o-mini",
+    "max_tokens": 600
+  }
+}
