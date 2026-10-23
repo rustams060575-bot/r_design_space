@@ -18,6 +18,7 @@
 "use strict";
 
 const mem = require("./_lib/memory");
+const env = require("./_lib/env");
 const { createStore, MemoryDisabled } = require("./_lib/store");
 const { askClaude } = require("./_lib/claude");
 
@@ -59,7 +60,7 @@ const LEAD_ID = /^[a-z_]+:[A-Za-z0-9]{1,40}$/;
 const MEMORY_ID = /^m[a-z0-9]{3,20}$/;
 
 async function tg(method, payload) {
-  const res = await fetch(`https://api.telegram.org/bot${process.env.TELEGRAM_BOT_TOKEN}/${method}`, {
+  const res = await fetch(`https://api.telegram.org/bot${env.get("TELEGRAM_BOT_TOKEN")}/${method}`, {
     method: "POST",
     headers: { "content-type": "application/json" },
     body: JSON.stringify(payload),
@@ -86,7 +87,7 @@ async function dispatch(inputs) {
   const res = await fetch(`https://api.github.com/repos/${repo}/actions/workflows/${workflow}/dispatches`, {
     method: "POST",
     headers: {
-      Authorization: `Bearer ${process.env.GH_DISPATCH_TOKEN}`,
+      Authorization: `Bearer ${env.get("GH_DISPATCH_TOKEN")}`,
       Accept: "application/vnd.github+json",
       "X-GitHub-Api-Version": "2022-11-28",
       "User-Agent": "r-design-space-bot",
@@ -106,7 +107,7 @@ function parseCommand(text) {
 // ---------------------------------------------------------------- memory commands
 
 async function withMemory(chat, fn) {
-  const store = createStore(process.env);
+  const store = createStore(env.storeEnv());
   if (!store.enabled) {
     return tg("sendMessage", { chat_id: chat, text: `🧠 Память не настроена: ${store.reason}.\nИнструкция - agent/README.md, раздел «Память».` });
   }
@@ -153,13 +154,13 @@ async function onMemoryCommand(chat, cmd) {
 async function onChat(msg, updateId) {
   const chat = msg.chat.id;
   const text = (msg.text || "").trim();
-  if (!process.env.ANTHROPIC_API_KEY) {
+  if (!env.get("ANTHROPIC_API_KEY")) {
     return tg("sendMessage", { chat_id: chat, text: "💬 Для диалога нужен ANTHROPIC_API_KEY в настройках Vercel (Environment Variables)." });
   }
   await tg("sendChatAction", { chat_id: chat, action: "typing" });
 
   const now = Date.now();
-  const store = createStore(process.env);
+  const store = createStore(env.storeEnv());
   let memory = mem.emptyMemory();
   let memoryNote = "";
   if (store.enabled) {
@@ -177,7 +178,7 @@ async function onChat(msg, updateId) {
   let proposal;
   try {
     const raw = await askClaude({
-      apiKey: process.env.ANTHROPIC_API_KEY,
+      apiKey: env.get("ANTHROPIC_API_KEY"),
       model: process.env.CHAT_MODEL || "claude-sonnet-5-5",
       system: CHAT_SYSTEM,
       user: `${mem.contextBlock(memory, text, now)}\n\n---\nСообщение пользователя:\n${text}`,
@@ -261,7 +262,7 @@ module.exports = async (req, res) => {
   // Always answer 200 once the request is authentic, otherwise Telegram retries the update.
   if (req.method !== "POST") return res.status(405).end();
 
-  const secret = process.env.TELEGRAM_WEBHOOK_SECRET;
+  const secret = env.get("TELEGRAM_WEBHOOK_SECRET");
   if (!secret || req.headers["x-telegram-bot-api-secret-token"] !== secret) {
     // The reason header helps to debug deployments; it reveals only the configuration state, never the secret.
     if (typeof res.setHeader === "function") res.setHeader("x-auth-reason", secret ? "secret-mismatch" : "secret-not-configured");
@@ -275,7 +276,7 @@ module.exports = async (req, res) => {
     const chat = message ? message.chat.id : callback && callback.message ? callback.message.chat.id : null;
 
     // Only the owner's chat may run the bot; everyone else is ignored silently.
-    if (chat !== undefined && chat !== null && String(chat) === String(process.env.TELEGRAM_CHAT_ID)) {
+    if (chat !== undefined && chat !== null && String(chat) === env.get("TELEGRAM_CHAT_ID")) {
       if (message && message.text) await onMessage(message, update.update_id);
       else if (callback) await onCallback(callback);
     }
