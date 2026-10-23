@@ -35,7 +35,7 @@ load_dotenv(ROOT / ".env")
 
 from email_sender import EMAIL_RE, send_email  # noqa: E402
 from pitch_writer import write_pitch  # noqa: E402
-from qualifier import qualify  # noqa: E402
+from qualifier import is_noise, qualify  # noqa: E402
 from telegram_bot import send_alert, send_report, send_text  # noqa: E402
 
 CONFIG_PATH = ROOT / "config.json"
@@ -305,8 +305,11 @@ def collect_leads(cfg: dict, query: str | None = None) -> list[dict]:
 
     keywords = cfg["keywords"] + cfg.get("hackernews", {}).get("keywords", []) + query_terms(query)
     signals = cfg.get("design_signals", [])
-    unique = {}
+    unique, noise = {}, 0
     for lead in leads:
+        if is_noise(lead):  # funding, investment, rounds, startup news: never a lead
+            noise += 1
+            continue
         text = f"{lead['name']} {lead['summary']}"
         hits, sig = keyword_hits(text, keywords), keyword_hits(text, signals)
         relevant = (bool(hits)
@@ -315,6 +318,7 @@ def collect_leads(cfg: dict, query: str | None = None) -> list[dict]:
         if relevant and lead["id"] not in unique:
             lead["keywords"], lead["signals"] = hits, sig
             unique[lead["id"]] = lead
+    print(f"[scraper] dropped {noise} funding / investment / news posts before qualification")
     return interleave(list(unique.values()))
 
 

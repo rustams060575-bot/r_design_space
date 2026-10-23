@@ -51,27 +51,21 @@
       "UI/UX designer",
       "frontend developer",
       "dashboard design",
-      "landing page"
+      "landing page",
+      "need a dashboard",
+      "build a web app",
+      "redesign our website",
+      "CRM developer",
+      "looking for a freelancer"
     ]
   },
   "sources": {
-    "producthunt_feed": "https://www.producthunt.com/feed",
+    "producthunt_feed": "",
     "hackernews_show": true,
-    "extra_feeds": [
-      {
-        "url": "https://vc.ru/rss",
-        "region": "Россия и СНГ",
-        "lang": "ru"
-      },
-      {
-        "url": "https://www.eu-startups.com/feed/",
-        "region": "Европа",
-        "lang": "en"
-      }
-    ]
+    "extra_feeds": []
   },
   "global_search": {
-    "enabled": true,
+    "enabled": false,
     "max_items_per_query": 6,
     "regions": [
       {
@@ -233,7 +227,10 @@
   "qualification": {
     "min_score": 7,
     "max_per_run": 25,
-    "enrich_site": true
+    "enrich_site": true,
+    "accepted_intents": [
+      "explicit_request"
+    ]
   },
   "outreach": {
     "require_confirmation": true

@@ -13,7 +13,7 @@ import os
 import requests
 
 import langs
-from qualifier import CATEGORY_RU
+from qualifier import NEED_RU, URGENCY_RU
 
 STATUS_LABEL = {
     "pending": "⏳ Ждёт вашего подтверждения - нажмите «Отправить письмо»",
@@ -67,13 +67,16 @@ def build_card(lead: dict, status: str, dry_run: bool, language: str = "en") -> 
         f"🎯 {lead['name']}",
         LINE,
         f"📍 {SOURCE_LABEL.get(lead['source'], lead['source'])}" + (f" · {lead['region']}" if lead.get("region") else ""),
-        f"⭐ Оценка: {a.get('score', '?')}/10 · {CATEGORY_RU.get(a.get('category'), 'проект')}",
+        f"⭐ Оценка: {a.get('score', '?')}/10 · 🧩 {NEED_RU.get(a.get('need_type'), 'запрос')} · ⏱ {URGENCY_RU.get(a.get('urgency'), 'срок не указан')}",
         f"🌐 Язык письма: {langs.LANG_RU.get(language, language)}",
         mode_label(dry_run),
         STATUS_LABEL.get(status, status),
         "",
-        "📝 О проекте",
+        "📝 Кто и что просит",
         a.get("summary_ru") or "-",
+        "",
+        "😣 Боль клиента",
+        a.get("pain_ru") or "-",
         "",
         "✅ Почему подходит",
         *why,
