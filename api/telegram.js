@@ -1,5 +1,7 @@
 // Telegram webhook on Vercel (serverless: no 24/7 server).
 //
+//  * OWNER (TELEGRAM_CHAT_ID) = personal Chief of Staff: everything below. ANY OTHER private chat = public lead qualifier
+//    (api/_lib/client_flow.js): asks about the task and budget, saves the lead to leads.json, notifies the owner.
 //  * /start, /help           answered here.
 //  * /search, "Send" button  start the GitHub Actions workflow (scanning, AI, email) which reports back to Telegram.
 //  * free text               a conversation with Claude that uses LONG-TERM MEMORY: relevant notes from past days or
@@ -27,6 +29,8 @@ const env = require("./_lib/env");
 const { createStore, MemoryDisabled } = require("./_lib/store");
 const { askClaude } = require("./_lib/claude");
 const voice = require("./_lib/voice");
+const leads = require("./_lib/leads");
+const { handleClient } = require("./_lib/client_flow");
 
 const START_TEXT =
   "👋 R Design Space · персональный агент\n\n" +
@@ -358,6 +362,22 @@ async function onVoice(msg, updateId, trace = {}) {
 
 // ---------------------------------------------------------------- updates
 
+// /leads [n]: leads qualified in the public mode (external clients), newest first.
+async function onLeadsCommand(chat, cmd) {
+  const store = createStore({ ...env.storeEnv(), MEMORY_PATH: process.env.LEADS_PATH || "leads.json" }, undefined, {
+    empty: leads.emptyLeads,
+    normalize: leads.normalizeLeads,
+  });
+  if (!store.enabled) return tg("sendMessage", { chat_id: chat, text: `📇 Хранилище лидов не настроено: ${store.reason}.` });
+  try {
+    const db = await store.read();
+    return sendLong(chat, leads.renderLeads(db, Math.min(30, Math.max(1, parseInt(cmd.arg, 10) || 10))));
+  } catch (err) {
+    console.error("leads read error:", err && err.message);
+    return tg("sendMessage", { chat_id: chat, text: "📇 Лиды недоступны: ошибка хранилища, подробности в логах Vercel." });
+  }
+}
+
 // /start <payload> from a deep link (t.me/r_design_space_bot?start=ig_reel_12): remember which reel the client came from.
 async function onStart(chat, payload) {
   const source = mem.parseSource(payload);
@@ -390,6 +410,7 @@ async function onMessage(msg, updateId) {
   if (cmd.name === "start") return onStart(chat, cmd.arg);
   if (cmd.name === "help") return tg("sendMessage", { chat_id: chat, text: HELP_TEXT });
   if (["memory", "history", "forget", "remember"].includes(cmd.name)) return onMemoryCommand(chat, cmd);
+  if (cmd.name === "leads") return onLeadsCommand(chat, cmd);
   if (cmd.name === "search") {
     const query = cmd.arg.slice(0, 100);
     const ok = await dispatch({ action: "search", query, lead_id: "" });
@@ -459,12 +480,18 @@ module.exports = async (req, res) => {
     const callback = update.callback_query;
     const chat = message ? message.chat.id : callback && callback.message ? callback.message.chat.id : null;
 
-    // Only the owner's chat may run the bot; everyone else is ignored silently.
-    if (chat !== undefined && chat !== null && String(chat) === env.get("TELEGRAM_CHAT_ID")) {
+    // Two modes. The owner's chat (TELEGRAM_CHAT_ID) gets the personal Chief of Staff: memory, search, e-mail, voice.
+    // Any other private chat is an external client and gets the public lead qualifier, which has none of those powers.
+    const ownerChat = env.get("TELEGRAM_CHAT_ID");
+    if (chat !== undefined && chat !== null) {
       if (alreadyHandled(update.update_id)) return res.status(200).json({ ok: true });
-      if (message && (message.voice || message.audio)) await onVoice(message, update.update_id, trace);
-      else if (message && message.text) await onMessage(message, update.update_id);
-      else if (callback) await onCallback(callback);
+      if (ownerChat && String(chat) === ownerChat) {
+        if (message && (message.voice || message.audio)) await onVoice(message, update.update_id, trace);
+        else if (message && message.text) await onMessage(message, update.update_id);
+        else if (callback) await onCallback(callback);
+      } else if (message && ownerChat) {
+        await handleClient(message, update.update_id, { tg, env, ownerChat });
+      }
     }
   } catch (err) {
     console.error("webhook error:", err && err.message);

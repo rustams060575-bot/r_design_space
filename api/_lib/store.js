@@ -16,7 +16,10 @@ class MemoryDisabled extends Error {
   }
 }
 
-function createStore(env, fetchImpl) {
+// opts.empty / opts.normalize let the same store hold another document (e.g. leads.json); the default is memory.json.
+function createStore(env, fetchImpl, opts = {}) {
+  const empty = opts.empty || emptyMemory;
+  const norm = opts.normalize || normalize;
   const repo = env.MEMORY_REPO;
   const token = env.GH_MEMORY_TOKEN || env.GH_DISPATCH_TOKEN;
   const path = env.MEMORY_PATH || "memory.json";
@@ -49,11 +52,11 @@ function createStore(env, fetchImpl) {
   async function load() {
     await ensurePrivate();
     const res = await doFetch(`${api}/contents/${encodeURIComponent(path)}?ref=${encodeURIComponent(branch)}`, { headers });
-    if (res.status === 404) return { memory: emptyMemory(), sha: null };
+    if (res.status === 404) return { memory: empty(), sha: null };
     if (!res.ok) throw new Error(`memory load failed: HTTP ${res.status}`);
     const file = await res.json();
     const text = Buffer.from(file.content || "", "base64").toString("utf8");
-    return { memory: normalize(text.trim() ? JSON.parse(text) : null), sha: file.sha };
+    return { memory: norm(text.trim() ? JSON.parse(text) : null), sha: file.sha };
   }
 
   async function save(memory, sha, message) {
