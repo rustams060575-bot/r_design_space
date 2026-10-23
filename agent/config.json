@@ -8,6 +8,21 @@
   },
   "vercel_url": "",
   "keywords": ["CRM", "SaaS", "Dashboard", "UI/UX", "Tilda Zero Block"],
+  "brand": "R Design Space",
+  "hackernews": {
+    "ask_queries": [
+      "looking for a designer",
+      "need a designer",
+      "UI/UX designer",
+      "frontend developer",
+      "dashboard design",
+      "landing page"
+    ]
+  },
+  "design_signals": [
+    "designer", "design help", "UI", "UX", "frontend", "front-end", "dashboard", "landing page",
+    "redesign", "prototype", "Figma", "MVP", "beta", "launch", "Tilda"
+  ],
   "sources": {
     "producthunt_feed": "https://www.producthunt.com/feed",
     "hackernews_show": true,

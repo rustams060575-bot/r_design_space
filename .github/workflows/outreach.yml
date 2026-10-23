@@ -2,7 +2,7 @@ name: Outreach agent
 
 on:
   schedule:
-    - cron: "0 */3 * * *"   # every 3 hours
+    - cron: "0 9 * * *"     # every day at 09:00 UTC
   workflow_dispatch:
 
 permissions:
@@ -27,12 +27,23 @@ jobs:
 
       - run: pip install -r agent/requirements.txt
 
+      - name: Check secrets (names only, values are never printed)
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          GMAIL_CREDENTIALS: ${{ secrets.GMAIL_CREDENTIALS }}
+        run: |
+          for name in ANTHROPIC_API_KEY TELEGRAM_BOT_TOKEN TELEGRAM_CHAT_ID GMAIL_CREDENTIALS; do
+            if [ -n "${!name}" ]; then echo "$name: set"; else echo "::warning::$name is NOT set in repository secrets"; fi
+          done
+
       - name: Run lead hunter
         run: python agent/scraper.py
         env:
           # Emails are only sent when the repository variable DRY_RUN is set to "false".
           DRY_RUN: ${{ vars.DRY_RUN || 'true' }}
-          GMAIL_APP_PASSWORD: ${{ secrets.GMAIL_APP_PASSWORD }}
+          GMAIL_CREDENTIALS: ${{ secrets.GMAIL_CREDENTIALS }}
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}

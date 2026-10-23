@@ -1,6 +1,7 @@
 """Gmail SMTP sender. Authenticates with the GMAIL_APP_PASSWORD environment variable."""
 from __future__ import annotations
 
+import json
 import os
 import re
 import smtplib
@@ -12,11 +13,36 @@ SMTP_HOST, SMTP_PORT = "smtp.gmail.com", 465
 EMAIL_RE = re.compile(r"^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$")
 
 
+def load_credentials(cfg: dict) -> tuple[str, str]:
+    """Reads the Gmail login from the GMAIL_CREDENTIALS secret (GMAIL_APP_PASSWORD is a legacy fallback).
+
+    Accepted formats: a bare app password, "user@gmail.com:app-password", or
+    JSON {"email": "...", "app_password": "..."}. Values are never printed.
+    """
+    raw = (os.getenv("GMAIL_CREDENTIALS") or os.getenv("GMAIL_APP_PASSWORD") or "").strip()
+    if not raw:
+        raise RuntimeError("GMAIL_CREDENTIALS environment variable is not set")
+
+    user, password = cfg["owner"]["email"], raw
+    if raw.startswith("{"):
+        try:
+            data = json.loads(raw)
+        except json.JSONDecodeError as exc:
+            raise ValueError("GMAIL_CREDENTIALS looks like JSON but is not valid") from exc
+        user = data.get("email") or data.get("user") or user
+        password = data.get("app_password") or data.get("password") or ""
+    elif "@" in raw.split(":", 1)[0] and ":" in raw:
+        user, password = raw.split(":", 1)
+    if not password:
+        raise ValueError("GMAIL_CREDENTIALS does not contain a password")
+    return user.strip().lower(), password.replace(" ", "")  # app passwords are often pasted with spaces
+
+
 def build_footer(cfg: dict) -> str:
     owner = cfg["owner"]
     parts = [
         "--",
-        f"{owner['name']} | UI/UX & Interactive Web Developer",
+        f"{owner['name']} | {cfg.get('brand', 'R Design Space')} - UI/UX, dashboards, frontend & Tilda Zero Block",
         f"Telegram: {owner['telegram_handle']} ({owner['telegram_url']})",
     ]
     if cfg.get("vercel_url"):
@@ -36,13 +62,9 @@ def send_email(to_addr: str, subject: str, body: str, cfg: dict) -> None:
     if not EMAIL_RE.match(to_addr):
         raise ValueError(f"invalid recipient address: {to_addr!r}")
 
-    password = os.getenv("GMAIL_APP_PASSWORD")
-    if not password:
-        raise RuntimeError("GMAIL_APP_PASSWORD environment variable is not set")
-
-    sender = cfg["owner"]["email"].lower()
+    sender, password = load_credentials(cfg)
     msg = EmailMessage()
-    msg["From"] = formataddr((cfg["owner"]["name"], sender))
+    msg["From"] = formataddr((f"{cfg['owner']['name']} | {cfg.get('brand', 'R Design Space')}", sender))
     msg["To"] = to_addr
     msg["Reply-To"] = sender
     msg["Subject"] = subject
@@ -50,5 +72,5 @@ def send_email(to_addr: str, subject: str, body: str, cfg: dict) -> None:
     msg.set_content(f"{body.rstrip()}\n\n{build_footer(cfg)}\n")
 
     with smtplib.SMTP_SSL(SMTP_HOST, SMTP_PORT, context=ssl.create_default_context(), timeout=30) as smtp:
-        smtp.login(sender, password.replace(" ", ""))  # app passwords are often pasted with spaces
+        smtp.login(sender, password)
         smtp.send_message(msg)

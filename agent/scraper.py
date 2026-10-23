@@ -161,29 +161,43 @@ def fetch_feed(url: str, source: str, cfg: dict) -> list[dict]:
 
 
 def fetch_hackernews(cfg: dict) -> list[dict]:
-    """Show HN posts through the public Algolia API; the item URL is the product's own website."""
-    cutoff = time.time() - cfg["limits"]["max_age_days"] * 86400
+    """Targeted Hacker News scan through the public Algolia API.
+
+    - Show HN: new products, one search per keyword; the item URL is the product's own website.
+    - Ask HN: founders asking for design / UI / frontend help, one search per phrase in
+      hackernews.ask_queries (no website, so these become Telegram-only leads).
+    """
+    hn = cfg.get("hackernews", {})
+    cutoff = int(time.time() - cfg["limits"]["max_age_days"] * 86400)
+    searches = []
+    if cfg["sources"].get("hackernews_show"):
+        searches += [("show_hn", kw) for kw in cfg["keywords"]]
+    searches += [("ask_hn", q) for q in hn.get("ask_queries", [])]
+
     seen, leads = set(), []
-    for kw in cfg["keywords"]:
+    for tag, query in searches:
         r = get("https://hn.algolia.com/api/v1/search_by_date", cfg["limits"]["request_timeout"],
-                params={"tags": "show_hn", "query": kw, "hitsPerPage": 20})
+                params={"tags": tag, "query": query, "hitsPerPage": 20,
+                        "numericFilters": f"created_at_i>{cutoff}"})
         if r is None:
             continue
         for h in r.json().get("hits", []):
             oid = h.get("objectID")
-            if not oid or oid in seen or h.get("created_at_i", 0) < cutoff:
+            if not oid or oid in seen:
                 continue
             seen.add(oid)
-            title = re.sub(r"^show hn:\s*", "", h.get("title") or "", flags=re.I)
+            title = re.sub(r"^(show|ask) hn:\s*", "", h.get("title") or "", flags=re.I)
             parts = re.split(r"\s[–—-]\s", title, maxsplit=1)
             name, tagline = parts[0].strip(), (parts[1].strip() if len(parts) > 1 else "")
+            is_ask = tag == "ask_hn"
             leads.append({
                 "id": f"hn:{oid}",
-                "source": "hackernews",
-                "name": name or title,
-                "summary": strip_html(f"{tagline}. {h.get('story_text') or ''}")[:400].strip(". "),
+                "source": "hackernews_ask" if is_ask else "hackernews",
+                "name": (title if is_ask else name) or title,
+                "summary": strip_html(f"{tagline}. {h.get('story_text') or ''}")[:500].strip(". "),
                 "url": f"https://news.ycombinator.com/item?id={oid}",
-                "website": h.get("url") if is_product_site(h.get("url")) else None,
+                "website": None if is_ask else (h.get("url") if is_product_site(h.get("url")) else None),
+                "author": h.get("author"),
             })
     return leads
 
@@ -193,18 +207,23 @@ def collect_leads(cfg: dict) -> list[dict]:
     leads: list[dict] = []
     if src.get("producthunt_feed"):
         leads += fetch_feed(src["producthunt_feed"], "producthunt", cfg)
-    if src.get("hackernews_show"):
+    if src.get("hackernews_show") or cfg.get("hackernews", {}).get("ask_queries"):
         leads += fetch_hackernews(cfg)
     for url in src.get("extra_feeds", []):
         leads += fetch_feed(url, "feed", cfg)
 
+    signals = cfg.get("design_signals", [])
     unique = {}
     for lead in leads:
-        hits = keyword_hits(f"{lead['name']} {lead['summary']}", cfg["keywords"])
-        if hits and lead["id"] not in unique:
-            lead["keywords"] = hits
+        text = f"{lead['name']} {lead['summary']}"
+        hits, sig = keyword_hits(text, cfg["keywords"]), keyword_hits(text, signals)
+        # Ask HN posts were already found by design-related phrases: a signal alone is enough there.
+        relevant = bool(hits) or (lead["source"] == "hackernews_ask" and bool(sig))
+        if relevant and lead["id"] not in unique:
+            lead["keywords"], lead["signals"] = hits, sig
             unique[lead["id"]] = lead
-    return list(unique.values())
+    # Strongest matches first, so the per-run cap keeps the best leads.
+    return sorted(unique.values(), key=lambda l: -(len(l["keywords"]) * 2 + len(l["signals"])))
 
 
 # ---------------------------------------------------------------- contact discovery
@@ -311,4 +330,6 @@ def run() -> int:
 
 
 if __name__ == "__main__":
+    if hasattr(sys.stdout, "reconfigure"):  # product names may contain non-cp1251 characters on Windows
+        sys.stdout.reconfigure(encoding="utf-8", errors="replace")
     sys.exit(run())
