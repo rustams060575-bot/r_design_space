@@ -1,6 +1,0 @@
-requests>=2.31
-python-dotenv>=1.0
-faster-whisper>=1.0,<2
-# faster-whisper 1.2 fails to decode audio with av 17+ ("open() got an unexpected keyword argument 'metadata_errors'");
-# 15.1 and 16.1 were verified on a real OGG/Opus voice sample.
-av>=15,<17
