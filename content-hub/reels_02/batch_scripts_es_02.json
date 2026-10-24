@@ -1,0 +1,392 @@
+{
+  "filename": "batch_scripts_es_02.json",
+  "brand": "R DESIGN SPACE",
+  "language": "es",
+  "audience": [
+    "Fundadores",
+    "CEOs",
+    "Directores de Marca",
+    "Propietarios de Negocios"
+  ],
+  "visual_style": {
+    "direction": "Quiet Luxury",
+    "palette": {
+      "background": "#141414",
+      "surface": "#232323",
+      "text": "#F2EFE8",
+      "accent": "#B89B67"
+    },
+    "typography": "Serif editorial para titulares y sans serif limpia para textos de apoyo.",
+    "motion": "Transiciones suaves, pausas deliberadas y movimientos sutiles.",
+    "rules": [
+      "Mostrar un solo mensaje principal por escena.",
+      "Reservar espacio negativo y mantener los textos dentro del área segura.",
+      "Usar composiciones distintas entre escenas.",
+      "Las métricas expresan estructuras o criterios, no resultados comerciales demostrados.",
+      "Las citas son textos originales de marca, sin atribuciones externas."
+    ]
+  },
+  "cta_destination": "https://t.me/r_design_space_bot",
+  "scripts": [
+    {
+      "id": "02_01",
+      "title": "Tu web negocia antes que tú",
+      "duration_seconds": 15,
+      "scenes": [
+        {
+          "role": "hook",
+          "start_seconds": 0,
+          "end_seconds": 3,
+          "layout": "LAYOUT_HERO",
+          "text": "¿Tu web justifica tu precio?",
+          "voiceover": "Tu web negocia antes que tú.",
+          "visual_direction": "Titular centrado sobre fondo oscuro. Una línea dorada aparece debajo."
+        },
+        {
+          "role": "insight",
+          "start_seconds": 3,
+          "end_seconds": 10,
+          "layout": "LAYOUT_QUOTE",
+          "text": "Un precio premium necesita una percepción a la altura.",
+          "voiceover": "Si tu presencia parece genérica, tu propuesta premium empieza teniendo que justificarse.",
+          "visual_direction": "Cita alineada a la izquierda, con comillas doradas y amplio margen derecho."
+        },
+        {
+          "role": "cta",
+          "start_seconds": 10,
+          "end_seconds": 15,
+          "layout": "LAYOUT_BENTO",
+          "text": "Solicita tu auditoría UX gratuita",
+          "secondary_text": "Telegram · @r_design_space_bot",
+          "voiceover": "Solicita tu auditoría UX gratuita en nuestro bot de Telegram.",
+          "visual_direction": "Tarjeta horizontal en el tercio inferior. Nombre de marca arriba y CTA dentro de la tarjeta."
+        }
+      ]
+    },
+    {
+      "id": "02_02",
+      "title": "Demasiadas salidas",
+      "duration_seconds": 15,
+      "scenes": [
+        {
+          "role": "hook",
+          "start_seconds": 0,
+          "end_seconds": 3,
+          "layout": "LAYOUT_METRIC",
+          "text": "7 BOTONES",
+          "secondary_text": "¿Cuál importa?",
+          "voiceover": "Siete botones. ¿Qué debería hacer tu cliente?",
+          "visual_direction": "Número siete de gran tamaño a la izquierda. Pregunta breve a la derecha."
+        },
+        {
+          "role": "insight",
+          "start_seconds": 3,
+          "end_seconds": 10,
+          "layout": "LAYOUT_BENTO",
+          "text": "Una acción principal",
+          "secondary_text": "Una jerarquía que guíe la decisión.",
+          "voiceover": "Cuando todo reclama atención, decidir cuesta más. Define una acción principal y dale prioridad.",
+          "visual_direction": "Interfaz minimalista con un botón destacado en dorado y enlaces secundarios discretos."
+        },
+        {
+          "role": "cta",
+          "start_seconds": 10,
+          "end_seconds": 15,
+          "layout": "LAYOUT_HERO",
+          "text": "Simplifica el siguiente paso.",
+          "secondary_text": "Auditoría UX gratuita · Telegram\n@r_design_space_bot",
+          "voiceover": "Pide tu auditoría UX gratuita en nuestro bot de Telegram.",
+          "visual_direction": "Mensaje centrado con línea dorada. Identificador de Telegram fijo debajo."
+        }
+      ]
+    },
+    {
+      "id": "02_03",
+      "title": "El coste de parecer iguales",
+      "duration_seconds": 15,
+      "scenes": [
+        {
+          "role": "hook",
+          "start_seconds": 0,
+          "end_seconds": 3,
+          "layout": "LAYOUT_QUOTE",
+          "text": "Si pareces igual, ¿por qué pagar más?",
+          "voiceover": "Si pareces igual, ¿por qué pagar más?",
+          "visual_direction": "Cita en serif sobre fondo marfil, alineada arriba a la izquierda."
+        },
+        {
+          "role": "insight",
+          "start_seconds": 3,
+          "end_seconds": 10,
+          "layout": "LAYOUT_HERO",
+          "text": "Haz visible tu diferencia.",
+          "voiceover": "Tu experiencia, tu método y tus pruebas deben explicar lo que una plantilla no cuenta.",
+          "visual_direction": "Cambio a fondo oscuro. Titular centrado con línea dorada que se extiende lentamente."
+        },
+        {
+          "role": "cta",
+          "start_seconds": 10,
+          "end_seconds": 15,
+          "layout": "LAYOUT_BENTO",
+          "text": "Revisemos cómo se percibe tu marca.",
+          "secondary_text": "Auditoría UX gratuita · Telegram\n@r_design_space_bot",
+          "voiceover": "Solicita tu auditoría UX gratuita en nuestro bot de Telegram.",
+          "visual_direction": "Tarjeta vertical desplazada a la derecha con una pequeña etiqueta superior: R DESIGN SPACE."
+        }
+      ]
+    },
+    {
+      "id": "02_04",
+      "title": "El tráfico no lo resuelve todo",
+      "duration_seconds": 15,
+      "scenes": [
+        {
+          "role": "hook",
+          "start_seconds": 0,
+          "end_seconds": 3,
+          "layout": "LAYOUT_BENTO",
+          "text": "Más visitas.",
+          "secondary_text": "Las mismas dudas.",
+          "voiceover": "Más tráfico no resuelve una oferta confusa.",
+          "visual_direction": "Dos bloques apilados: visitas arriba, dudas abajo. El segundo recibe un contorno dorado."
+        },
+        {
+          "role": "insight",
+          "start_seconds": 3,
+          "end_seconds": 10,
+          "layout": "LAYOUT_METRIC",
+          "text": "3 RESPUESTAS",
+          "secondary_text": "Qué resuelves. Para quién. Por qué elegirte.",
+          "voiceover": "Antes de invertir más, aclara qué resuelves, para quién y por qué deberían elegirte.",
+          "visual_direction": "Número tres centrado en la mitad superior. Las tres respuestas aparecen debajo, una por una."
+        },
+        {
+          "role": "cta",
+          "start_seconds": 10,
+          "end_seconds": 15,
+          "layout": "LAYOUT_HERO",
+          "text": "Empieza por la claridad.",
+          "secondary_text": "Auditoría UX gratuita · Telegram\n@r_design_space_bot",
+          "voiceover": "Pide tu auditoría UX gratuita en nuestro bot de Telegram.",
+          "visual_direction": "Titular centrado sobre fondo marfil con línea dorada y CTA en negro."
+        }
+      ]
+    },
+    {
+      "id": "02_05",
+      "title": "La confianza necesita pruebas",
+      "duration_seconds": 15,
+      "scenes": [
+        {
+          "role": "hook",
+          "start_seconds": 0,
+          "end_seconds": 3,
+          "layout": "LAYOUT_HERO",
+          "text": "«Somos líderes» no basta.",
+          "voiceover": "Tu cliente necesita algo más que adjetivos.",
+          "visual_direction": "Titular centrado en dos líneas. Acento dorado bajo la palabra líderes."
+        },
+        {
+          "role": "insight",
+          "start_seconds": 3,
+          "end_seconds": 10,
+          "layout": "LAYOUT_BENTO",
+          "text": "Haz visible la evidencia.",
+          "secondary_text": "Casos reales · Proceso claro · Testimonios verificables",
+          "voiceover": "Muestra casos reales, explica tu proceso y aporta testimonios verificables. Así das razones para confiar.",
+          "visual_direction": "Tres tarjetas compactas con etiquetas editoriales. Sin cifras, logotipos ni testimonios inventados."
+        },
+        {
+          "role": "cta",
+          "start_seconds": 10,
+          "end_seconds": 15,
+          "layout": "LAYOUT_QUOTE",
+          "text": "¿Tu web da razones para confiar?",
+          "secondary_text": "Solicita una auditoría UX gratuita\nTelegram · @r_design_space_bot",
+          "voiceover": "Solicita tu auditoría UX gratuita en nuestro bot de Telegram.",
+          "visual_direction": "Pregunta en formato de cita a la izquierda. CTA separado debajo mediante espacio negativo."
+        }
+      ]
+    },
+    {
+      "id": "02_06",
+      "title": "Tu marca en una mano",
+      "duration_seconds": 15,
+      "scenes": [
+        {
+          "role": "hook",
+          "start_seconds": 0,
+          "end_seconds": 3,
+          "layout": "LAYOUT_METRIC",
+          "text": "1 PULGAR",
+          "secondary_text": "¿Puede avanzar sin esfuerzo?",
+          "voiceover": "Tu próximo cliente puede llegar desde el móvil.",
+          "visual_direction": "Número uno de gran formato junto al contorno fino de un teléfono."
+        },
+        {
+          "role": "insight",
+          "start_seconds": 3,
+          "end_seconds": 10,
+          "layout": "LAYOUT_QUOTE",
+          "text": "La experiencia móvil también representa tu nivel.",
+          "voiceover": "Texto pequeño y formularios incómodos añaden fricción. La experiencia móvil también representa tu nivel.",
+          "visual_direction": "Cita sobre fondo marfil. Comillas doradas pequeñas y composición asimétrica."
+        },
+        {
+          "role": "cta",
+          "start_seconds": 10,
+          "end_seconds": 15,
+          "layout": "LAYOUT_BENTO",
+          "text": "Revisemos tu experiencia móvil.",
+          "secondary_text": "Auditoría UX gratuita · Telegram\n@r_design_space_bot",
+          "voiceover": "Pide tu auditoría UX gratuita en nuestro bot de Telegram.",
+          "visual_direction": "Tarjeta inspirada en una interfaz móvil, con CTA amplio y texto legible."
+        }
+      ]
+    },
+    {
+      "id": "02_07",
+      "title": "Lujo sin confusión",
+      "duration_seconds": 15,
+      "scenes": [
+        {
+          "role": "hook",
+          "start_seconds": 0,
+          "end_seconds": 3,
+          "layout": "LAYOUT_QUOTE",
+          "text": "El lujo no debería necesitar instrucciones.",
+          "voiceover": "El lujo no debería necesitar instrucciones.",
+          "visual_direction": "Cita centrada verticalmente, alineada a la izquierda, con comillas de gran tamaño."
+        },
+        {
+          "role": "insight",
+          "start_seconds": 3,
+          "end_seconds": 10,
+          "layout": "LAYOUT_BENTO",
+          "text": "Menos ruido. Más intención.",
+          "secondary_text": "Oferta visible · Lectura clara · Contacto accesible",
+          "voiceover": "Una web sofisticada puede ser sencilla: oferta visible, lectura clara y un contacto fácil de encontrar.",
+          "visual_direction": "Una tarjeta principal amplia y dos bloques secundarios pequeños. El contacto recibe el acento dorado."
+        },
+        {
+          "role": "cta",
+          "start_seconds": 10,
+          "end_seconds": 15,
+          "layout": "LAYOUT_HERO",
+          "text": "Haz que elegirte sea sencillo.",
+          "secondary_text": "Auditoría UX gratuita · Telegram\n@r_design_space_bot",
+          "voiceover": "Solicita tu auditoría UX gratuita en nuestro bot de Telegram.",
+          "visual_direction": "Frase centrada sobre negro con línea dorada. Marca discreta en la parte superior."
+        }
+      ]
+    },
+    {
+      "id": "02_08",
+      "title": "El formulario también vende",
+      "duration_seconds": 15,
+      "scenes": [
+        {
+          "role": "hook",
+          "start_seconds": 0,
+          "end_seconds": 3,
+          "layout": "LAYOUT_BENTO",
+          "text": "¿Contacto o interrogatorio?",
+          "voiceover": "¿Tu formulario parece un interrogatorio?",
+          "visual_direction": "Tarjeta de formulario con campos abstractos que ocupan casi toda la pantalla."
+        },
+        {
+          "role": "insight",
+          "start_seconds": 3,
+          "end_seconds": 10,
+          "layout": "LAYOUT_HERO",
+          "text": "Pide lo necesario para empezar.",
+          "voiceover": "Cada pregunta exige esfuerzo. Pide lo necesario para cualificar el contacto y explica qué ocurrirá después.",
+          "visual_direction": "Los campos desaparecen mediante un fundido. Queda un titular centrado y una línea dorada."
+        },
+        {
+          "role": "cta",
+          "start_seconds": 10,
+          "end_seconds": 15,
+          "layout": "LAYOUT_QUOTE",
+          "text": "Una buena conversación empieza con un paso claro.",
+          "secondary_text": "Auditoría UX gratuita · Telegram\n@r_design_space_bot",
+          "voiceover": "Pide tu auditoría UX gratuita en nuestro bot de Telegram.",
+          "visual_direction": "Cita breve en la mitad superior. Identificador del bot en sans serif grande debajo."
+        }
+      ]
+    },
+    {
+      "id": "02_09",
+      "title": "Una marca, varias señales",
+      "duration_seconds": 15,
+      "scenes": [
+        {
+          "role": "hook",
+          "start_seconds": 0,
+          "end_seconds": 3,
+          "layout": "LAYOUT_METRIC",
+          "text": "1 MARCA",
+          "secondary_text": "¿Tres versiones distintas?",
+          "voiceover": "¿Tu marca cambia en cada canal?",
+          "visual_direction": "Número uno dominante. Debajo, tres etiquetas pequeñas: web, presentación y propuesta."
+        },
+        {
+          "role": "insight",
+          "start_seconds": 3,
+          "end_seconds": 10,
+          "layout": "LAYOUT_BENTO",
+          "text": "Una misma identidad.",
+          "secondary_text": "Web · Presentación · Propuesta",
+          "voiceover": "Web, presentación y propuesta deben transmitir el mismo nivel. La coherencia ayuda a reconocerte y confiar.",
+          "visual_direction": "Tres tarjetas de tamaños distintos comparten tipografía, márgenes y un mismo detalle dorado."
+        },
+        {
+          "role": "cta",
+          "start_seconds": 10,
+          "end_seconds": 15,
+          "layout": "LAYOUT_HERO",
+          "text": "Empecemos por tu web.",
+          "secondary_text": "Auditoría UX gratuita · Telegram\n@r_design_space_bot",
+          "voiceover": "Solicita tu auditoría UX gratuita en nuestro bot de Telegram.",
+          "visual_direction": "Titular centrado sobre fondo marfil. Línea dorada corta y CTA oscuro debajo."
+        }
+      ]
+    },
+    {
+      "id": "02_10",
+      "title": "Diseñar para la decisión",
+      "duration_seconds": 15,
+      "scenes": [
+        {
+          "role": "hook",
+          "start_seconds": 0,
+          "end_seconds": 3,
+          "layout": "LAYOUT_HERO",
+          "text": "Bonita. ¿Pero convincente?",
+          "voiceover": "Una web bonita puede dejar dudas.",
+          "visual_direction": "Titular centrado con contraste entre serif y sans serif. Línea dorada bajo la pregunta."
+        },
+        {
+          "role": "insight",
+          "start_seconds": 3,
+          "end_seconds": 10,
+          "layout": "LAYOUT_METRIC",
+          "text": "3 DUDAS",
+          "secondary_text": "Encaje · Confianza · Siguiente paso",
+          "voiceover": "¿Es para mí? ¿Puedo confiar? ¿Cómo avanzamos? Tu diseño debe ayudar a responder las tres.",
+          "visual_direction": "Número tres grande a la derecha. Las tres dudas aparecen en columna a la izquierda."
+        },
+        {
+          "role": "cta",
+          "start_seconds": 10,
+          "end_seconds": 15,
+          "layout": "LAYOUT_BENTO",
+          "text": "Detecta qué frena la decisión.",
+          "secondary_text": "Auditoría UX gratuita · Telegram\n@r_design_space_bot",
+          "voiceover": "Pide tu auditoría UX gratuita en nuestro bot de Telegram.",
+          "visual_direction": "Tarjeta central con borde fino dorado. CTA y bot visibles durante los cinco segundos."
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,49 @@
+{
+  "filename": "carousel_01_es.json",
+  "brand": "R DESIGN SPACE",
+  "topic": "5 errores invisibles en tu web",
+  "slides": [
+    {
+      "slide_number": 1,
+      "type": "COVER",
+      "title": "Tu precio es premium. ¿Tu web lo sostiene?",
+      "subtitle": "5 errores invisibles que hacen dudar a tus clientes. Desliza para detectarlos."
+    },
+    {
+      "slide_number": 2,
+      "type": "KEY_POINT",
+      "title": "01. Tu propuesta podría ser de cualquiera.",
+      "subtitle": "«Calidad e innovación» no explican tu valor. Di qué problema resuelves, para quién y qué hace distinto tu enfoque."
+    },
+    {
+      "slide_number": 3,
+      "type": "KEY_POINT",
+      "title": "02. Prometes más de lo que demuestras.",
+      "subtitle": "Los adjetivos no sustituyen a la evidencia. Muestra un caso real: reto, intervención y resultado verificable."
+    },
+    {
+      "slide_number": 4,
+      "type": "KEY_POINT",
+      "title": "03. Lo importante no destaca.",
+      "subtitle": "Si todo compite por atención, tu valor se diluye. Ordena la lectura: propuesta, pruebas y siguiente paso."
+    },
+    {
+      "slide_number": 5,
+      "type": "KEY_POINT",
+      "title": "04. Tu web cambia de nivel en el móvil.",
+      "subtitle": "Textos pequeños, botones incómodos, contenido cortado. Cuida cada pantalla con el mismo rigor que tu servicio."
+    },
+    {
+      "slide_number": 6,
+      "type": "INSIGHT",
+      "title": "05. Dejas el siguiente paso en el aire.",
+      "subtitle": "Explica qué ocurre después del contacto. El valor percibido no depende solo de lo que prometes, sino de la confianza para avanzar."
+    },
+    {
+      "slide_number": 7,
+      "type": "CTA",
+      "title": "Antes de bajar tu precio, revisa tu web.",
+      "subtitle": "Solicita tu auditoría UX gratuita en Telegram: @r_design_space_bot. Guarda esta guía para tu próxima revisión."
+    }
+  ]
+}
