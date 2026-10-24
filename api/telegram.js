@@ -14,6 +14,9 @@
 //
 // Environment variables (Vercel -> Project -> Settings -> Environment Variables):
 //   TELEGRAM_BOT_TOKEN, TELEGRAM_CHAT_ID (the ONLY chat obeyed), TELEGRAM_WEBHOOK_SECRET
+//   ADMIN_TELEGRAM_ID        numeric Telegram id of the single super-admin (Rustam); falls back to TELEGRAM_CHAT_ID.
+//                            Only this user gets /admin, /stats, /leads, memory, search and the lead-card buttons.
+//   LEADS_PATH               optional, file with the external leads (default leads.json)
 //   GH_DISPATCH_TOKEN        fine-grained token, "Actions: Read and write" on the code repo
 //   ANTHROPIC_API_KEY        enables the conversation (optional CHAT_MODEL, default claude-sonnet-5-5)
 //   OPENAI_API_KEY           enables voice messages (optional OPENAI_STT_MODEL=whisper-1, OPENAI_TTS_MODEL=tts-1,
@@ -30,14 +33,14 @@ const { createStore, MemoryDisabled } = require("./_lib/store");
 const { askClaude } = require("./_lib/claude");
 const voice = require("./_lib/voice");
 const leads = require("./_lib/leads");
-const { handleClient } = require("./_lib/client_flow");
+const { handleClient, handleLeadAction, renderAdmin } = require("./_lib/client_flow");
 
 const START_TEXT =
   "👋 R Design Space · персональный агент\n\n" +
   "• Лидогенерация: ищу стартапы и SaaS по миру, пишу письма на языке фаундера. Письмо уходит только после вашей кнопки.\n" +
   "• Диалог с памятью: пишите мне как ассистенту - я помню проекты, договорённости и интересы, даже спустя недели.\n" +
   "• Голос: отправьте голосовое сообщение - отвечу голосом.\n\n" +
-  "Команды:\n/search - поиск лидов сейчас (можно с запросом)\n/memory - что я помню\n/history - хронология\n" +
+  "Команды:\n/admin - статистика лидов и источников\n/leads - последние лиды\n/search - поиск лидов сейчас (можно с запросом)\n/memory - что я помню\n/history - хронология\n" +
   "/remember <текст> - запомнить\n/forget <id> - забыть запись\n/help - справка";
 
 const HELP_TEXT =
@@ -411,6 +414,7 @@ async function onMessage(msg, updateId) {
   if (cmd.name === "help") return tg("sendMessage", { chat_id: chat, text: HELP_TEXT });
   if (["memory", "history", "forget", "remember"].includes(cmd.name)) return onMemoryCommand(chat, cmd);
   if (cmd.name === "leads") return onLeadsCommand(chat, cmd);
+  if (cmd.name === "admin" || cmd.name === "stats") return sendLong(chat, await renderAdmin(env));
   if (cmd.name === "search") {
     const query = cmd.arg.slice(0, 100);
     const ok = await dispatch({ action: "search", query, lead_id: "" });
@@ -427,6 +431,7 @@ async function onMessage(msg, updateId) {
 
 async function onCallback(cb) {
   const chat = cb.message && cb.message.chat.id;
+  if ((cb.data || "").startsWith("ls:")) return handleLeadAction(cb, { tg, env });
   const [action, ...rest] = (cb.data || "").split(":");
   const leadId = rest.join(":");
   if (!LEAD_ID.test(leadId) || !["send", "skip"].includes(action)) {
@@ -482,10 +487,12 @@ module.exports = async (req, res) => {
 
     // Two modes. The owner's chat (TELEGRAM_CHAT_ID) gets the personal Chief of Staff: memory, search, e-mail, voice.
     // Any other private chat is an external client and gets the public lead qualifier, which has none of those powers.
-    const ownerChat = env.get("TELEGRAM_CHAT_ID");
+    // The super-admin is one numeric Telegram id: ADMIN_TELEGRAM_ID, or TELEGRAM_CHAT_ID when it is not set.
+    const ownerChat = env.get("ADMIN_TELEGRAM_ID") || env.get("TELEGRAM_CHAT_ID");
+    const sender = (message || callback || {}).from;
     if (chat !== undefined && chat !== null) {
       if (alreadyHandled(update.update_id)) return res.status(200).json({ ok: true });
-      if (ownerChat && String(chat) === ownerChat) {
+      if (ownerChat && String(chat) === ownerChat && sender && String(sender.id) === ownerChat) {
         if (message && (message.voice || message.audio)) await onVoice(message, update.update_id, trace);
         else if (message && message.text) await onMessage(message, update.update_id);
         else if (callback) await onCallback(callback);

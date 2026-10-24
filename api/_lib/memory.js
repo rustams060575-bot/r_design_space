@@ -67,13 +67,23 @@ function normalize(mem) {
 
 const SOURCE_PLATFORM = { ig: "Instagram", tt: "TikTok" };
 
-// "ig_reel_12" / "tt_reel_7" -> a reel, "ig_bio" / "tt_bio" -> a profile link. Anything else is ignored.
+// "ig_reel_201" / "tt_reel_7" -> a reel, "ig_carousel_3" / "tt_carousel_3" -> a carousel, "ig_bio" / "tt_bio" -> a profile link.
+// Anything else is ignored.
 function parseSource(payload) {
-  const m = /^(ig|tt)_(?:(reel)_(\d{1,5})|(bio))$/.exec(String(payload || "").trim().toLowerCase());
+  const m = /^(ig|tt)_(?:(reel|carousel)_(\d{1,5})|(bio))$/.exec(String(payload || "").trim().toLowerCase());
   if (!m) return null;
   const platform = SOURCE_PLATFORM[m[1]];
-  const code = m[2] ? `${m[1]}_reel_${Number(m[3])}` : `${m[1]}_bio`;
-  return { code, platform, reel: m[2] ? Number(m[3]) : null, label: m[2] ? `${platform}, ролик №${Number(m[3])}` : `${platform}, профиль (bio)` };
+  if (m[4]) return { code: `${m[1]}_bio`, platform, kind: "bio", num: null, reel: null, label: `${platform}, профиль (bio)` };
+  const num = Number(m[3]);
+  const reel = m[2] === "reel";
+  return {
+    code: `${m[1]}_${m[2]}_${num}`,
+    platform,
+    kind: m[2],
+    num,
+    reel: reel ? num : null,
+    label: `${platform}, ${reel ? "ролик" : "карусель"} №${num}`,
+  };
 }
 
 // ---------------------------------------------------------------- dates

@@ -14,7 +14,10 @@ const MAX_LEADS = 500;
 const STANDARD_EUR = 1000; // minimum check
 const PREMIUM_EUR = 3000; // premium
 
-const emptyLeads = () => ({ version: 1, last_update_id: 0, leads: {} });
+const LANGS = ["es", "en", "ru"];
+const AUDIT_STATUSES = ["new", "in_work", "audit_sent", "done"];
+
+const emptyLeads = () => ({ version: 1, last_update_id: 0, leads: {}, stats: { starts: {} } });
 
 function normalizeLeads(raw) {
   const m = raw && typeof raw === "object" ? raw : {};
@@ -22,6 +25,7 @@ function normalizeLeads(raw) {
     version: 1,
     last_update_id: Number(m.last_update_id) || 0,
     leads: m.leads && typeof m.leads === "object" ? m.leads : {},
+    stats: { starts: m.stats && m.stats.starts && typeof m.stats.starts === "object" ? m.stats.starts : {} },
   };
 }
 
@@ -49,8 +53,10 @@ function getLead(db, from, chatId, now) {
       first_seen: new Date(now).toISOString(),
       updated: new Date(now).toISOString(),
       status: "new", // new -> in_dialog -> handoff
+      audit_status: "new", // set by the owner's card buttons: new -> in_work -> audit_sent -> done
+      lang: langFromCode(from && from.language_code),
       tier: "unknown",
-      profile: { task: "", company: "", role: "", budget_eur: null, budget_note: "", timeline: "", contact: "" },
+      profile: { task: "", company: "", role: "", budget_eur: null, budget_note: "", timeline: "", contact: "", website: "", contact_pref: "" },
       summary: "",
       notified_new: false,
       notified_handoff: false,
@@ -64,7 +70,25 @@ function getLead(db, from, chatId, now) {
       delete db.leads[oldest];
     }
   }
-  return db.leads[key];
+  const lead = db.leads[key];
+  // Leads saved before the audit funnel existed get the new fields.
+  if (!lead.audit_status) lead.audit_status = "new";
+  if (!lead.lang) lead.lang = langFromCode(from && from.language_code);
+  if (lead.profile.website === undefined) lead.profile.website = "";
+  if (lead.profile.contact_pref === undefined) lead.profile.contact_pref = "";
+  return lead;
+}
+
+// Telegram's language_code is only the first guess; the model confirms the real language from the messages.
+function langFromCode(code) {
+  const c = String(code || "").toLowerCase().slice(0, 2);
+  return LANGS.includes(c) ? c : "en";
+}
+
+// Counts a deep-link visit (every /start with a valid payload), separately from the lead's current source.
+function countStart(db, code) {
+  if (!db.stats) db.stats = { starts: {} };
+  db.stats.starts[code] = (db.stats.starts[code] || 0) + 1;
 }
 
 // A valid deep-link payload (ig_reel_N, tt_reel_N, ig_bio, tt_bio) sets or replaces the source of the lead.
@@ -112,12 +136,14 @@ function parseModelJson(text) {
 function applyProposal(lead, proposal) {
   const p = proposal && typeof proposal.profile === "object" && proposal.profile ? proposal.profile : {};
   const prof = lead.profile;
-  for (const k of ["task", "company", "role", "timeline", "contact", "budget_note"]) {
+  for (const k of ["task", "company", "role", "timeline", "contact", "budget_note", "website", "contact_pref"]) {
     const v = clip(p[k], k === "task" ? 300 : 160);
     if (v) prof[k] = v;
   }
   const eur = Number(p.budget_eur);
   if (Number.isFinite(eur) && eur > 0 && eur < 100000000) prof.budget_eur = Math.round(eur);
+  const lang = String((proposal && proposal.lang) || "").toLowerCase();
+  if (LANGS.includes(lang)) lead.lang = lang;
   const summary = clip(proposal && proposal.summary, 400);
   if (summary) lead.summary = summary;
 
@@ -125,7 +151,7 @@ function applyProposal(lead, proposal) {
   lead.tier = tierFromBudget(prof.budget_eur);
   if (lead.status === "new") lead.status = "in_dialog";
   let handoffNow = false;
-  if (proposal && proposal.handoff && prof.task && !lead.notified_handoff) {
+  if (proposal && proposal.handoff && (prof.website || prof.task) && !lead.notified_handoff) {
     lead.status = "handoff";
     handoffNow = true;
   }
@@ -137,20 +163,22 @@ function applyProposal(lead, proposal) {
 function clientContext(lead) {
   const prof = lead.profile;
   const known = [
-    prof.task && `задача: ${prof.task}`,
-    prof.company && `компания: ${prof.company}`,
-    prof.role && `роль: ${prof.role}`,
-    prof.budget_eur && `бюджет: ${prof.budget_eur} EUR`,
-    prof.budget_note && `про бюджет: ${prof.budget_note}`,
-    prof.timeline && `сроки: ${prof.timeline}`,
-    prof.contact && `контакт: ${prof.contact}`,
+    prof.website && `website: ${prof.website}`,
+    prof.task && `main task / pain: ${prof.task}`,
+    prof.contact_pref && `preferred contact: ${prof.contact_pref}`,
+    prof.company && `company: ${prof.company}`,
+    prof.role && `role: ${prof.role}`,
+    prof.budget_eur && `budget: ${prof.budget_eur} EUR`,
+    prof.budget_note && `budget note: ${prof.budget_note}`,
+    prof.timeline && `timeline: ${prof.timeline}`,
+    prof.contact && `contact: ${prof.contact}`,
   ].filter(Boolean);
   const lines = [];
-  lines.push(lead.source ? `Пришёл из: ${lead.source.label}.` : "Источник перехода неизвестен.");
-  lines.push(`Имя в Telegram: ${lead.name || "не указано"}${lead.username ? " (@" + lead.username + ")" : ""}.`);
-  lines.push(known.length ? `Уже известно: ${known.join("; ")}.` : "Пока ничего не известно о задаче клиента.");
+  lines.push(lead.source ? `Came from: ${lead.source.label}.` : "Source of the visit is unknown.");
+  lines.push(`Telegram name: ${lead.name || "not set"}${lead.username ? " (@" + lead.username + ")" : ""}. Language guess so far: ${lead.lang}.`);
+  lines.push(known.length ? `Already known: ${known.join("; ")}.` : "Nothing is known about the client yet.");
   const dialog = lead.history.slice(-14);
-  if (dialog.length) lines.push("", "Диалог до этого момента:", ...dialog.map((h) => `${h.role === "user" ? "Клиент" : "Ассистент"}: ${h.text}`));
+  if (dialog.length) lines.push("", "Dialogue so far:", ...dialog.map((h) => `${h.role === "user" ? "Client" : "Assistant"}: ${h.text}`));
   return lines.join("\n");
 }
 
@@ -169,22 +197,84 @@ function newLeadNotice(lead, firstText) {
   ].join("\n");
 }
 
+const AUDIT_BUTTONS = [
+  ["in_work", "take", "Взять в работу"],
+  ["audit_sent", "audit", "Отправить аудит"],
+  ["done", "done", "Завершить"],
+];
+
+// Inline keyboard under the lead card. Reached steps get a check mark; a finished lead has no buttons.
+function leadKeyboard(lead) {
+  if (lead.audit_status === "done") return { inline_keyboard: [] };
+  const reached = AUDIT_STATUSES.indexOf(lead.audit_status);
+  return {
+    inline_keyboard: [
+      AUDIT_BUTTONS.map(([status, action, label]) => ({
+        text: AUDIT_STATUSES.indexOf(status) <= reached ? "✔ " + label : label,
+        callback_data: `ls:${action}:${lead.id}`,
+      })),
+    ],
+  };
+}
+
+// Card for the owner when a client leaves a site for the free UX audit: Name | Language | URL | Source | Message.
 function handoffNotice(lead) {
   const p = lead.profile;
-  const head = lead.tier === "premium" ? "🔥 ПРЕМИУМ-лид готов к связи" : lead.tier === "cold" ? "🧊 Лид (бюджет ниже минимума)" : "✅ Квалифицированный лид";
+  const lastUser = [...lead.history].reverse().find((h) => h.role === "user");
   return [
-    head,
-    who(lead),
-    `Источник: ${lead.source ? lead.source.label : "неизвестен"}`,
+    "🔥 Новая заявка на UX-аудит",
+    `👤 ${lead.name || "Без имени"}${lead.username ? " @" + lead.username : ""}`,
+    `🌐 Язык: ${lead.lang.toUpperCase()}`,
+    `🔗 ${p.website || "сайт не указан"}`,
+    `📌 ${lead.source ? lead.source.label : "прямой заход / неизвестен"}`,
+    `💬 ${clip(lastUser ? lastUser.text : p.task, 300) || "—"}`,
+    "",
     `Задача: ${p.task || "—"}`,
-    `Компания/роль: ${[p.company, p.role].filter(Boolean).join(", ") || "—"}`,
-    `Бюджет: ${p.budget_eur ? p.budget_eur + " €" : p.budget_note || "не назван"} · ${TIER_RU[lead.tier]}`,
-    `Сроки: ${p.timeline || "—"}`,
-    `Контакт: ${p.contact || "Telegram"}${lead.username ? " · https://t.me/" + lead.username : ""} · tg://user?id=${lead.id}`,
+    `Связь: ${p.contact_pref || "Telegram"}${p.contact ? " · " + p.contact : ""}${lead.username ? " · https://t.me/" + lead.username : ""} · tg://user?id=${lead.id}`,
+    p.company || p.role ? `Компания/роль: ${[p.company, p.role].filter(Boolean).join(", ")}` : "",
     lead.summary ? `Резюме: ${lead.summary}` : "",
+    p.budget_eur || p.budget_note ? `Бюджет: ${p.budget_eur ? p.budget_eur + " € · " : ""}${p.budget_note || TIER_RU[lead.tier]}` : "",
   ]
-    .filter(Boolean)
+    .filter((l, i, a) => l !== "" || (i > 0 && a[i - 1] !== ""))
     .join("\n");
+}
+
+// /admin: one-screen dashboard for the owner.
+function renderStats(db, now = Date.now()) {
+  const list = Object.values(db.leads);
+  const count = (arr, key) => arr.reduce((acc, l) => ((acc[key(l)] = (acc[key(l)] || 0) + 1), acc), {});
+  const week = list.filter((l) => now - Date.parse(l.first_seen) < 7 * 86400000).length;
+  const langs = count(list, (l) => l.lang || "en");
+  const dialog = count(list, (l) => l.status);
+  const audit = count(list.filter((l) => l.status === "handoff"), (l) => l.audit_status || "new");
+  const starts = (db.stats && db.stats.starts) || {};
+  const byLead = count(list.filter((l) => l.source), (l) => l.source.code);
+  const direct = list.filter((l) => !l.source).length;
+  const n = (o, k) => o[k] || 0;
+
+  const codes = [...new Set([...Object.keys(starts), ...Object.keys(byLead)])];
+  const group = (title, re) => {
+    const rows = codes
+      .filter((c) => re.test(c))
+      .sort((a, b) => n(starts, b) - n(starts, a) || a.localeCompare(b, "en", { numeric: true }))
+      .map((c) => `   ${c}: ${n(starts, c)} перех. · ${n(byLead, c)} лид.`);
+    return rows.length ? [title, ...rows] : [];
+  };
+
+  return [
+    "📊 Статистика бота",
+    `Всего обращений: ${list.length} (за 7 дней: ${week})`,
+    `Языки: ES ${n(langs, "es")} · EN ${n(langs, "en")} · RU ${n(langs, "ru")}`,
+    `Диалоги: новые ${n(dialog, "new")} · в разговоре ${n(dialog, "in_dialog")} · передано мне ${n(dialog, "handoff")}`,
+    `Заявки на аудит: ждут ${n(audit, "new")} · в работе ${n(audit, "in_work")} · отправлено ${n(audit, "audit_sent")} · завершено ${n(audit, "done")}`,
+    "",
+    "Источники (переходы по диплинкам):",
+    ...group("▫️ Instagram reels", /^ig_reel_/),
+    ...group("▫️ TikTok reels", /^tt_reel_/),
+    ...group("▫️ Карусели", /_carousel_/),
+    ...group("▫️ Профиль (bio)", /_bio$/),
+    `▫️ Без источника: ${direct} лид.`,
+  ].join("\n");
 }
 
 function renderLeads(db, n = 10) {
@@ -199,7 +289,7 @@ function renderLeads(db, n = 10) {
 }
 
 module.exports = {
-  DAILY_LIMIT, MAX_TEXT, STANDARD_EUR, PREMIUM_EUR,
-  emptyLeads, normalizeLeads, tierFromBudget, getLead, setSource, countMessage, push, parseModelJson, applyProposal,
-  clientContext, newLeadNotice, handoffNotice, renderLeads, clip,
+  DAILY_LIMIT, MAX_TEXT, STANDARD_EUR, PREMIUM_EUR, LANGS, AUDIT_STATUSES,
+  emptyLeads, normalizeLeads, tierFromBudget, getLead, langFromCode, countStart, setSource, countMessage, push, parseModelJson, applyProposal,
+  clientContext, newLeadNotice, handoffNotice, leadKeyboard, renderStats, renderLeads, clip,
 };
