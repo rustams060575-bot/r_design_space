@@ -488,11 +488,25 @@ module.exports = async (req, res) => {
     // Two modes. The owner's chat (TELEGRAM_CHAT_ID) gets the personal Chief of Staff: memory, search, e-mail, voice.
     // Any other private chat is an external client and gets the public lead qualifier, which has none of those powers.
     // The super-admin is one numeric Telegram id: ADMIN_TELEGRAM_ID, or TELEGRAM_CHAT_ID when it is not set.
-    const ownerChat = env.get("ADMIN_TELEGRAM_ID") || env.get("TELEGRAM_CHAT_ID");
+    // ADMIN_TELEGRAM_ID may also hold a @username by mistake: it is accepted too, so the admin is never taken for a client.
+    const adminRaw = env.get("ADMIN_TELEGRAM_ID");
+    const adminId = /^-?\d+$/.test(adminRaw) ? adminRaw : "";
+    const ownerChat = adminId || env.get("TELEGRAM_CHAT_ID");
     const sender = (message || callback || {}).from;
+    const isAdmin =
+      !!sender &&
+      (String(sender.id) === adminId ||
+        String(sender.id) === env.get("TELEGRAM_CHAT_ID") ||
+        (!!adminRaw && !adminId && !!sender.username && sender.username.toLowerCase() === adminRaw.replace(/^@/, "").toLowerCase()));
     if (chat !== undefined && chat !== null) {
       if (alreadyHandled(update.update_id)) return res.status(200).json({ ok: true });
-      if (ownerChat && String(chat) === ownerChat && sender && String(sender.id) === ownerChat) {
+      // /admin and /stats are intercepted first, before the owner/client routing and before the qualifier can see them.
+      const adminCmd = message && message.text ? parseCommand(message.text) : null;
+      if (isAdmin && adminCmd && (adminCmd.name === "admin" || adminCmd.name === "stats")) {
+        await sendLong(chat, await renderAdmin(env));
+        return res.status(200).json({ ok: true });
+      }
+      if (ownerChat && isAdmin && String(chat) === String(sender.id)) {
         if (message && (message.voice || message.audio)) await onVoice(message, update.update_id, trace);
         else if (message && message.text) await onMessage(message, update.update_id);
         else if (callback) await onCallback(callback);
