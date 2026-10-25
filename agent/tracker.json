@@ -334,6 +334,126 @@
       "status": "rejected",
       "score": 6,
       "at": "2026-10-24T13:06:49+00:00"
+    },
+    "hn:50231324": {
+      "name": "Liquid Glass",
+      "status": "rejected",
+      "score": 1,
+      "at": "2026-10-25T13:32:30+00:00"
+    },
+    "job:7a604d27b4f92f55": {
+      "name": "Design Engineer - EU - Ashby",
+      "status": "rejected",
+      "score": 6,
+      "at": "2026-10-25T13:32:34+00:00"
+    },
+    "hn:50227527": {
+      "name": "ReVault – new secure archive format",
+      "status": "rejected",
+      "score": 1,
+      "at": "2026-10-25T13:32:37+00:00"
+    },
+    "job:645df9e496eb6a57": {
+      "name": "Product Design Lead - Carrot",
+      "status": "rejected",
+      "score": 6,
+      "at": "2026-10-25T13:32:41+00:00"
+    },
+    "hn:50227918": {
+      "name": "Close the UI building AI agent loop with Protoshot",
+      "status": "rejected",
+      "score": 1,
+      "at": "2026-10-25T13:32:45+00:00"
+    },
+    "job:cfe4e1033aafa50c": {
+      "name": "Design Engineer - UK - Ashby",
+      "status": "rejected",
+      "score": 6,
+      "at": "2026-10-25T13:32:49+00:00"
+    },
+    "job:9113de10e7490b15": {
+      "name": "Design Engineer - Americas - Ashby",
+      "status": "rejected",
+      "score": 6,
+      "at": "2026-10-25T13:32:53+00:00"
+    },
+    "hn:50224373": {
+      "name": "Narro",
+      "status": "rejected",
+      "score": 1,
+      "at": "2026-10-25T13:32:56+00:00"
+    },
+    "job:e1b03044badfab8a": {
+      "name": "Senior Product Designer - TrustedHousesitters",
+      "status": "rejected",
+      "score": 6,
+      "at": "2026-10-25T13:33:01+00:00"
+    },
+    "job:9c4251e663ded003": {
+      "name": "Product Designer, AI-Native Products (Staff-Level / L6) - Synthesia",
+      "status": "rejected",
+      "score": 6,
+      "at": "2026-10-25T13:33:05+00:00"
+    },
+    "job:6afb47509aa3bd29": {
+      "name": "Staff Product Designer - Medium",
+      "status": "rejected",
+      "score": 6,
+      "at": "2026-10-25T13:33:09+00:00"
+    },
+    "job:52c2ae10f69606c5": {
+      "name": "Senior Product Designer - Nextiva",
+      "status": "rejected",
+      "score": 6,
+      "at": "2026-10-25T13:33:13+00:00"
+    },
+    "job:6513a7d07825ec17": {
+      "name": "Lead Product Designer - Monzo",
+      "status": "rejected",
+      "score": 6,
+      "at": "2026-10-25T13:33:19+00:00"
+    },
+    "job:ce04a01f5ef8e743": {
+      "name": "Sr. Marketing Designer - Imprint",
+      "status": "rejected",
+      "score": 6,
+      "at": "2026-10-25T13:33:26+00:00"
+    },
+    "job:69a6b7469c20eda0": {
+      "name": "Senior Software Engineer - Go - Paddle",
+      "status": "rejected",
+      "score": 1,
+      "at": "2026-10-25T13:33:29+00:00"
+    },
+    "job:3eeac7ab68fe7f56": {
+      "name": "Senior Product Designer II, Revenue Experimentation - Life360",
+      "status": "rejected",
+      "score": 6,
+      "at": "2026-10-25T13:33:33+00:00"
+    },
+    "job:f358321671ec2690": {
+      "name": "Senior Web Engineer - Subscriptions - Spotify",
+      "status": "rejected",
+      "score": 6,
+      "at": "2026-10-25T13:33:37+00:00"
+    },
+    "job:2c2176c68327fd9f": {
+      "name": "Lead Brand Designer - ClickUp",
+      "status": "rejected",
+      "score": 4,
+      "at": "2026-10-25T13:33:44+00:00"
+    },
+    "job:99afcb36305f9970": {
+      "name": "Learning Experience Designer, Nebius Academy - Nebius",
+      "status": "rejected",
+      "score": 2,
+      "at": "2026-10-25T13:33:48+00:00"
+    },
+    "job:27374a6bda9da76e": {
+      "name": "Learning Experience Designer - Amplitude",
+      "status": "rejected",
+      "score": 2,
+      "at": "2026-10-25T13:33:53+00:00"
     }
   },
   "contacted_domains": []
