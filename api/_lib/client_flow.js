@@ -8,6 +8,8 @@
 const leads = require("./leads");
 const { createStore } = require("./store");
 const { askClaude } = require("./claude");
+const voice = require("./voice");
+const funnel = require("./motion_funnel");
 
 const CLIENT_SYSTEM =
   "You are the assistant of R Design Space, a studio of custom web design and front-end for B2B companies (UI/UX, dashboards, CRM and SaaS " +
@@ -90,7 +92,33 @@ function leadsStore(env) {
   });
 }
 
-// deps: { tg, env, ownerChat }
+// Wiring of the Spanish "motion" funnel (motion_funnel.js) to Telegram, the leads store and OpenAI TTS.
+function funnelDeps(deps, store) {
+  const { tg, env, ownerChat } = deps;
+  const key = env.get("OPENAI_API_KEY");
+  return {
+    tg,
+    now: () => Date.now(),
+    sendVoice: deps.sendVoice,
+    update: store && store.enabled ? (fn, message) => store.update(fn, message) : undefined,
+    notifyOwner: (text, reply_markup) =>
+      tg("sendMessage", { chat_id: ownerChat, text, disable_web_page_preview: true, ...(reply_markup ? { reply_markup } : {}) }),
+    // James is a man: a deeper voice by default; OpenAI TTS reads Spanish text in Spanish. Never rejects.
+    tts: (text) =>
+      !key || !deps.sendVoice
+        ? Promise.resolve(null)
+        : voice
+            .speech(text, key, { model: env.get("OPENAI_TTS_MODEL") || "tts-1", voice: env.get("MOTION_TTS_VOICE") || env.get("OPENAI_TTS_VOICE") || "onyx" })
+            .catch((err) => (console.error("funnel tts error:", err && err.message), null)),
+  };
+}
+
+// Inline-button presses of the funnel ("mf:*"), called from the webhook for any non-admin chat.
+async function handleFunnelCallback(cb, deps) {
+  return funnel.onCallback(funnelDeps(deps, leadsStore(deps.env)), cb);
+}
+
+// deps: { tg, env, ownerChat, sendVoice }
 async function handleClient(msg, updateId, deps) {
   const { tg, env, ownerChat } = deps;
   if (!msg.chat || msg.chat.type !== "private") return; // the bot answers clients only in private chats
@@ -104,6 +132,8 @@ async function handleClient(msg, updateId, deps) {
     tg("sendMessage", { chat_id: ownerChat, text, disable_web_page_preview: true, ...(reply_markup ? { reply_markup } : {}) });
 
   if (!rawText) return tg("sendMessage", { chat_id: chat, text: tr("textOnly", guess) });
+  const trigger = funnel.detectTrigger(rawText);
+  if (trigger) return funnel.start(funnelDeps(deps, leadsStore(env)), msg, trigger, updateId);
   if (rawText.startsWith("/") && payload === null) {
     return tg("sendMessage", { chat_id: chat, text: tr("hint", guess) });
   }
@@ -123,6 +153,11 @@ async function handleClient(msg, updateId, deps) {
     return tg("sendMessage", { chat_id: chat, text: tr("fallback", guess) });
   }
   if (updateId && updateId <= db.last_update_id) return; // redelivered update
+
+  // The funnel asked for a project description / contact: this message is the answer, not a new qualifier turn.
+  if (payload === null && !rawText.startsWith("/") && funnel.isAwaitingContact(db.leads[String(chat)], now)) {
+    if (await funnel.onDetails(funnelDeps(deps, store), msg, updateId)) return;
+  }
 
   // ---- /start (deep link): greeting only, no model call
   if (payload !== null) {
@@ -258,4 +293,4 @@ async function renderAdmin(env) {
   }
 }
 
-module.exports = { handleClient, handleLeadAction, renderAdmin, CLIENT_SYSTEM };
+module.exports = { handleClient, handleFunnelCallback, handleLeadAction, renderAdmin, CLIENT_SYSTEM };

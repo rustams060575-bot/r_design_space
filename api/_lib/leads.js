@@ -5,6 +5,7 @@
 "use strict";
 
 const { parseSource } = require("./memory");
+const funnelStats = () => require("./motion_funnel").renderFunnelStats; // lazy: motion_funnel requires this module
 
 const MAX_TEXT = 1200; // characters taken from one client message
 const MAX_HISTORY = 24; // messages kept per client
@@ -176,6 +177,7 @@ function clientContext(lead) {
   const lines = [];
   lines.push(lead.source ? `Came from: ${lead.source.label}.` : "Source of the visit is unknown.");
   lines.push(`Telegram name: ${lead.name || "not set"}${lead.username ? " (@" + lead.username + ")" : ""}. Language guess so far: ${lead.lang}.`);
+  if (lead.funnel) lines.push(`The client went through the Spanish "motion" lead magnet (step ${lead.funnel.step}${lead.funnel.choice ? ", chose: " + lead.funnel.choice : ""}); keep answering in Spanish.`);
   lines.push(known.length ? `Already known: ${known.join("; ")}.` : "Nothing is known about the client yet.");
   const dialog = lead.history.slice(-14);
   if (dialog.length) lines.push("", "Dialogue so far:", ...dialog.map((h) => `${h.role === "user" ? "Client" : "Assistant"}: ${h.text}`));
@@ -274,6 +276,7 @@ function renderStats(db, now = Date.now()) {
     ...group("▫️ Карусели", /_carousel_/),
     ...group("▫️ Профиль (bio)", /_bio$/),
     `▫️ Без источника: ${direct} лид.`,
+    ...(funnelStats()(list) ? ["", funnelStats()(list)] : []),
   ].join("\n");
 }
 

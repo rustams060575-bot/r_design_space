@@ -33,7 +33,7 @@ const { createStore, MemoryDisabled } = require("./_lib/store");
 const { askClaude } = require("./_lib/claude");
 const voice = require("./_lib/voice");
 const leads = require("./_lib/leads");
-const { handleClient, handleLeadAction, renderAdmin } = require("./_lib/client_flow");
+const { handleClient, handleFunnelCallback, handleLeadAction, renderAdmin } = require("./_lib/client_flow");
 
 const START_TEXT =
   "👋 R Design Space · персональный агент\n\n" +
@@ -511,7 +511,9 @@ module.exports = async (req, res) => {
         else if (message && message.text) await onMessage(message, update.update_id);
         else if (callback) await onCallback(callback);
       } else if (message && ownerChat) {
-        await handleClient(message, update.update_id, { tg, env, ownerChat });
+        await handleClient(message, update.update_id, { tg, env, ownerChat, sendVoice });
+      } else if (callback && ownerChat && /^mf:/.test(callback.data || "")) {
+        await handleFunnelCallback(callback, { tg, env, ownerChat, sendVoice });
       }
     }
   } catch (err) {
