@@ -574,6 +574,84 @@
       "status": "rejected",
       "score": 6,
       "at": "2026-10-26T15:49:57+00:00"
+    },
+    "hn:50254335": {
+      "name": "Handcrafted HTML-first framework that outperforms React",
+      "status": "rejected",
+      "score": 1,
+      "at": "2026-10-27T15:06:14+00:00"
+    },
+    "job:dafa6f1c8e2f6773": {
+      "name": "H-E-B is hiring for a position of Manager of Creative Design in San Antonio, TX",
+      "status": "rejected",
+      "score": 3,
+      "at": "2026-10-27T15:06:21+00:00"
+    },
+    "job:8a4f9313cee2ca5e": {
+      "name": "Lorum is hiring for a position of Brand Design Lead in London, United Kingdom",
+      "status": "rejected",
+      "score": 3,
+      "at": "2026-10-27T15:06:27+00:00"
+    },
+    "job:4dbaeeb2b6eec96c": {
+      "name": "Graphic Designer (Permanent work from home) - Lightspeed Commerce",
+      "status": "rejected",
+      "score": 2,
+      "at": "2026-10-27T15:06:31+00:00"
+    },
+    "hn:50257891": {
+      "name": "flint",
+      "status": "rejected",
+      "score": 2,
+      "at": "2026-10-27T15:06:35+00:00"
+    },
+    "job:1b8f066c0492ece1": {
+      "name": "AllFeams is hiring for a position of Web & Digital Designer in Remote",
+      "status": "rejected",
+      "score": 6,
+      "at": "2026-10-27T15:06:39+00:00"
+    },
+    "hn:50253082": {
+      "name": "Better Design",
+      "status": "rejected",
+      "score": 1,
+      "at": "2026-10-27T15:06:43+00:00"
+    },
+    "job:ade324326aaec96f": {
+      "name": "H-E-B is hiring for a position of Senior Digital Designer in San Antonio, TX",
+      "status": "rejected",
+      "score": 6,
+      "at": "2026-10-27T15:06:47+00:00"
+    },
+    "hn:50251342": {
+      "name": "GradientDeck",
+      "status": "rejected",
+      "score": 1,
+      "at": "2026-10-27T15:06:50+00:00"
+    },
+    "hn:50257924": {
+      "name": "Kupe Cloud",
+      "status": "rejected",
+      "score": 2,
+      "at": "2026-10-27T15:06:55+00:00"
+    },
+    "job:22fbc033f5d8e318": {
+      "name": "Senior Product Designer - TeamSnap",
+      "status": "rejected",
+      "score": 6,
+      "at": "2026-10-27T15:06:58+00:00"
+    },
+    "hn:50256197": {
+      "name": "Software Hate Index (real-time ranking of SaaS complaints)",
+      "status": "rejected",
+      "score": 1,
+      "at": "2026-10-27T15:07:05+00:00"
+    },
+    "job:87f8d81c44e4eda6": {
+      "name": "Senior Product Designer - Future PLC",
+      "status": "rejected",
+      "score": 6,
+      "at": "2026-10-27T15:07:08+00:00"
     }
   },
   "contacted_domains": []
