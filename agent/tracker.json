@@ -730,6 +730,156 @@
       "status": "rejected",
       "score": 3,
       "at": "2026-10-28T15:43:20+00:00"
+    },
+    "hn:50280331": {
+      "name": "The Best Lightbox Component Out There",
+      "status": "rejected",
+      "score": 1,
+      "at": "2026-10-29T15:49:13+00:00"
+    },
+    "hn:50279039": {
+      "name": "Watch Apple slowly become just another computer company",
+      "status": "rejected",
+      "score": 0,
+      "at": "2026-10-29T15:49:18+00:00"
+    },
+    "hn:50290463": {
+      "name": "Backend for Agents and Builders who don't need one yet",
+      "status": "rejected",
+      "score": 1,
+      "at": "2026-10-29T15:49:23+00:00"
+    },
+    "job:6c8c709854620fed": {
+      "name": "Web Developer: WordPress & HubSpot (U.S. Based, Remote Contractor) - SimpleTiger",
+      "status": "rejected",
+      "score": 6,
+      "at": "2026-10-29T15:49:29+00:00"
+    },
+    "hn:50280650": {
+      "name": "I built a tool that finds reliability bugs in your code",
+      "status": "rejected",
+      "score": 1,
+      "at": "2026-10-29T15:49:32+00:00"
+    },
+    "job:8af774cbf3fd013e": {
+      "name": "Front-End Developer - Edconic",
+      "status": "rejected",
+      "score": 6,
+      "at": "2026-10-29T15:49:37+00:00"
+    },
+    "job:0b5c711c2f47b321": {
+      "name": "Principal Design Engineer - AlphaSense",
+      "status": "rejected",
+      "score": 6,
+      "at": "2026-10-29T15:49:40+00:00"
+    },
+    "job:2bfa15e0ae31e28e": {
+      "name": "Staff Design Engineer - UK - Ashby",
+      "status": "rejected",
+      "score": 6,
+      "at": "2026-10-29T15:49:44+00:00"
+    },
+    "hn:50289281": {
+      "name": "Node research browser for knowledge networking",
+      "status": "rejected",
+      "score": 1,
+      "at": "2026-10-29T15:49:49+00:00"
+    },
+    "job:0506395a733f4a2a": {
+      "name": "M+C Saatchi World Services is hiring for a position of Motion Graphics Designer in Washington, D. C., United States",
+      "status": "rejected",
+      "score": 2,
+      "at": "2026-10-29T15:49:52+00:00"
+    },
+    "job:dd4b2296ca41e7b6": {
+      "name": "Staff Design Engineer - EU - Ashby",
+      "status": "rejected",
+      "score": 6,
+      "at": "2026-10-29T15:49:56+00:00"
+    },
+    "hn:50278951": {
+      "name": "U.S. Elections, Campaign Finance and Legislation on a Miller-Column UI",
+      "status": "rejected",
+      "score": 2,
+      "at": "2026-10-29T15:50:00+00:00"
+    },
+    "job:f70948355d5cf136": {
+      "name": "Senior Product Designer - Compute, Nebius Console - Nebius",
+      "status": "rejected",
+      "score": 6,
+      "at": "2026-10-29T15:50:05+00:00"
+    },
+    "hn:50288599": {
+      "name": "MyPrintables, a simple, small, and fast 3D assets manager",
+      "status": "rejected",
+      "score": 1,
+      "at": "2026-10-29T15:50:09+00:00"
+    },
+    "hn:50287379": {
+      "name": "AI social media interview platform",
+      "status": "rejected",
+      "score": 3,
+      "at": "2026-10-29T15:50:13+00:00"
+    },
+    "hn:50284856": {
+      "name": "Fabivo",
+      "status": "rejected",
+      "score": 2,
+      "at": "2026-10-29T15:50:17+00:00"
+    },
+    "job:5ab7e79d711483f4": {
+      "name": "Brand Experience Designer, Consumer - Toast",
+      "status": "rejected",
+      "score": 2,
+      "at": "2026-10-29T15:50:24+00:00"
+    },
+    "hn:50278863": {
+      "name": "Measuring how much of an AI-assisted design is yours",
+      "status": "rejected",
+      "score": 1,
+      "at": "2026-10-29T15:50:28+00:00"
+    },
+    "hn:50275972": {
+      "name": "SysBreak",
+      "status": "rejected",
+      "score": 1,
+      "at": "2026-10-29T15:50:32+00:00"
+    },
+    "hn:50284998": {
+      "name": "iCloud Drive Client for Linux, in Rust",
+      "status": "rejected",
+      "score": 2,
+      "at": "2026-10-29T15:50:37+00:00"
+    },
+    "hn:50281533": {
+      "name": "Fast, Zero Allocation, AOT Safe, Compile-Time Safe .NET Template Engine",
+      "status": "rejected",
+      "score": 1,
+      "at": "2026-10-29T15:50:41+00:00"
+    },
+    "hn:50277564": {
+      "name": "42Loop",
+      "status": "rejected",
+      "score": 1,
+      "at": "2026-10-29T15:50:45+00:00"
+    },
+    "hn:50287819": {
+      "name": "Nori",
+      "status": "rejected",
+      "score": 1,
+      "at": "2026-10-29T15:50:50+00:00"
+    },
+    "hn:50284303": {
+      "name": "Startica Open-source app for SEO, marketing, accessibility and security",
+      "status": "rejected",
+      "score": 1,
+      "at": "2026-10-29T15:50:54+00:00"
+    },
+    "hn:50285372": {
+      "name": "Pure Particles, an open source art particle toy built with Three.js",
+      "status": "rejected",
+      "score": 1,
+      "at": "2026-10-29T15:50:58+00:00"
     }
   },
   "contacted_domains": []
