@@ -880,6 +880,84 @@
       "status": "rejected",
       "score": 1,
       "at": "2026-10-29T15:50:58+00:00"
+    },
+    "hn:50302708": {
+      "name": "NotchMetrics",
+      "status": "rejected",
+      "score": 2,
+      "at": "2026-10-30T15:30:13+00:00"
+    },
+    "job:81cfdc92c2619bfc": {
+      "name": "Staff Product Designer - Ashby",
+      "status": "rejected",
+      "score": 6,
+      "at": "2026-10-30T15:30:17+00:00"
+    },
+    "job:54f24b7ebdf20ee6": {
+      "name": "Creative Localization Specialist - Keeper Security",
+      "status": "rejected",
+      "score": 2,
+      "at": "2026-10-30T15:30:20+00:00"
+    },
+    "job:e0798531e5e99521": {
+      "name": "Council on Foreign Relations is hiring for a position of Design Manager in New York City, NY",
+      "status": "rejected",
+      "score": 2,
+      "at": "2026-10-30T15:30:28+00:00"
+    },
+    "hn:50294799": {
+      "name": "ccfleet, a quiet, tmux-native Claude Code dashboard",
+      "status": "rejected",
+      "score": 1,
+      "at": "2026-10-30T15:30:31+00:00"
+    },
+    "job:b340e009b97dfaee": {
+      "name": "Brand Designer - Thatch",
+      "status": "rejected",
+      "score": 2,
+      "at": "2026-10-30T15:30:40+00:00"
+    },
+    "hn:50305171": {
+      "name": "Dbprint",
+      "status": "rejected",
+      "score": 1,
+      "at": "2026-10-30T15:30:43+00:00"
+    },
+    "job:b4ef32c6f15e2bc2": {
+      "name": "Edison Scientific is hiring for a position of Brand Designer in San Francisco, CA",
+      "status": "rejected",
+      "score": 3,
+      "at": "2026-10-30T15:30:49+00:00"
+    },
+    "hn:50304912": {
+      "name": "Nexus, a calorie and workout planner inside ChatGPT and Claude",
+      "status": "rejected",
+      "score": 1,
+      "at": "2026-10-30T15:30:53+00:00"
+    },
+    "job:7c77af106cb80683": {
+      "name": "2D Graphic and Motion Designer - Ruby Labs",
+      "status": "rejected",
+      "score": 3,
+      "at": "2026-10-30T15:30:58+00:00"
+    },
+    "hn:50304670": {
+      "name": "Free system design learning path with animated architecture diagrams",
+      "status": "rejected",
+      "score": 1,
+      "at": "2026-10-30T15:31:03+00:00"
+    },
+    "hn:50293125": {
+      "name": "System Design Articles from Companies",
+      "status": "rejected",
+      "score": 0,
+      "at": "2026-10-30T15:31:07+00:00"
+    },
+    "hn:50295662": {
+      "name": "OpenArcanum",
+      "status": "rejected",
+      "score": 1,
+      "at": "2026-10-30T15:31:11+00:00"
     }
   },
   "contacted_domains": []
