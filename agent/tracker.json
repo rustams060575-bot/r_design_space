@@ -958,6 +958,60 @@
       "status": "rejected",
       "score": 1,
       "at": "2026-10-30T15:31:11+00:00"
+    },
+    "job:78cbebee66c38213": {
+      "name": "Full-Stack Developer - Fluence International, Inc.",
+      "status": "rejected",
+      "score": 6,
+      "at": "2026-10-31T14:58:45+00:00"
+    },
+    "hn:50310397": {
+      "name": "Balk",
+      "status": "rejected",
+      "score": 1,
+      "at": "2026-10-31T14:58:48+00:00"
+    },
+    "hn:50313539": {
+      "name": "Tell HN: Claude is using my limits even though it's infra is failing",
+      "status": "rejected",
+      "score": 0,
+      "at": "2026-10-31T14:58:52+00:00"
+    },
+    "job:32fa228c38467a08": {
+      "name": "Technical Designer - Fresh Prints",
+      "status": "rejected",
+      "score": 1,
+      "at": "2026-10-31T14:58:56+00:00"
+    },
+    "hn:50310053": {
+      "name": "HackerFlow",
+      "status": "rejected",
+      "score": 1,
+      "at": "2026-10-31T14:59:00+00:00"
+    },
+    "hn:50309010": {
+      "name": "Staxless",
+      "status": "rejected",
+      "score": 1,
+      "at": "2026-10-31T14:59:03+00:00"
+    },
+    "job:7961c62fd879a0b4": {
+      "name": "Staff Industrial Designer - hims &#038; hers",
+      "status": "rejected",
+      "score": 2,
+      "at": "2026-10-31T14:59:06+00:00"
+    },
+    "hn:50307229": {
+      "name": "A Modern Basketball Play Designer",
+      "status": "rejected",
+      "score": 1,
+      "at": "2026-10-31T14:59:10+00:00"
+    },
+    "job:20856beb338e7b9f": {
+      "name": "Staff Graphic Designer, Print & Packaging - hims &#038; hers",
+      "status": "rejected",
+      "score": 2,
+      "at": "2026-10-31T14:59:14+00:00"
     }
   },
   "contacted_domains": []
