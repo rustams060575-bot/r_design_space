@@ -1012,6 +1012,84 @@
       "status": "rejected",
       "score": 2,
       "at": "2026-10-31T14:59:14+00:00"
+    },
+    "job:86f41b96b9a0279a": {
+      "name": "UX Designer | EMEA | Contract - Fueled",
+      "status": "alert_only",
+      "score": 7,
+      "at": "2026-11-02T19:06:54+00:00"
+    },
+    "hn:50333280": {
+      "name": "13M opinions on 48k products extracted from Reddit and HN",
+      "status": "rejected",
+      "score": 2,
+      "at": "2026-11-02T19:06:59+00:00"
+    },
+    "hn:50328267": {
+      "name": "Cannot log in to my AWS account",
+      "status": "rejected",
+      "score": 0,
+      "at": "2026-11-02T19:07:03+00:00"
+    },
+    "hn:50327492": {
+      "name": "DataQuest-Your website data in Telegram and Discord",
+      "status": "rejected",
+      "score": 2,
+      "at": "2026-11-02T19:07:07+00:00"
+    },
+    "hn:50333045": {
+      "name": "Pepperwind, a fictional company dataset with 223 tables and 79M rows",
+      "status": "rejected",
+      "score": 1,
+      "at": "2026-11-02T19:07:11+00:00"
+    },
+    "hn:50339790": {
+      "name": "Prepd",
+      "status": "rejected",
+      "score": 1,
+      "at": "2026-11-02T19:07:16+00:00"
+    },
+    "hn:50333499": {
+      "name": "AI System Design Primer",
+      "status": "rejected",
+      "score": 0,
+      "at": "2026-11-02T19:07:20+00:00"
+    },
+    "hn:50339547": {
+      "name": "Open-source, Lightroom Alternative RAW editor made by photographer",
+      "status": "rejected",
+      "score": 1,
+      "at": "2026-11-02T19:07:23+00:00"
+    },
+    "hn:50335339": {
+      "name": "Mistake Trainer",
+      "status": "rejected",
+      "score": 1,
+      "at": "2026-11-02T19:07:28+00:00"
+    },
+    "hn:50335827": {
+      "name": "Faro, an unofficial Signal client for the terminal",
+      "status": "rejected",
+      "score": 1,
+      "at": "2026-11-02T19:07:31+00:00"
+    },
+    "hn:50331387": {
+      "name": "People you know, an end-to-end encrypted private Instagram replacement",
+      "status": "rejected",
+      "score": 1,
+      "at": "2026-11-02T19:07:35+00:00"
+    },
+    "hn:50333638": {
+      "name": "Open-sourced alternatives to every SaaS tool",
+      "status": "rejected",
+      "score": 1,
+      "at": "2026-11-02T19:07:39+00:00"
+    },
+    "hn:50338055": {
+      "name": "MxRaven",
+      "status": "rejected",
+      "score": 2,
+      "at": "2026-11-02T19:07:43+00:00"
     }
   },
   "contacted_domains": []
