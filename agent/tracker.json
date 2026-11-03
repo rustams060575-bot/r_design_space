@@ -1090,6 +1090,132 @@
       "status": "rejected",
       "score": 2,
       "at": "2026-11-02T19:07:43+00:00"
+    },
+    "hn:50353760": {
+      "name": "Websitevice",
+      "status": "rejected",
+      "score": 1,
+      "at": "2026-11-03T16:48:52+00:00"
+    },
+    "hn:50353244": {
+      "name": "Design My YouTube Feed",
+      "status": "rejected",
+      "score": 1,
+      "at": "2026-11-03T16:48:56+00:00"
+    },
+    "job:bdcbf4275baf83da": {
+      "name": "Lead Product Designer (100% Remote within Poland) - Docplanner",
+      "status": "rejected",
+      "score": 6,
+      "at": "2026-11-03T16:49:00+00:00"
+    },
+    "hn:50345881": {
+      "name": "Hacker News, à la Lobsters",
+      "status": "rejected",
+      "score": 1,
+      "at": "2026-11-03T16:49:04+00:00"
+    },
+    "hn:50344418": {
+      "name": "Can you help me design my YouTube feed?",
+      "status": "rejected",
+      "score": 1,
+      "at": "2026-11-03T16:49:08+00:00"
+    },
+    "hn:50353127": {
+      "name": "Election.run",
+      "status": "rejected",
+      "score": 2,
+      "at": "2026-11-03T16:49:12+00:00"
+    },
+    "hn:50352173": {
+      "name": "AllTheStatus, status page central dashboard",
+      "status": "rejected",
+      "score": 2,
+      "at": "2026-11-03T16:49:17+00:00"
+    },
+    "hn:50350444": {
+      "name": "Globalize.now",
+      "status": "rejected",
+      "score": 1,
+      "at": "2026-11-03T16:49:21+00:00"
+    },
+    "hn:50353615": {
+      "name": "CleanSlop",
+      "status": "rejected",
+      "score": 1,
+      "at": "2026-11-03T16:49:26+00:00"
+    },
+    "hn:50352620": {
+      "name": "React and NextJS Interactions with MCP for AI Coding",
+      "status": "rejected",
+      "score": 1,
+      "at": "2026-11-03T16:49:31+00:00"
+    },
+    "hn:50351190": {
+      "name": "Built a infinite Rar Runner game inspired by Subway Surfers using React",
+      "status": "rejected",
+      "score": 1,
+      "at": "2026-11-03T16:49:34+00:00"
+    },
+    "hn:50348853": {
+      "name": "Vectoys",
+      "status": "rejected",
+      "score": 1,
+      "at": "2026-11-03T16:49:38+00:00"
+    },
+    "hn:50342767": {
+      "name": "Notes on Watchmen",
+      "status": "rejected",
+      "score": 1,
+      "at": "2026-11-03T16:49:42+00:00"
+    },
+    "hn:50351684": {
+      "name": "Open-Source Searchable Job Board for HN's Hiring Threads",
+      "status": "rejected",
+      "score": 1,
+      "at": "2026-11-03T16:49:46+00:00"
+    },
+    "hn:50351427": {
+      "name": "Kvittas, an Expense Splitting App",
+      "status": "rejected",
+      "score": 2,
+      "at": "2026-11-03T16:49:50+00:00"
+    },
+    "hn:50351615": {
+      "name": "Duckity",
+      "status": "rejected",
+      "score": 2,
+      "at": "2026-11-03T16:49:55+00:00"
+    },
+    "hn:50353386": {
+      "name": "HackerChurn",
+      "status": "rejected",
+      "score": 1,
+      "at": "2026-11-03T16:50:01+00:00"
+    },
+    "hn:50353885": {
+      "name": "Ramen Profitable, a browser game about bootstrapping a SaaS",
+      "status": "rejected",
+      "score": 1,
+      "at": "2026-11-03T16:50:05+00:00"
+    },
+    "hn:50351409": {
+      "name": "LokaDB",
+      "status": "rejected",
+      "score": 1,
+      "at": "2026-11-03T16:50:08+00:00"
+    },
+    "hn:50354238": {
+      "name": "Workspaces",
+      "status": "rejected",
+      "score": 1,
+      "at": "2026-11-03T16:50:11+00:00"
+    },
+    "hn:50353601": {
+      "name": "I built Knemora",
+      "status": "rejected",
+      "score": 1,
+      "at": "2026-11-03T16:50:15+00:00"
     }
   },
   "contacted_domains": []
