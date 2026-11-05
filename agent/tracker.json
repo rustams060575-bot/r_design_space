@@ -1366,6 +1366,114 @@
       "status": "rejected",
       "score": 1,
       "at": "2026-11-04T16:50:59+00:00"
+    },
+    "hn:50377613": {
+      "name": "Spindle",
+      "status": "rejected",
+      "score": 1,
+      "at": "2026-11-05T17:04:44+00:00"
+    },
+    "job:e9596cb58e2eca52": {
+      "name": "Senior CRO Designer, Paywalls and Funnels - RevenueCat",
+      "status": "rejected",
+      "score": 6,
+      "at": "2026-11-05T17:04:49+00:00"
+    },
+    "hn:50373378": {
+      "name": "Native HTML Partials and Native MFEs",
+      "status": "rejected",
+      "score": 1,
+      "at": "2026-11-05T17:04:53+00:00"
+    },
+    "job:642dc2d98392c31f": {
+      "name": "Senior Product Designer - NetBox Labs",
+      "status": "rejected",
+      "score": 6,
+      "at": "2026-11-05T17:04:57+00:00"
+    },
+    "hn:50380992": {
+      "name": "Any good AI design tools for pitch decks and visuals?",
+      "status": "rejected",
+      "score": 2,
+      "at": "2026-11-05T17:05:01+00:00"
+    },
+    "hn:50369215": {
+      "name": "Phonon TTS on WebGPU, 44MB, 115x real time, with live word timings",
+      "status": "rejected",
+      "score": 1,
+      "at": "2026-11-05T17:05:04+00:00"
+    },
+    "hn:50374845": {
+      "name": "Credit card and loyalty analytics, where to start?",
+      "status": "rejected",
+      "score": 3,
+      "at": "2026-11-05T17:05:09+00:00"
+    },
+    "hn:50379221": {
+      "name": "Waymark",
+      "status": "rejected",
+      "score": 1,
+      "at": "2026-11-05T17:05:12+00:00"
+    },
+    "job:eba3bd957018246a": {
+      "name": "Principal Product Designer - Customer.io",
+      "status": "rejected",
+      "score": 6,
+      "at": "2026-11-05T17:05:17+00:00"
+    },
+    "hn:50372381": {
+      "name": "Canva lays off 22% of its workforce; 1,270 people",
+      "status": "rejected",
+      "score": 0,
+      "at": "2026-11-05T17:05:21+00:00"
+    },
+    "job:d5d3bff09db16aae": {
+      "name": "Senior Product Designer, Knowledge Graph | Ireland | Remote - Grafana Labs",
+      "status": "rejected",
+      "score": 6,
+      "at": "2026-11-05T17:05:25+00:00"
+    },
+    "hn:50378643": {
+      "name": "Firenook",
+      "status": "rejected",
+      "score": 1,
+      "at": "2026-11-05T17:05:30+00:00"
+    },
+    "job:4b8819da0b902737": {
+      "name": "Designer, Web Presence & Platform - Stripe",
+      "status": "alert_only",
+      "score": 7,
+      "at": "2026-11-05T17:05:40+00:00"
+    },
+    "job:a8a89de4e2875a39": {
+      "name": "Senior Product Designer, Knowledge Graph | Germany | Remote - Grafana Labs",
+      "status": "rejected",
+      "score": 6,
+      "at": "2026-11-05T17:05:44+00:00"
+    },
+    "hn:50371490": {
+      "name": "Mastodon desktop client, made with Claude, using Rust and GTK4",
+      "status": "rejected",
+      "score": 1,
+      "at": "2026-11-05T17:05:48+00:00"
+    },
+    "job:f7594e1f334b41c7": {
+      "name": "Communications Designer, Developer Experience - Nebius",
+      "status": "rejected",
+      "score": 4,
+      "at": "2026-11-05T17:05:54+00:00"
+    },
+    "hn:50379536": {
+      "name": "Open-source proxy for per-tenant Postgres, no app changes",
+      "status": "rejected",
+      "score": 1,
+      "at": "2026-11-05T17:05:57+00:00"
+    },
+    "job:7296739c4d6b7f1f": {
+      "name": "Creative Designer (Fixed Term Contract) - Mozilla",
+      "status": "rejected",
+      "score": 2,
+      "at": "2026-11-05T17:06:05+00:00"
     }
   },
   "contacted_domains": []
