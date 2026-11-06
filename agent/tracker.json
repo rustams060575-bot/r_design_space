@@ -1474,6 +1474,120 @@
       "status": "rejected",
       "score": 2,
       "at": "2026-11-05T17:06:05+00:00"
+    },
+    "hn:50381846": {
+      "name": "Flawless UI/UX",
+      "status": "rejected",
+      "score": 1,
+      "at": "2026-11-06T16:34:35+00:00"
+    },
+    "job:3bfcd6ed938e637e": {
+      "name": "Senior Creative & Web Designer - Breakthrough Design Group",
+      "status": "alert_only",
+      "score": 8,
+      "at": "2026-11-06T16:34:43+00:00"
+    },
+    "job:4e275f885f480c91": {
+      "name": "Helmsted is hiring for a position of Founding Design Engineer in United States",
+      "status": "rejected",
+      "score": 6,
+      "at": "2026-11-06T16:34:47+00:00"
+    },
+    "job:50812768865dbf84": {
+      "name": "Senior Product Designer - Visual Craft & AI - Envato",
+      "status": "rejected",
+      "score": 6,
+      "at": "2026-11-06T16:34:52+00:00"
+    },
+    "hn:50391875": {
+      "name": "Antidraw",
+      "status": "rejected",
+      "score": 1,
+      "at": "2026-11-06T16:34:55+00:00"
+    },
+    "job:1f4fa5f224a15c54": {
+      "name": "Talkiatry is hiring for a position of Staff Product Designer in Remote",
+      "status": "rejected",
+      "score": 6,
+      "at": "2026-11-06T16:34:59+00:00"
+    },
+    "hn:50383648": {
+      "name": "Data center build-out dashboard with interactive map, coverage, etc.",
+      "status": "rejected",
+      "score": 2,
+      "at": "2026-11-06T16:35:03+00:00"
+    },
+    "hn:50384502": {
+      "name": "Cerea",
+      "status": "rejected",
+      "score": 1,
+      "at": "2026-11-06T16:35:07+00:00"
+    },
+    "job:5ac7e96baabc931b": {
+      "name": "Senior Brand Designer - Customer.io",
+      "status": "rejected",
+      "score": 3,
+      "at": "2026-11-06T16:35:14+00:00"
+    },
+    "hn:50383912": {
+      "name": "Aireel.tv Paste your landing page. Get a produced promo film",
+      "status": "rejected",
+      "score": 1,
+      "at": "2026-11-06T16:35:19+00:00"
+    },
+    "hn:50381848": {
+      "name": "Animated React components that also ship as single HTML files",
+      "status": "rejected",
+      "score": 1,
+      "at": "2026-11-06T16:35:23+00:00"
+    },
+    "hn:50389331": {
+      "name": "Mall Bats, a nostalgic tycoon game with a twitst",
+      "status": "rejected",
+      "score": 1,
+      "at": "2026-11-06T16:35:27+00:00"
+    },
+    "hn:50384450": {
+      "name": "Hnollo",
+      "status": "rejected",
+      "score": 1,
+      "at": "2026-11-06T16:35:30+00:00"
+    },
+    "hn:50388727": {
+      "name": "Moosik",
+      "status": "rejected",
+      "score": 1,
+      "at": "2026-11-06T16:35:34+00:00"
+    },
+    "hn:50390605": {
+      "name": "Overhead",
+      "status": "rejected",
+      "score": 0,
+      "at": "2026-11-06T16:35:38+00:00"
+    },
+    "hn:50383948": {
+      "name": "CalmCanary",
+      "status": "rejected",
+      "score": 2,
+      "at": "2026-11-06T16:35:42+00:00"
+    },
+    "hn:50392413": {
+      "name": "Mercury 3 cost calculator (launch promo vs. list pricing)",
+      "status": "rejected",
+      "score": 1,
+      "at": "2026-11-06T16:35:46+00:00"
+    },
+    "hn:50392347": {
+      "name": "Grid",
+      "status": "rejected",
+      "score": 1,
+      "at": "2026-11-06T16:35:51+00:00"
+    },
+    "hn:50392219": {
+      "name": "An open source webbluetooth and NFC browser for iOS",
+      "status": "rejected",
+      "score": 1,
+      "at": "2026-11-06T16:35:55+00:00"
     }
   },
   "contacted_domains": []
