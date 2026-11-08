@@ -1672,6 +1672,144 @@
       "status": "rejected",
       "score": 3,
       "at": "2026-11-07T15:25:02+00:00"
+    },
+    "hn:50409553": {
+      "name": "Calibron 12 Puzzle/Solver",
+      "status": "rejected",
+      "score": 1,
+      "at": "2026-11-08T15:44:51+00:00"
+    },
+    "job:e1ba5e31d8bfa733": {
+      "name": "UX Designer - Design systems - Canonical",
+      "status": "rejected",
+      "score": 6,
+      "at": "2026-11-08T15:44:54+00:00"
+    },
+    "hn:50406687": {
+      "name": "Does my iPad Air have a design bug in volume buttons?",
+      "status": "rejected",
+      "score": 0,
+      "at": "2026-11-08T15:44:58+00:00"
+    },
+    "job:b155b3d6d10f0523": {
+      "name": "Principal UX Engineer, Ads - Reddit",
+      "status": "rejected",
+      "score": 5,
+      "at": "2026-11-08T15:45:02+00:00"
+    },
+    "hn:50411346": {
+      "name": "Ferrule",
+      "status": "rejected",
+      "score": 1,
+      "at": "2026-11-08T15:45:05+00:00"
+    },
+    "job:a21105500943cb37": {
+      "name": "Staff Design Engineer - Cloud Networking UX - Canonical",
+      "status": "rejected",
+      "score": 6,
+      "at": "2026-11-08T15:45:09+00:00"
+    },
+    "job:73968e6007a88eae": {
+      "name": "Instructional Designer - MedAmerica",
+      "status": "rejected",
+      "score": 2,
+      "at": "2026-11-08T15:45:12+00:00"
+    },
+    "job:f207ba4ad2622713": {
+      "name": "Senior Design Quality Engineer - Bayesian Health",
+      "status": "rejected",
+      "score": 1,
+      "at": "2026-11-08T15:45:16+00:00"
+    },
+    "hn:50407700": {
+      "name": "TheySay",
+      "status": "rejected",
+      "score": 2,
+      "at": "2026-11-08T15:45:20+00:00"
+    },
+    "job:a7c7b6c9b93da778": {
+      "name": "Staff Frontend Engineer - ClickUp",
+      "status": "rejected",
+      "score": 6,
+      "at": "2026-11-08T15:45:23+00:00"
+    },
+    "job:521818143d722b45": {
+      "name": "Staff Product Manager, SaaS Manager - 1Password",
+      "status": "rejected",
+      "score": 2,
+      "at": "2026-11-08T15:45:27+00:00"
+    },
+    "hn:50407925": {
+      "name": "Conductor sold to Meta. Rebuilding the app (3 days, $170) (MIT)",
+      "status": "rejected",
+      "score": 1,
+      "at": "2026-11-08T15:45:30+00:00"
+    },
+    "job:e0f95f42f84a96ce": {
+      "name": "Senior Frontend Engineer - ClickUp",
+      "status": "rejected",
+      "score": 6,
+      "at": "2026-11-08T15:45:34+00:00"
+    },
+    "hn:50414111": {
+      "name": "Velork",
+      "status": "rejected",
+      "score": 1,
+      "at": "2026-11-08T15:45:38+00:00"
+    },
+    "job:7f336051d02d60bc": {
+      "name": "UX Designer - Infrastructure - Canonical",
+      "status": "rejected",
+      "score": 6,
+      "at": "2026-11-08T15:45:42+00:00"
+    },
+    "job:898911aece2fb15b": {
+      "name": "UX Designer - Developer experience - Canonical",
+      "status": "rejected",
+      "score": 6,
+      "at": "2026-11-08T15:45:46+00:00"
+    },
+    "hn:50413968": {
+      "name": "Loop",
+      "status": "rejected",
+      "score": 2,
+      "at": "2026-11-08T15:45:49+00:00"
+    },
+    "hn:50406477": {
+      "name": "A framework for prototyping web games in 2D and 3D",
+      "status": "rejected",
+      "score": 1,
+      "at": "2026-11-08T15:45:52+00:00"
+    },
+    "hn:50412135": {
+      "name": "An open-source IDE for software architecture",
+      "status": "rejected",
+      "score": 1,
+      "at": "2026-11-08T15:45:56+00:00"
+    },
+    "hn:50409129": {
+      "name": "An immutable local inference appliance with routing capability",
+      "status": "rejected",
+      "score": 1,
+      "at": "2026-11-08T15:46:00+00:00"
+    },
+    "hn:50412484": {
+      "name": "Gitbet",
+      "status": "rejected",
+      "score": 1,
+      "at": "2026-11-08T15:46:04+00:00"
+    },
+    "hn:50408350": {
+      "name": "An offline desktop companion to help maintain a healthy blink rhythm",
+      "status": "rejected",
+      "score": 1,
+      "at": "2026-11-08T15:46:08+00:00"
+    },
+    "job:115bd23e12c00a43": {
+      "name": "Visual Designer - Canonical",
+      "status": "rejected",
+      "score": 6,
+      "at": "2026-11-08T15:46:12+00:00"
     }
   },
   "contacted_domains": []
