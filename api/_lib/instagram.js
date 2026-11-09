@@ -18,7 +18,7 @@ const crypto = require("crypto");
 
 const FUNNEL_LINK = "https://t.me/r_design_outreach_bot?start=motion";
 const DM_TEXT = (link) =>
-  "¡Hola! Soy James, del equipo de R Design Space. Aquí tienes la guía Motion, paso a paso: wireframe, estética, código y animación.\n\n" +
+  "¡Hola! Soy James, del equipo de AR Design. Aquí tienes la guía Motion, paso a paso: wireframe, estética, código y animación.\n\n" +
   `${link}\n\n` +
   "Pulsa «Start» en Telegram y te la envío al momento.";
 

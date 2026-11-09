@@ -14,7 +14,7 @@ const STT_TIMEOUT_MS = 20000;
 const TTS_TIMEOUT_MS = 20000;
 
 // Domain hint for Whisper: improves the spelling of product and business terms. Language is detected automatically.
-const STT_PROMPT = "R Design Space, Chief of Staff, CRM, SaaS, B2B, dashboard, дашборд, лендинг, Tilda Zero Block, Figma, UI/UX, дедлайн, лид.";
+const STT_PROMPT = "AR Design, Chief of Staff, CRM, SaaS, B2B, dashboard, дашборд, лендинг, Tilda Zero Block, Figma, UI/UX, дедлайн, лид.";
 
 class ApiError extends Error {
   constructor(service, status) {

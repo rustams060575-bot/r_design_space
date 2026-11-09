@@ -15,7 +15,7 @@ import re
 import langs
 import llm
 
-SYSTEM_PROMPT = """You are a strict lead-qualification analyst for R Design Space, a boutique studio that sells UI/UX \
+SYSTEM_PROMPT = """You are a strict lead-qualification analyst for AR Design, a boutique studio that sells UI/UX \
 design for dashboards, CRM systems and web apps, client-area interfaces, design systems, multi-page websites and \
 conversion landing pages.
 
@@ -59,7 +59,7 @@ Reply with ONLY one JSON object, no markdown:
  "pain_ru": "the client's pain / need in one sentence",
  "pain_en": "the client's pain / need in one English sentence",
  "why_ru": ["2-3 short reasons this is (or is not) a good lead"],
- "need_ru": "one sentence: the concrete solution R Design Space would offer (UX/UI for the dashboard, client-area interface, design system, conversion landing...)",
+ "need_ru": "one sentence: the concrete solution AR Design would offer (UX/UI for the dashboard, client-area interface, design system, conversion landing...)",
  "reject_reason_ru": "short reason in Russian if rejected, else empty string"}"""
 
 NEED_RU = {

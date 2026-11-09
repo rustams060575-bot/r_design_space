@@ -2,7 +2,7 @@
 
 Every approved lead produces two messages:
   1. the analysis card (Russian): what the project is, why it fits, what to offer, language, status and buttons;
-  2. the email draft in the founder's language (original text, so the R Design Space style can be judged at once),
+  2. the email draft in the founder's language (original text, so the AR Design style can be judged at once),
      with a one-line Russian gist when the draft is not in Russian.
 Commands and button taps are received by api/telegram.js (webhook) or agent/bot_poll.py (local polling).
 """
@@ -36,7 +36,7 @@ SOURCE_LABEL = {
 LINE = "━━━━━━━━━━━━━━"
 
 START_TEXT = (
-    "👋 R Design Space · персональный агент\n\n"
+    "👋 AR Design · персональный агент\n\n"
     "• Лидогенерация: ищу стартапы и SaaS по миру, пишу письма на языке фаундера. Письмо уходит только после вашей кнопки.\n"
     "• Диалог с памятью: пишите мне как ассистенту - я помню проекты, договорённости и интересы, даже спустя недели.\n"
     "• Голос: отправьте голосовое сообщение - отвечу голосом.\n\n"

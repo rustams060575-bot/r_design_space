@@ -53,7 +53,7 @@ def build_footer(cfg: dict, lang: str = "en") -> str:
     owner = cfg["owner"]
     parts = [
         "--",
-        f"{owner['name']} | {cfg.get('brand', 'R Design Space')} - UI/UX, dashboards, frontend & Tilda Zero Block",
+        f"{owner['name']} | {cfg.get('brand', 'AR Design')} - UI/UX, dashboards, frontend & Tilda Zero Block",
         f"Telegram: {owner['telegram_handle']} ({owner['telegram_url']})",
     ]
     if cfg.get("vercel_url"):
@@ -74,7 +74,7 @@ def send_email(to_addr: str, subject: str, body: str, cfg: dict, lang: str = "en
 
     sender, password = load_credentials(cfg)
     msg = EmailMessage()
-    msg["From"] = formataddr((f"{cfg['owner']['name']} | {cfg.get('brand', 'R Design Space')}", sender))
+    msg["From"] = formataddr((f"{cfg['owner']['name']} | {cfg.get('brand', 'AR Design')}", sender))
     msg["To"] = to_addr
     msg["Reply-To"] = sender
     msg["Subject"] = subject

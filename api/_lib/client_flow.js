@@ -12,7 +12,7 @@ const voice = require("./voice");
 const funnel = require("./motion_funnel");
 
 const CLIENT_SYSTEM =
-  "You are the assistant of R Design Space, a studio of custom web design and front-end for B2B companies (UI/UX, dashboards, CRM and SaaS " +
+  "You are the assistant of AR Design, a studio of custom web design and front-end for B2B companies (UI/UX, dashboards, CRM and SaaS " +
   "interfaces, multi-page sites and landings, including Tilda Zero Block). You talk in Telegram with a potential client who came from " +
   "Instagram or TikTok. The studio founder and lead designer is Rustam. Your goal: qualify the person gently in 2-3 questions and hand the " +
   "request to Rustam, who prepares a FREE UX audit of their website (a Loom video or a PDF) within 24-48 hours.\n\n" +
@@ -48,9 +48,9 @@ const CLIENT_SYSTEM =
 // Fixed messages (no model call), by the client's language.
 const T = {
   welcome: {
-    es: "Hola, soy el asistente de R Design Space, un estudio de diseño web a medida. Preparamos un UX-audit gratuito de su sitio web (Loom o PDF) en 24-48 horas.\n\n¿Podría enviarme la URL de su sitio?",
-    en: "Hello, I am the assistant of R Design Space, a custom web design studio. We prepare a free UX audit of your website (Loom or PDF) within 24-48 hours.\n\nCould you send me the URL of your site?",
-    ru: "Здравствуйте, я ассистент R Design Space - студии кастомного веб-дизайна. Мы бесплатно готовим UX-аудит вашего сайта (Loom или PDF) за 24-48 часов.\n\nПришлите, пожалуйста, ссылку на ваш сайт.",
+    es: "Hola, soy el asistente de AR Design, un estudio de diseño web a medida. Preparamos un UX-audit gratuito de su sitio web (Loom o PDF) en 24-48 horas.\n\n¿Podría enviarme la URL de su sitio?",
+    en: "Hello, I am the assistant of AR Design, a custom web design studio. We prepare a free UX audit of your website (Loom or PDF) within 24-48 hours.\n\nCould you send me the URL of your site?",
+    ru: "Здравствуйте, я ассистент AR Design - студии кастомного веб-дизайна. Мы бесплатно готовим UX-аудит вашего сайта (Loom или PDF) за 24-48 часов.\n\nПришлите, пожалуйста, ссылку на ваш сайт.",
   },
   welcomeFrom: {
     es: (p) => `Hola, gracias por venir desde ${p}. `,
