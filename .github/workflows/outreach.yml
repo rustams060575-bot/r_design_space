@@ -2,7 +2,11 @@ name: Outreach agent
 
 on:
   schedule:
-    - cron: "0 9 * * *"     # every day at 09:00 UTC
+    # Alicante = Europe/Madrid (CET/CEST). The timezone key makes GitHub follow daylight saving by itself.
+    - cron: "0 9 * * *"     # 09:00 Alicante: Europe is starting its day
+      timezone: "Europe/Madrid"
+    - cron: "0 21 * * *"    # 21:00 Alicante: America is starting its day
+      timezone: "Europe/Madrid"
   workflow_dispatch:         # started from Telegram (api/telegram.js) or by hand
     inputs:
       action:

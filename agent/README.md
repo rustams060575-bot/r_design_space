@@ -15,7 +15,7 @@ Telegram ──► Vercel api/telegram.js ──► GitHub Actions (outreach.yml
 |---|---|
 | `api/telegram.js` | webhook: команды, диалог с памятью, кнопки; запускает Actions |
 | `api/_lib/memory.js`, `store.js`, `claude.js` | долговременная память, её хранилище (приватный репозиторий), клиент Claude |
-| `.github/workflows/outreach.yml` | ежедневно 09:00 UTC + запуск из Telegram; сохраняет `tracker.json` и `pending.json` |
+| `.github/workflows/outreach.yml` | ежедневно в 09:00 и 21:00 (Аликанте, Europe/Madrid) + запуск из Telegram; сохраняет `tracker.json` и `pending.json` |
 | `agent/scraper.py` | точка входа: `--action search \| send`, `--query`, `--lead-id` |
 | `agent/qualifier.py` | жёсткий отбор (порог 7/10), анализ на русском, определение языка письма |
 | `agent/pitch_writer.py` | письмо на языке фаундера в стиле AR Design |
@@ -142,7 +142,7 @@ Claude. 1–2 секунды недостижимы при любой архит
 
 ## Биржи заказов и утренняя сводка
 
-Каждый день в 09:00 UTC (workflow `outreach.yml`) агент, кроме Hacker News, просматривает открытые биржи из блока
+Дважды в день, в 09:00 и 21:00 по Аликанте (workflow `outreach.yml`) агент, кроме Hacker News, просматривает открытые биржи из блока
 `job_boards` в `config.json`: We Work Remotely (дизайн и фронтенд), Dribbble Jobs, Remotive, Jobicy (США, Европа, APAC для
 Японии, Кореи и китайских брендов). Перед карточками в Telegram приходит сводка «☀️ Утренняя сводка лидов» с числом
 свежих объявлений по площадкам, затем карточки с готовым черновиком письма под каждого клиента. Отбор строгий (см.
