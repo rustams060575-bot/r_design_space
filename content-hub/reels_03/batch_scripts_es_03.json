@@ -1,0 +1,81 @@
+{
+  "filename": "batch_scripts_es_03.json",
+  "brand": "R DESIGN SPACE",
+  "language": "es",
+  "source": "Carrusel 01 «Tu precio es premium. ¿Tu web lo sostiene?» reformateado a Reels",
+  "audience": ["Fundadores", "CEOs", "Directores de Marca", "Propietarios de Negocios"],
+  "visual_style": {
+    "direction": "Quiet Luxury",
+    "palette": {
+      "background": "#141414",
+      "surface": "#232323",
+      "text": "#F2EFE8",
+      "accent": "#B89B67"
+    },
+    "typography": "Serif editorial para titulares y sans serif limpia para textos de apoyo.",
+    "motion": "Transiciones suaves, pausas deliberadas y movimientos sutiles.",
+    "rules": [
+      "Mostrar un solo mensaje principal por escena.",
+      "Reservar espacio negativo y mantener los textos dentro del área segura.",
+      "Usar composiciones distintas entre escenas."
+    ]
+  },
+  "cta_destination": "https://t.me/r_design_space_bot?start=ig_reel_3",
+  "scripts": [
+    {
+      "id": "03_01",
+      "title": "Tu precio es premium",
+      "duration_seconds": 23,
+      "scenes": [
+        {
+          "role": "hook",
+          "start_seconds": 0,
+          "end_seconds": 3,
+          "layout": "LAYOUT_HERO",
+          "text": "Tu precio es premium. ¿Tu web lo sostiene?",
+          "voiceover": "Tu precio es premium. ¿Tu web lo sostiene?",
+          "visual_direction": "Titular centrado sobre fondo oscuro. Una línea dorada aparece debajo."
+        },
+        {
+          "role": "point_1",
+          "start_seconds": 3,
+          "end_seconds": 8,
+          "layout": "LAYOUT_METRIC",
+          "text": "01",
+          "secondary_text": "Propuesta genérica",
+          "voiceover": "Uno. Tu propuesta podría ser de cualquiera. Di qué problema resuelves y para quién.",
+          "visual_direction": "Número grande a la izquierda, frase breve a la derecha."
+        },
+        {
+          "role": "point_2",
+          "start_seconds": 8,
+          "end_seconds": 13,
+          "layout": "LAYOUT_BENTO",
+          "text": "02 · Prometes más de lo que demuestras",
+          "secondary_text": "Un caso real vale más que mil adjetivos.",
+          "voiceover": "Dos. Prometes más de lo que demuestras. Un caso real vale más que mil adjetivos.",
+          "visual_direction": "Tarjeta minimalista con borde dorado fino."
+        },
+        {
+          "role": "point_3",
+          "start_seconds": 13,
+          "end_seconds": 18,
+          "layout": "LAYOUT_QUOTE",
+          "text": "03 · Dejas el siguiente paso en el aire.",
+          "voiceover": "Tres. Dejas el siguiente paso en el aire. Explica qué ocurre después del contacto.",
+          "visual_direction": "Cita alineada a la izquierda, con comillas doradas y amplio margen derecho."
+        },
+        {
+          "role": "cta",
+          "start_seconds": 18,
+          "end_seconds": 23,
+          "layout": "LAYOUT_HERO",
+          "text": "Antes de bajar tu precio, revisa tu web.",
+          "secondary_text": "Guarda este vídeo\nTelegram · @r_design_space_bot",
+          "voiceover": "Antes de bajar tu precio, revisa tu web. Guarda este vídeo para tu próxima revisión.",
+          "visual_direction": "Mensaje centrado con línea dorada. Identificador de Telegram fijo debajo."
+        }
+      ]
+    }
+  ]
+}
