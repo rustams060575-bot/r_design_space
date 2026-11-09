@@ -27,6 +27,7 @@ class ApiError extends Error {
     if (this.status === 401) return `ключ ${this.service === "openai" ? "OPENAI_API_KEY" : "API"} не принят (проверьте значение в Vercel)`;
     if (this.status === 429) return "лимит запросов или недостаточно средств на балансе OpenAI";
     if (this.status === 413) return "аудио слишком большое";
+    if (this.status === 400) return "запись не принята как аудио (повреждена или слишком короткая), запишите ещё раз";
     return `ошибка сервиса (HTTP ${this.status})`;
   }
 }
@@ -68,12 +69,13 @@ function cleanForSpeech(text) {
 }
 
 // OGG/Opus voice note -> text (OpenAI Whisper, POST /v1/audio/transcriptions).
-async function transcribe(buffer, apiKey, { model = "whisper-1", timeoutMs = STT_TIMEOUT_MS, doFetch = (...a) => globalThis.fetch(...a) } = {}) {
+async function transcribe(buffer, apiKey, { model = "whisper-1", language = "", timeoutMs = STT_TIMEOUT_MS, doFetch = (...a) => globalThis.fetch(...a) } = {}) {
   const form = new FormData();
   form.append("file", new Blob([buffer], { type: "audio/ogg" }), "voice.ogg");
   form.append("model", model);
   form.append("response_format", "json");
   form.append("prompt", STT_PROMPT);
+  if (language) form.append("language", language); // ISO-639-1 hint ("ru"): stops Whisper from guessing the wrong language
   const res = await request(`${OPENAI}/audio/transcriptions`, { method: "POST", headers: { Authorization: `Bearer ${apiKey}` }, body: form }, timeoutMs, doFetch);
   if (!res.ok) throw new ApiError("openai", res.status);
   return String((await res.json()).text || "").trim();
