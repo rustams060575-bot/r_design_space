@@ -1810,6 +1810,30 @@
       "status": "rejected",
       "score": 6,
       "at": "2026-11-08T15:46:12+00:00"
+    },
+    "hn:50420962": {
+      "name": "Just Dashboard, an open-source VPS management dashboard",
+      "status": "rejected",
+      "score": 2,
+      "at": "2026-11-09T10:55:25+00:00"
+    },
+    "hn:50415959": {
+      "name": "HN's HTML has changed slightly",
+      "status": "rejected",
+      "score": 0,
+      "at": "2026-11-09T10:55:29+00:00"
+    },
+    "hn:50423820": {
+      "name": "Open-source customer-facing agents",
+      "status": "rejected",
+      "score": 2,
+      "at": "2026-11-09T10:55:32+00:00"
+    },
+    "hn:50414575": {
+      "name": "emcee",
+      "status": "rejected",
+      "score": 1,
+      "at": "2026-11-09T10:55:36+00:00"
     }
   },
   "contacted_domains": []
