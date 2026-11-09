@@ -5,6 +5,7 @@
   "buildCommand": "",
   "functions": {
     "api/telegram.js": { "maxDuration": 60 },
-    "api/instagram.js": { "maxDuration": 30 }
+    "api/instagram.js": { "maxDuration": 30 },
+    "api/cron.js": { "maxDuration": 20 }
   }
 }

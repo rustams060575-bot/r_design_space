@@ -295,7 +295,10 @@ async function sendVoice(chat, ogg, replyTo) {
   // OGG/Opus sent through sendVoice is displayed by Telegram as a playable voice message.
   const form = new FormData();
   form.append("chat_id", String(chat));
-  if (replyTo) form.append("reply_to_message_id", String(replyTo));
+  if (replyTo) {
+    form.append("reply_to_message_id", String(replyTo));
+    form.append("allow_sending_without_reply", "true"); // a deleted or unknown original must not make the answer fail
+  }
   form.append("voice", new Blob([ogg], { type: "audio/ogg" }), "reply.ogg");
   const res = await fetch(`https://api.telegram.org/bot${env.get("TELEGRAM_BOT_TOKEN")}/sendVoice`, {
     method: "POST",
@@ -341,6 +344,7 @@ async function onVoice(msg, updateId, trace = {}) {
   const chat = msg.chat.id;
   const v = msg.voice || msg.audio;
   if (!v || !v.file_id) return;
+  if (v.duration !== undefined && v.duration < 1) return tg("sendMessage", { chat_id: chat, text: "🎙 Запись слишком короткая. Скажите хотя бы пару слов и отправьте ещё раз." });
   if ((v.duration || 0) > MAX_VOICE_SECONDS) return tg("sendMessage", { chat_id: chat, text: "🎙 Голосовое длиннее 3 минут. Отправьте покороче." });
   if ((v.file_size || 0) > MAX_VOICE_BYTES) return tg("sendMessage", { chat_id: chat, text: "🎙 Файл слишком большой (до 10 МБ)." });
   const openaiKey = env.get("OPENAI_API_KEY");
