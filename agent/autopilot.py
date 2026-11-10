@@ -318,3 +318,15 @@ def run_autopilot(cfg: dict) -> int:
         save_state(state)
     send_report("james autopilot · " + today + "\n" + "\n".join(report))
     return 0
+
+
+def run_reel_test() -> int:
+    """CI smoke test: render a reel with sound, check the audio is not silent, print stats. Publishes nothing."""
+    import tempfile
+    import audio
+    concept = CONCEPT_BANK[0]
+    out = Path(tempfile.mkdtemp()) / "reeltest.mp4"
+    reels.render_reel(concept, out)
+    level = reels.mean_volume_db(audio.ffmpeg_exe(), out)
+    print(f"[reeltest] ok: {out.stat().st_size // 1024} KB, mean volume {level} dB")
+    return 0

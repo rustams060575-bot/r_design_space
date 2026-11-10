@@ -10,7 +10,7 @@ on:
       action:
         description: "search = scan and send cards, send = send one confirmed email, strategy = weekly US/EU lead plan, content = weekly reel concepts"
         type: choice
-        options: [search, send, strategy, content, publish, autopilot]
+        options: [search, send, strategy, content, publish, autopilot, reeltest]
         default: search
       query:
         description: "Optional custom search query (Telegram: /search <query>)"

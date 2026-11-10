@@ -4,7 +4,7 @@
 
 Frames are drawn with Pillow (same quiet-luxury style as cards.py) and piped straight into ffmpeg: no MoviePy/OpenCV needed.
 Structure: 1.5-2 s hook (motion in the very first frame, <=5 words), one scene per on-screen line, end card with the cta.
-Video: 1080x1920, 24 fps, yuv420p, faststart, silent AAC track (Instagram accepts it; add licensed audio by hand if wanted).
+Video: 1080x1920 (9:16), 24 fps, yuv420p, faststart. Audio: original ambient bed from audio.py (hits on cuts, fade in/out, -15 LUFS); a silent result is rejected.
 """
 from __future__ import annotations
 
@@ -16,6 +16,7 @@ from pathlib import Path
 
 from PIL import Image, ImageDraw
 
+import audio
 import cards
 
 W, H, FPS = 1080, 1920, 24
@@ -104,21 +105,24 @@ def draw_scene(img: Image.Image, scene: dict, prepared, local_t: float, total_t:
 
 
 def render_reel(concept: dict, out_path: Path, footer: str = cards.HANDLE) -> Path:
-    ffmpeg = shutil.which("ffmpeg")
-    if not ffmpeg:  # runners without ffmpeg: use the static binary shipped by the imageio-ffmpeg wheel
-        try:
-            import imageio_ffmpeg
-            ffmpeg = imageio_ffmpeg.get_ffmpeg_exe()
-        except Exception as exc:
-            raise RuntimeError(f"ffmpeg not found ({type(exc).__name__})") from None
+    try:
+        ffmpeg = audio.ffmpeg_exe()  # system ffmpeg, else the static binary from the imageio-ffmpeg wheel
+    except Exception as exc:
+        raise RuntimeError(f"ffmpeg not found ({type(exc).__name__})") from None
     scenes = scenes_from_concept(concept)
     prepared = [layout_scene(s) for s in scenes]
     total = sum(s["seconds"] for s in scenes)
     out_path.parent.mkdir(parents=True, exist_ok=True)
+    cuts, acc = [], 0.0
+    for sc in scenes:  # a low hit lands on every cut (and on frame 1: the hook)
+        cuts.append(round(acc, 3))
+        acc += sc["seconds"]
+    seed = sum(ord(ch) for ch in concept["id"])
+    music = audio.make_track(total, seed, cuts, out_path.with_suffix(".wav"))
     cmd = [ffmpeg, "-y", "-loglevel", "error", "-f", "rawvideo", "-pix_fmt", "rgb24", "-s", f"{W}x{H}", "-r", str(FPS), "-i", "-",
-           "-f", "lavfi", "-i", "anullsrc=r=44100:cl=stereo", "-t", f"{total:.2f}",
+           "-i", str(music), "-t", f"{total:.2f}",
            "-c:v", "libx264", "-preset", "medium", "-crf", "22", "-pix_fmt", "yuv420p", "-profile:v", "high", "-movflags", "+faststart",
-           "-c:a", "aac", "-b:a", "96k", "-shortest", str(out_path)]
+           "-c:a", "aac", "-b:a", "160k", "-ar", "44100", *audio.mix_args(total), "-shortest", str(out_path)]
     proc = subprocess.Popen(cmd, stdin=subprocess.PIPE)
     frames = int(math.ceil(total * FPS))
     try:
@@ -134,9 +138,21 @@ def render_reel(concept: dict, out_path: Path, footer: str = cards.HANDLE) -> Pa
     finally:
         proc.stdin.close()
         proc.wait()
+    music.unlink(missing_ok=True)
     if proc.returncode != 0 or not out_path.exists():
         raise RuntimeError("ffmpeg failed")
+    level = mean_volume_db(ffmpeg, out_path)
+    if level is None or level < -45:  # never ship a silent reel
+        raise RuntimeError(f"reel audio is silent (mean {level} dB)")
     return out_path
+
+
+def mean_volume_db(ffmpeg: str, path: Path) -> float | None:
+    done = subprocess.run([ffmpeg, "-hide_banner", "-i", str(path), "-vn", "-af", "volumedetect", "-f", "null", "-"], capture_output=True, text=True)
+    for line in done.stderr.splitlines():
+        if "mean_volume:" in line:
+            return float(line.split("mean_volume:")[1].split("dB")[0])
+    return None
 
 
 if __name__ == "__main__":

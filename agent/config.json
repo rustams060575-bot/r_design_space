@@ -7,7 +7,10 @@
     "linkedin_url": "https://www.linkedin.com/in/rustam-akbarovich-45b187417/",
     "postal_address": "",
     "instagram_handle": "@ar_design_agency",
-    "instagram_url": "https://www.instagram.com/ar_design_agency"
+    "instagram_url": "https://www.instagram.com/ar_design_agency",
+    "facebook_page_name": "ar design studio",
+    "facebook_page_id": "1542301175627947",
+    "facebook_page_name_note": "Meta API cannot rename pages (error #3): change it by hand in Page settings; this field is the target name."
   },
   "brand": "ar design studio",
   "vercel_url": "",
