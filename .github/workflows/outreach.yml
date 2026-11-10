@@ -47,6 +47,9 @@ jobs:
 
       - run: pip install -r agent/requirements.txt
 
+      - name: Install ffmpeg (reels engine)
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg
+
       - name: Check secrets (names only, values are never printed)
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
