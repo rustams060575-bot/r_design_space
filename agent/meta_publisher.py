@@ -39,7 +39,8 @@ QUEUE_PATH = ROOT.parent / "content-hub" / "publish_queue.json"
 GRAPH = "https://graph.facebook.com"
 FB_MIN_AHEAD, FB_MAX_AHEAD = timedelta(minutes=10), timedelta(days=30)
 PLATFORMS = ("instagram", "facebook")
-KINDS = ("reel", "image", "post")
+KINDS = ("reel", "image", "post", "carousel")
+PUBLISH_SCOPES = ("instagram_basic", "instagram_content_publish", "pages_show_list", "pages_manage_posts", "pages_read_engagement")
 STATUS_POLL_SECONDS, STATUS_POLL_TRIES = 6, 30
 
 
@@ -77,7 +78,13 @@ def validate_item(item: dict) -> list[str]:
         problems.append("kind must be reel, image or post")
     if not set(item.get("platforms", [])) <= set(PLATFORMS) or not item.get("platforms"):
         problems.append("platforms must be instagram and/or facebook")
-    if item.get("kind") != "post" and not str(item.get("media_url", "")).startswith("https://"):
+    if item.get("kind") == "carousel":
+        urls = item.get("media_urls") or []
+        if not 2 <= len(urls) <= 10 or not all(str(u).startswith("https://") for u in urls):
+            problems.append("carousel needs 2-10 public https image URLs in media_urls")
+        if item.get("platforms") != ["instagram"]:
+            problems.append("carousel is instagram-only")
+    elif item.get("kind") != "post" and not str(item.get("media_url", "")).startswith("https://"):
         problems.append("media_url must be a public https URL")
     caption = item.get("caption", "")
     if not caption or len(caption) > 2200:
@@ -98,16 +105,26 @@ def validate_item(item: dict) -> list[str]:
 class Graph:
     def __init__(self, env=os.environ, session=None):
         self.v = env.get("IG_API_VERSION") or "v21.0"
-        self.ig_id, self.ig_token = env.get("IG_USER_ID", ""), env.get("IG_ACCESS_TOKEN", "")
+        # ACCESS_TOKEN (a user token) is the generic fallback; a dedicated Page token is preferred for Facebook.
+        generic = env.get("ACCESS_TOKEN", "")
+        self.user_token = generic
+        self.ig_id, self.ig_token = env.get("IG_USER_ID", ""), env.get("IG_ACCESS_TOKEN") or generic
         self.fb_id, self.fb_token = env.get("FB_PAGE_ID", ""), env.get("FB_PAGE_TOKEN", "")
         self.live = env.get("META_PUBLISH_LIVE") == "1"
+        self.poll_tries = int(env.get("META_POLL_TRIES") or STATUS_POLL_TRIES)
+        self.poll_seconds = int(env.get("META_POLL_SECONDS") or STATUS_POLL_SECONDS)
         self.http = session or requests
 
     def has(self, platform: str) -> bool:
-        return bool(self.ig_id and self.ig_token) if platform == "instagram" else bool(self.fb_id and self.fb_token)
+        if platform == "instagram":
+            return bool(self.ig_id and self.ig_token)
+        return bool(self.fb_id and (self.fb_token or self.user_token))
 
     def _call(self, method: str, path: str, token: str, **params) -> dict:
-        res = self.http.request(method, f"{GRAPH}/{self.v}/{path}", params={**params, "access_token": token}, timeout=60)
+        try:
+            res = self.http.request(method, f"{GRAPH}/{self.v}/{path}", params={**params, "access_token": token}, timeout=60)
+        except requests.RequestException as exc:  # the exception text can embed the URL (and the token): never pass it on
+            raise RuntimeError(f"meta network error ({type(exc).__name__})") from None
         try:
             data = res.json()
         except ValueError:
@@ -117,33 +134,78 @@ class Graph:
             raise RuntimeError(f"meta {res.status_code}: {err.get('message', 'unknown error')} (code {err.get('code')})")
         return data
 
-    # instagram
-    def publish_instagram(self, item: dict) -> str:
-        params = {"caption": item["caption"]}
-        if item["kind"] == "reel":
-            params.update(media_type="REELS", video_url=item["media_url"], share_to_feed="true")
-        else:
-            params.update(image_url=item["media_url"])
-        container = self._call("POST", f"{self.ig_id}/media", self.ig_token, **params)["id"]
-        for _ in range(STATUS_POLL_TRIES):
+    # discovery: which Page and which Instagram business account are behind this token (ids only, never tokens)
+    def discover(self) -> dict:
+        token = self.user_token or self.ig_token
+        perms = self._call("GET", "me/permissions", token).get("data", [])
+        granted = sorted(p["permission"] for p in perms if p.get("status") == "granted")
+        pages = self._call("GET", "me/accounts", token, fields="id,name,instagram_business_account{id,username}").get("data", [])
+        return {
+            "granted": granted,
+            "missing_for_publishing": [s for s in PUBLISH_SCOPES if s not in granted],
+            "pages": [{"page_id": pg["id"], "page_name": pg.get("name"),
+                       "ig_user_id": (pg.get("instagram_business_account") or {}).get("id"),
+                       "ig_username": (pg.get("instagram_business_account") or {}).get("username")} for pg in pages],
+        }
+
+    def page_token(self) -> str:
+        """Facebook posting needs a Page token: FB_PAGE_TOKEN, or derived from the user token through /{page}?fields=access_token."""
+        if not self.fb_token and self.fb_id and self.user_token:
+            self.fb_token = self._call("GET", self.fb_id, self.user_token, fields="access_token").get("access_token", "")
+        return self.fb_token
+
+    # instagram: step 1 create a container, step 2 wait until FINISHED, step 3 media_publish
+    def _container(self, params: dict) -> str:
+        return self._call("POST", f"{self.ig_id}/media", self.ig_token, **params)["id"]
+
+    def wait_ready(self, container: str) -> bool:
+        """True when FINISHED; False if still processing after the poll budget (a reel can take a minute or more)."""
+        for _ in range(self.poll_tries):
             state = self._call("GET", container, self.ig_token, fields="status_code").get("status_code")
             if state == "FINISHED":
-                break
+                return True
             if state in ("ERROR", "EXPIRED"):
                 raise RuntimeError(f"instagram container {state}")
-            time.sleep(STATUS_POLL_SECONDS)
-        else:
-            raise RuntimeError("instagram container not ready in time")
+            time.sleep(self.poll_seconds)
+        return False
+
+    def finish_instagram(self, container: str) -> str:
+        if not self.wait_ready(container):
+            raise RuntimeError("instagram container still processing")
         return self._call("POST", f"{self.ig_id}/media_publish", self.ig_token, creation_id=container)["id"]
+
+    def create_instagram_container(self, item: dict) -> str:
+        caption = item["caption"]
+        if item["kind"] == "reel":
+            return self._container({"caption": caption, "media_type": "REELS", "video_url": item["media_url"], "share_to_feed": "true"})
+        if item["kind"] == "carousel":
+            children = [self._container({"image_url": u, "is_carousel_item": "true"}) for u in item["media_urls"]]
+            for child in children:
+                if not self.wait_ready(child):
+                    raise RuntimeError("carousel item still processing")
+            return self._container({"caption": caption, "media_type": "CAROUSEL", "children": ",".join(children)})
+        return self._container({"caption": caption, "image_url": item["media_url"]})
+
+    def publish_instagram(self, item: dict) -> str:
+        return self.finish_instagram(self.create_instagram_container(item))
 
     # facebook page (native scheduling when `when` is given)
     def publish_facebook(self, item: dict, when: datetime | None = None) -> str:
+        self.page_token()
         sched = {"published": "false", "scheduled_publish_time": int(when.timestamp())} if when else {}
         if item["kind"] == "reel":
             return self._call("POST", f"{self.fb_id}/videos", self.fb_token, file_url=item["media_url"], description=item["caption"], **sched)["id"]
         if item["kind"] == "image":
             return self._call("POST", f"{self.fb_id}/photos", self.fb_token, url=item["media_url"], caption=item["caption"], **sched)["id"]
         return self._call("POST", f"{self.fb_id}/feed", self.fb_token, message=item["caption"], **sched)["id"]
+
+
+def derived_key(token: str, purpose: str = "publish-trigger") -> str:
+    """Secret for the Vercel endpoint, derived from TELEGRAM_BOT_TOKEN (same idea as api/cron.js); rotates with the token."""
+    import base64
+    import hashlib
+    import hmac
+    return base64.urlsafe_b64encode(hmac.new(token.encode(), purpose.encode(), hashlib.sha256).digest()).decode().rstrip("=")[:32]
 
 
 # ---------------------------------------------------------------- queue operations
@@ -235,7 +297,14 @@ def main(argv=None) -> int:
     ap_.add_argument("id")
     sub.add_parser("list")
     sub.add_parser("run")
+    sub.add_parser("key")
     args = ap.parse_args(argv)
+    if args.cmd == "key":  # secret for /api/publish (header X-Publish-Key)
+        from dotenv import load_dotenv
+        load_dotenv(ROOT / ".env")
+        token = os.getenv("TELEGRAM_BOT_TOKEN", "").strip()
+        print(derived_key(token) if token else "TELEGRAM_BOT_TOKEN is not set")
+        return 0 if token else 1
     items = load_queue()
     if args.cmd == "add":
         from growth import iso_week
