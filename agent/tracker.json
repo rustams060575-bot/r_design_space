@@ -2122,6 +2122,156 @@
       "status": "rejected",
       "score": 1,
       "at": "2026-11-10T13:45:03+00:00"
+    },
+    "hn:50441923": {
+      "name": "Deedglass",
+      "status": "rejected",
+      "score": 3,
+      "at": "2026-11-10T16:03:21+00:00"
+    },
+    "signal:5cd557131e0c5ef2": {
+      "name": "“It’s Like Therapy”: Jordanluca’s Luca Marchetto Joins Redesign Atelier Menabóh",
+      "status": "rejected",
+      "score": 1,
+      "at": "2026-11-10T16:03:24+00:00"
+    },
+    "signal:15d9ec54d052d68c": {
+      "name": "Dulo Raises $130M Seed Round to Develop AI Models for Engineering, Hardware Design",
+      "status": "rejected",
+      "score": 6,
+      "at": "2026-11-10T16:03:28+00:00"
+    },
+    "signal:3922ea5cc0d2819a": {
+      "name": "TwisterLife LLC Relaunches Website With Refreshed Brand Identity and Expanded Fashion Collections",
+      "status": "rejected",
+      "score": 6,
+      "at": "2026-11-10T16:03:33+00:00"
+    },
+    "signal:8e25b4fb76729383": {
+      "name": "KÜHL Relaunches Iconic Spyfire Collection With Stitch-Free Baffles and Premium Muscovy Duck Down",
+      "status": "rejected",
+      "score": 5,
+      "at": "2026-11-10T16:03:38+00:00"
+    },
+    "signal:0d50ee38443b6edd": {
+      "name": "Raycash Opens Ethereum Beta for Private Stablecoin Payments",
+      "status": "rejected",
+      "score": 5,
+      "at": "2026-11-10T16:03:42+00:00"
+    },
+    "signal:726dac87aac0380a": {
+      "name": "Lovable backer Creandum raises $750m for largest-ever fund to back AI boom",
+      "status": "rejected",
+      "score": 1,
+      "at": "2026-11-10T16:03:45+00:00"
+    },
+    "signal:bd81be605954915e": {
+      "name": "Dulo Raises $130M for AI Engineering in San Francisco",
+      "status": "rejected",
+      "score": 7,
+      "at": "2026-11-10T16:03:50+00:00"
+    },
+    "signal:52e982b71280e5ae": {
+      "name": "Corporate America's AI bill is ballooning. This startup raised $30 million to make sense of where the money is going.",
+      "status": "alert_only",
+      "score": 8,
+      "at": "2026-11-10T16:03:58+00:00"
+    },
+    "hn:50441350": {
+      "name": "Aircad",
+      "status": "rejected",
+      "score": 6,
+      "at": "2026-11-10T16:04:03+00:00"
+    },
+    "signal:718174f815dcb400": {
+      "name": "Physicl Raises $10M Seed to Address Physical AI’s Edge-Case Problem",
+      "status": "rejected",
+      "score": 6,
+      "at": "2026-11-10T16:04:07+00:00"
+    },
+    "signal:7a5f97ad5d780fff": {
+      "name": "Reed Jobs’s Yosemite raises $350 million second fund to make cancer non-lethal",
+      "status": "rejected",
+      "score": 1,
+      "at": "2026-11-10T16:04:10+00:00"
+    },
+    "hn:50440754": {
+      "name": "Monoprint",
+      "status": "rejected",
+      "score": 2,
+      "at": "2026-11-10T16:04:12+00:00"
+    },
+    "signal:50ba114418edc563": {
+      "name": "The New York Startup Daily Funding Report: 11/5/2026",
+      "status": "rejected",
+      "score": 2,
+      "at": "2026-11-10T16:04:15+00:00"
+    },
+    "job:69376b5e63483aac": {
+      "name": "Community Intern (Reedsy Learning) - Reedsy",
+      "status": "rejected",
+      "score": 1,
+      "at": "2026-11-10T16:04:18+00:00"
+    },
+    "signal:55e491e37ad1df6f": {
+      "name": "Israeli cyber startup Daylight raises $80 million Series B at estimated $400 million valuation",
+      "status": "rejected",
+      "score": 3,
+      "at": "2026-11-10T16:04:22+00:00"
+    },
+    "job:35dedf123fb38fb7": {
+      "name": "Community Growth Manager - Reedsy",
+      "status": "rejected",
+      "score": 1,
+      "at": "2026-11-10T16:04:25+00:00"
+    },
+    "signal:09fb80be7ea99805": {
+      "name": "As Big Tech bets on nuclear power, startup Uranium Digital raises $16.5 million to modernize uranium trading",
+      "status": "rejected",
+      "score": 6,
+      "at": "2026-11-10T16:04:28+00:00"
+    },
+    "signal:5a377299aad28d69": {
+      "name": "Startup Athena raises $2.5M in pre-seed funding to revamp the revenue model for legal AI",
+      "status": "rejected",
+      "score": 6,
+      "at": "2026-11-10T16:04:33+00:00"
+    },
+    "signal:2e52efeb271d2d78": {
+      "name": "Exclusive | AI Security Startup Sentra Raises $150 Million to Police Autonomous Agents",
+      "status": "rejected",
+      "score": 6,
+      "at": "2026-11-10T16:04:38+00:00"
+    },
+    "signal:d63c29cb91d21109": {
+      "name": "Melbourne adtech Vudoo raises $22 million Series B as in-ad checkout takes on the US",
+      "status": "rejected",
+      "score": 5,
+      "at": "2026-11-10T16:04:42+00:00"
+    },
+    "signal:1b1dc05ce1774221": {
+      "name": "For SMBs that need quick access to capital, Bizcap raises a $175M credit facility to expand its solution for that",
+      "status": "rejected",
+      "score": 3,
+      "at": "2026-11-10T16:04:48+00:00"
+    },
+    "signal:bb702a53af4913af": {
+      "name": "Boynton Beach book publishing startup raises $64 million",
+      "status": "rejected",
+      "score": 6,
+      "at": "2026-11-10T16:04:53+00:00"
+    },
+    "signal:1b2cc936ab66b7ee": {
+      "name": "Crowded is fixing the financial headaches behind doing good",
+      "status": "rejected",
+      "score": 7,
+      "at": "2026-11-10T16:04:58+00:00"
+    },
+    "signal:15af6a7a5eb29f1a": {
+      "name": "Oxford spin-out Alethio Therapeutics raises €80.46 million Series A to advance targeted blood cancer therapies",
+      "status": "rejected",
+      "score": 3,
+      "at": "2026-11-10T16:05:02+00:00"
     }
   },
   "contacted_domains": [
