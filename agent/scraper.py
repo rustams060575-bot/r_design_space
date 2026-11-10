@@ -54,7 +54,7 @@ JUNK_EMAIL = re.compile(r"(example\.|sentry|wixpress|yourdomain|domain\.com|emai
 FOUND_EMAIL_RE = re.compile(r"[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}")
 LEAD_ID_RE = re.compile(r"^[a-z_]+:[A-Za-z0-9]{1,40}$")
 JOB_SOURCES = ("jobboard",)  # real job / contract postings: relevant only with a design or front-end signal
-NO_KEYWORD_GATE = ("news", "feed")  # regional sources are already topic-searched; the qualifier decides
+NO_KEYWORD_GATE = ("news", "feed", "signal")  # regional sources are already topic-searched; the qualifier decides
 
 _session = requests.Session()
 _session.headers["User-Agent"] = UA
@@ -358,6 +358,26 @@ def fetch_global_news(cfg: dict, query: str | None = None) -> list[dict]:
     return leads
 
 
+def fetch_signals(cfg: dict) -> list[dict]:
+    """US growth signals: fresh seed / Series A-B rounds, stealth exits and launches (Google News RSS, no key).
+
+    A signal has no explicit ask; it is a reason to start a soft conversation. These leads become Telegram alerts
+    with a pitch angle, never automatic emails (a news link has no contact address).
+    """
+    sg = cfg.get("signals", {})
+    if not sg.get("enabled"):
+        return []
+    region, leads = sg["region"], []
+    for q in sg.get("queries", []):
+        for lead in fetch_feed(google_news_url(q, region, sg.get("max_age_days", 10)), "news", cfg,
+                               region=region["name"], lang="en", limit=sg.get("per_query", 6)):
+            lead["source"] = "signal"
+            lead["id"] = make_id("signal", lead["url"])
+            leads.append(lead)
+        time.sleep(0.3)
+    return leads
+
+
 def interleave(leads: list[dict]) -> list[dict]:
     """Strongest first inside each source/region group, then round-robin across groups.
 
@@ -384,6 +404,7 @@ def collect_leads(cfg: dict, query: str | None = None) -> list[dict]:
     leads += fetch_global_news(cfg, query)
     if not query:  # job boards are scanned in the daily run; a custom /search stays on its own query
         leads += fetch_job_boards(cfg)
+        leads += fetch_signals(cfg)
     if not query:  # general startup media feeds are only useful for the broad daily scan
         for feed in src.get("extra_feeds", []):
             feed = {"url": feed} if isinstance(feed, str) else feed

@@ -266,7 +266,8 @@
     "enrich_site": true,
     "accepted_intents": [
       "explicit_request",
-      "product_launch"
+      "product_launch",
+      "funding_signal"
     ]
   },
   "outreach": {
@@ -559,5 +560,28 @@
       ],
       "networking": "soft and expert: comment and connect first, no pitch in the first message, one useful observation, never mass-mail"
     }
+  },
+  "signals": {
+    "enabled": true,
+    "max_age_days": 10,
+    "per_query": 6,
+    "region": {
+      "name": "USA signals",
+      "hl": "en-US",
+      "gl": "US",
+      "ceid": "US:en"
+    },
+    "queries": [
+      "AI startup raises seed round San Francisco",
+      "startup raises Series A New York",
+      "startup raises Series A Miami",
+      "startup raises Series B AI platform",
+      "fintech startup raises seed OR \"Series A\" United States",
+      "DTC brand launches new website",
+      "luxury brand relaunch redesign website",
+      "AI startup emerges from stealth",
+      "Y Combinator startup launches product",
+      "startup launches public beta waitlist United States"
+    ]
   }
 }

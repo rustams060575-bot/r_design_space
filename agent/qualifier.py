@@ -31,6 +31,7 @@ intent (choose exactly one):
 - "product_launch": a SaaS or e-commerce product announcement, new site or new version (Show HN / Product Hunt style) \
 without an explicit ask. It is a warm lead when the product has a visible interface, a store or a customer-support / \
 onboarding flow that we could improve.
+- "funding_signal": ONLY for source "signal" (US news about a startup or brand that just raised a seed / Series A / Series B round, emerged from stealth, launched or relaunched). The company is a warm lead for a flagship site, redesign, design system or dashboard: score 8-9 when it is a US seed-to-series-B startup, AI product, DTC / luxury brand or fintech, 5-6 for anything else. Put the company name in the summary. Never use it for big public companies, investors, funds or pure industry commentary. For a funding_signal always set need_type to the best fit ("multipage_site", "web_app", "dashboard", "design_system" or "redesign"), never "none". us_based is true ONLY when the headline or text places the company in the US (a US city or state, or a US-only context); an Israeli, Australian, UK or other foreign company is false, unknown is null.
 - "funding_news": fundraising, investment, funding rounds, valuations, IPO, acquisitions, investors.
 - "general_news": startup news, industry articles, opinions, listicles, interviews.
 - "other": libraries, tools, research, hobby projects, hiring for unrelated roles (backend, ML, sales), anything else.
@@ -84,7 +85,7 @@ NEED_RU = {
     "ai_agent": "ИИ-агент", "none": "не по профилю",
 }
 INTENT_RU = {
-    "explicit_request": "запрос на разработку/дизайн", "product_launch": "тёплый лид: анонс продукта", "funding_news": "инвестиции и раунды",
+    "funding_signal": "сигнал: свежий раунд или запуск в США", "explicit_request": "запрос на разработку/дизайн", "product_launch": "тёплый лид: анонс продукта", "funding_news": "инвестиции и раунды",
     "general_news": "новости", "other": "другое",
 }
 URGENCY_RU = {"urgent": "срочно", "normal": "обычный срок", "unknown": "срок не указан"}
@@ -146,6 +147,8 @@ def lead_text(lead: dict) -> str:
 
 def is_noise(lead: dict) -> bool:
     """Funding / investment / general-news posts. A post that mentions funding but clearly asks for help stays."""
+    if lead.get("source") == "signal":  # a fresh US round is exactly the signal we hunt
+        return False
     text = lead_text(lead)
     return bool(NOISE.search(text)) and not (REQUEST_CUE.search(text) and SCOPE.search(text))
 
@@ -270,7 +273,7 @@ def apply_policy(result: dict, lead: dict, cfg: dict) -> dict:
         return result
     text = policy_text(lead)
     reason = None
-    if MARKETPLACE.search(text):
+    if lead.get("source") != "signal" and MARKETPLACE.search(text):  # "$12M" in a funding headline is not a gig price
         reason = "Шаблонный заказ или биржа микро-заказов: не наш ICP."
     elif result.get("budget_signal") == "low":
         reason = "Низкий бюджет: не flagship-проект."
