@@ -2038,6 +2038,90 @@
       "status": "alert_only",
       "score": 6,
       "at": "2026-11-10T06:12:13+00:00"
+    },
+    "job:b2f8ca5d0a243749": {
+      "name": "Staff Software Engineer, Product/AI - Customer.io",
+      "status": "rejected",
+      "score": 3,
+      "at": "2026-11-10T13:44:14+00:00"
+    },
+    "hn:50440083": {
+      "name": "pvewarden",
+      "status": "rejected",
+      "score": 2,
+      "at": "2026-11-10T13:44:17+00:00"
+    },
+    "job:ed02929f1cb113b3": {
+      "name": "Senior Software Engineer, Frontend - Phantom",
+      "status": "rejected",
+      "score": 6,
+      "at": "2026-11-10T13:44:22+00:00"
+    },
+    "hn:50439141": {
+      "name": "Cosh",
+      "status": "rejected",
+      "score": 2,
+      "at": "2026-11-10T13:44:24+00:00"
+    },
+    "job:4156e6b1b2349be9": {
+      "name": "Frontend Engineer - User Interface - Nebius",
+      "status": "rejected",
+      "score": 6,
+      "at": "2026-11-10T13:44:29+00:00"
+    },
+    "job:a430e0d66d07ca65": {
+      "name": "Software Engineer - Console - XBOW",
+      "status": "rejected",
+      "score": 6,
+      "at": "2026-11-10T13:44:34+00:00"
+    },
+    "job:cb9bcf27c695a9ea": {
+      "name": "eLearning Developer, Articulate Rise Contractor - CrossFit",
+      "status": "rejected",
+      "score": 2,
+      "at": "2026-11-10T13:44:37+00:00"
+    },
+    "hn:50439620": {
+      "name": "Relinos",
+      "status": "rejected",
+      "score": 1,
+      "at": "2026-11-10T13:44:40+00:00"
+    },
+    "hn:50439598": {
+      "name": "Markview",
+      "status": "rejected",
+      "score": 2,
+      "at": "2026-11-10T13:44:44+00:00"
+    },
+    "job:a909ea1de536a562": {
+      "name": "Senior Full Stack Engineer, Observability - NetBox Labs",
+      "status": "rejected",
+      "score": 6,
+      "at": "2026-11-10T13:44:49+00:00"
+    },
+    "hn:50436566": {
+      "name": "Android and iOS games running offline in the browser",
+      "status": "rejected",
+      "score": 5,
+      "at": "2026-11-10T13:44:55+00:00"
+    },
+    "job:adccdd4fbd9a9a0d": {
+      "name": "Revenue Operations Manager - Socket",
+      "status": "rejected",
+      "score": 1,
+      "at": "2026-11-10T13:44:57+00:00"
+    },
+    "job:dd266c92d5592401": {
+      "name": "Head of Product - Socket",
+      "status": "rejected",
+      "score": 3,
+      "at": "2026-11-10T13:45:01+00:00"
+    },
+    "job:780dbd3c29e0e937": {
+      "name": "Marketing Coordinator (Part Time) - Maze",
+      "status": "rejected",
+      "score": 1,
+      "at": "2026-11-10T13:45:03+00:00"
     }
   },
   "contacted_domains": [
