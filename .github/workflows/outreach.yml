@@ -2,8 +2,8 @@ name: Outreach agent
 
 on:
   schedule:                # james autopilot: posts + stories to Instagram and the Facebook Page (UTC)
-    - cron: "0 14 * * *"
-    - cron: "0 19 * * *"
+    - cron: "0 17 * * *"      # prime slot: 12:00 ET / 09:00 PT (reel, carousel, story)
+    - cron: "30 0 * * *"      # evening slot: 19:30 ET / 16:30 PT (story)
   # No GitHub schedule: the 09:00 and 21:00 (Europe/Madrid) runs come from the external trigger /api/cron.
   workflow_dispatch:         # started by /api/cron, Telegram (api/telegram.js) or by hand
     inputs:
@@ -46,9 +46,6 @@ jobs:
           cache-dependency-path: agent/requirements.txt
 
       - run: pip install -r agent/requirements.txt
-
-      - name: Install ffmpeg (reels engine)
-        run: sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg
 
       - name: Check secrets (names only, values are never printed)
         env:

@@ -72,7 +72,7 @@ def background(t: float) -> Image.Image:
     return img
 
 
-def draw_scene(img: Image.Image, scene: dict, prepared, local_t: float, total_t: float, total: float) -> None:
+def draw_scene(img: Image.Image, scene: dict, prepared, local_t: float, total_t: float, total: float, footer: str = cards.HANDLE) -> None:
     fnt, lines, flat, sub_font = prepared
     d = ImageDraw.Draw(img)
     lead = int(fnt.size * 1.12)
@@ -99,14 +99,18 @@ def draw_scene(img: Image.Image, scene: dict, prepared, local_t: float, total_t:
         a = ease((local_t - 0.9) / 0.5) * fade_out
         d.text((96, y0 + block_h + 36), scene["sub"], font=sub_font, fill=mix(cards.STONE, cards.BG, a))
     d.text((96, 92), cards.LABEL, font=cards.font("mono", 30), fill=cards.STONE)
-    d.text((96, H - 250), cards.HANDLE, font=cards.font("mono", 32), fill=cards.STONE)
+    d.text((96, H - 250), footer, font=cards.font("mono", 32), fill=cards.STONE)
     d.rectangle([96, H - 190, 96 + int((W - 192) * (total_t / total)), H - 187], fill=cards.ACCENT)  # progress hairline
 
 
-def render_reel(concept: dict, out_path: Path) -> Path:
+def render_reel(concept: dict, out_path: Path, footer: str = cards.HANDLE) -> Path:
     ffmpeg = shutil.which("ffmpeg")
-    if not ffmpeg:
-        raise RuntimeError("ffmpeg not found")
+    if not ffmpeg:  # runners without ffmpeg: use the static binary shipped by the imageio-ffmpeg wheel
+        try:
+            import imageio_ffmpeg
+            ffmpeg = imageio_ffmpeg.get_ffmpeg_exe()
+        except Exception as exc:
+            raise RuntimeError(f"ffmpeg not found ({type(exc).__name__})") from None
     scenes = scenes_from_concept(concept)
     prepared = [layout_scene(s) for s in scenes]
     total = sum(s["seconds"] for s in scenes)
@@ -125,7 +129,7 @@ def render_reel(concept: dict, out_path: Path) -> Path:
                 acc += scenes[idx]["seconds"]
                 idx += 1
             img = background(t)
-            draw_scene(img, scenes[idx], prepared[idx], t - acc, t, total)
+            draw_scene(img, scenes[idx], prepared[idx], t - acc, t, total, footer)
             proc.stdin.write(img.tobytes())
     finally:
         proc.stdin.close()

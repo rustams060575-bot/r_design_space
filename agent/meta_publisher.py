@@ -110,6 +110,7 @@ class Graph:
         self.fb_id, self.fb_token = env.get("FB_PAGE_ID", ""), env.get("FB_PAGE_TOKEN", "")
         self.ig_token = env.get("IG_ACCESS_TOKEN") or self.fb_token or generic
         self.live = env.get("META_PUBLISH_LIVE") == "1"
+        self.ig_location_id = env.get("IG_LOCATION_ID", "")
         self.poll_tries = int(env.get("META_POLL_TRIES") or STATUS_POLL_TRIES)
         self.poll_seconds = int(env.get("META_POLL_SECONDS") or STATUS_POLL_SECONDS)
         self.http = session or requests
@@ -161,6 +162,8 @@ class Graph:
 
     # instagram: step 1 create a container, step 2 wait until FINISHED, step 3 media_publish
     def _container(self, params: dict) -> str:
+        if self.ig_location_id and "is_carousel_item" not in params and params.get("media_type") != "STORIES":
+            params = {**params, "location_id": self.ig_location_id}
         return self._call("POST", f"{self.ig_id}/media", self.ig_token, **params)["id"]
 
     def wait_ready(self, container: str) -> bool:

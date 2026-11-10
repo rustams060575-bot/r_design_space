@@ -115,14 +115,14 @@ def save(img: Image.Image, path: Path) -> Path:
     return path
 
 
-def render_carousel(slides: list[dict], out_dir: Path, stem: str) -> list[Path]:
+def render_carousel(slides: list[dict], out_dir: Path, stem: str, footer: str = HANDLE) -> list[Path]:
     total = len(slides)
     paths = []
     for i, s in enumerate(slides, 1):
-        img = render_card(s["h"], s.get("b", ""), f"{i:02d} / {total:02d}", POST_SIZE, big=(i == 1))
+        img = render_card(s["h"], s.get("b", ""), f"{i:02d} / {total:02d}", POST_SIZE, footer=footer, big=(i == 1))
         paths.append(save(img, out_dir / f"{stem}-{i}.jpg"))
     return paths
 
 
-def render_story(story: dict, out_dir: Path, stem: str) -> Path:
-    return save(render_card(story["h"], story.get("b", ""), "", STORY_SIZE, big=True), out_dir / f"{stem}.jpg")
+def render_story(story: dict, out_dir: Path, stem: str, footer: str = HANDLE) -> Path:
+    return save(render_card(story["h"], story.get("b", ""), "", STORY_SIZE, footer=footer, big=True), out_dir / f"{stem}.jpg")

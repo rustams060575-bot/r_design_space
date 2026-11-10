@@ -21,6 +21,7 @@ import subprocess
 import time
 from datetime import datetime, timezone
 from pathlib import Path
+from zoneinfo import ZoneInfo
 
 import requests
 
@@ -203,10 +204,10 @@ def host(paths: list[Path], today: str) -> bool:
 
 # ---------------------------------------------------------------- publish
 
-def hashtags(cfg: dict, seed: int) -> str:
+def hashtags(cfg: dict, seed: int, geo_tags: list[str] | None = None) -> str:
     extra = ["#creativecoding", "#webdesign", "#uxdesign", "#frontend", "#brandidentity", "#gsap", "#threejs", "#scrollanimation"]
     pick = [extra[(seed + i) % len(extra)] for i in range(3)]
-    return " ".join(CORE_TAGS + pick)
+    return " ".join(CORE_TAGS + pick + (geo_tags or []))
 
 
 def send_report(text: str) -> None:
@@ -234,13 +235,17 @@ def run_autopilot(cfg: dict) -> int:
     graph = mp.Graph()
     live = graph.live
     now = datetime.now(timezone.utc)
-    today = now.strftime("%Y-%m-%d")
+    et = now.astimezone(ZoneInfo(cfg["james"]["autopilot"].get("timezone", "America/New_York")))
+    today = et.strftime("%Y-%m-%d")  # quotas count per US-eastern day
+    evening = et.hour >= 17  # evening slot (about 19:30 ET): stories only; the prime slot (about 12:00 ET) does reel/post/story
     state = load_state()
+    geo = cfg["james"].get("geo", {}).get("locations", [])
+    loc = geo[len(state["log"]) % len(geo)] if geo else {"name": "", "tags": []}
     jobs = []
     forced = os.getenv("SEARCH_QUERY", "").strip().lower()  # manual run: query "reel" forces a reel today
-    if (now.weekday() in REEL_WEEKDAYS and now.hour < 16 or forced == "reel") and done_today(state, "reel", today) < MAX_REELS_PER_DAY:
+    if not evening and (et.weekday() in REEL_WEEKDAYS or forced == "reel") and done_today(state, "reel", today) < MAX_REELS_PER_DAY:
         jobs.append("reel")
-    if done_today(state, "post", today) < MAX_POSTS_PER_DAY:
+    if not evening and done_today(state, "post", today) < MAX_POSTS_PER_DAY:
         jobs.append("post")
     if done_today(state, "story", today) < MAX_STORIES_PER_DAY:
         jobs.append("story")
@@ -257,29 +262,29 @@ def run_autopilot(cfg: dict) -> int:
             c, source = CONCEPT_BANK[state["reel_i"] % len(CONCEPT_BANK)], "bank"
             stem = f"{c['id']}-{now.strftime('%H%M')}"
             try:
-                paths = [reels.render_reel(c, MEDIA_DIR / today / f"{stem}.mp4")]
+                paths = [reels.render_reel(c, MEDIA_DIR / today / f"{stem}.mp4", footer=f"{cards.HANDLE} · {loc['name']}")]
             except (RuntimeError, OSError) as exc:
                 print(f"[autopilot] reel render failed: {exc}")
                 report.append(f"⚠️ reel {c['id']}: render failed, skipped")
                 continue
-            tags = " ".join(dict.fromkeys(CORE_TAGS + c["hashtags"]))
-            item = {"kind": "reel", "platforms": platforms, "media_url": "", "caption": f"{c['caption'].strip()}\n\n{c['cta']}\n\n{tags}", "publish_at": now.isoformat()}
+            tags = " ".join(dict.fromkeys(CORE_TAGS + c["hashtags"] + loc["tags"]))
+            item = {"kind": "reel", "platforms": platforms, "media_url": "", "caption": f"{c['caption'].strip()}\n\n{c['cta']}\n\n{loc['name']}\n\n{tags}", "publish_at": now.isoformat()}
         elif job == "post":
             c = model_carousel(cfg, used) if llm.available(cfg) and cfg["james"].get("autopilot", {}).get("model_generation", True) else None
             source = "model"
             if not c:
                 c, source = CAROUSELS[state["carousel_i"] % len(CAROUSELS)], "bank"
             stem = f"{c['id']}-{now.strftime('%H%M')}"
-            paths = cards.render_carousel(c["slides"], MEDIA_DIR / today, stem)
-            item = {"kind": "carousel", "platforms": platforms, "media_urls": [], "caption": f"{c['caption'].strip()}\n\n{CTA}\n\n{hashtags(cfg, state['carousel_i'])}", "publish_at": now.isoformat()}
+            paths = cards.render_carousel(c["slides"], MEDIA_DIR / today, stem, footer=f"{cards.HANDLE} · {loc['name']}")
+            item = {"kind": "carousel", "platforms": platforms, "media_urls": [], "caption": f"{c['caption'].strip()}\n\n{CTA}\n\n{loc['name']}\n\n{hashtags(cfg, state['carousel_i'], loc['tags'])}", "publish_at": now.isoformat()}
         else:
             s = STORIES[state["story_i"] % len(STORIES)]
             c, source = s, "bank"
             stem = f"{s['id']}-{now.strftime('%H%M')}"
-            paths = [cards.render_story(s, MEDIA_DIR / today, stem)]
+            paths = [cards.render_story(s, MEDIA_DIR / today, stem, footer=f"{cards.HANDLE} · {loc['name']}")]
             item = {"kind": "story", "platforms": platforms, "media_url": "", "caption": "", "publish_at": now.isoformat()}
 
-        entry = {"date": today, "time": now.strftime("%H:%M"), "kind": job, "id": c["id"], "source": source, "live": live, "ok": False}
+        entry = {"date": today, "time": now.strftime("%H:%M"), "geo": loc["name"], "kind": job, "id": c["id"], "source": source, "live": live, "ok": False}
         if not live:
             entry["result"] = {"dry_run": [str(p.name) for p in paths]}
             print(f"[autopilot] DRY RUN {job} {c['id']} ({source}): rendered {len(paths)} card(s), nothing pushed or published")

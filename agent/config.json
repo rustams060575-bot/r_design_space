@@ -449,7 +449,46 @@
       "platforms": [
         "instagram",
         "facebook"
+      ],
+      "timezone": "America/New_York",
+      "prime_slot_utc": "17:00",
+      "evening_slot_utc": "00:30",
+      "reel_weekdays": [
+        "mon",
+        "wed",
+        "fri"
       ]
+    },
+    "geo": {
+      "locations": [
+        {
+          "name": "miami, fl",
+          "tags": [
+            "#miami",
+            "#miamitech",
+            "#floridastartups"
+          ]
+        },
+        {
+          "name": "silicon valley, ca",
+          "tags": [
+            "#siliconvalley",
+            "#bayarea",
+            "#startups"
+          ]
+        },
+        {
+          "name": "new york, ny",
+          "tags": [
+            "#nyc",
+            "#nyctech",
+            "#startupnyc"
+          ]
+        }
+      ],
+      "ig_location_ids": {},
+      "fb_place_ids": {},
+      "note": "location_id lookup needs Page Public Content Access (Meta App Review). Until then: caption line, hashtags and on-card label."
     }
   }
 }
