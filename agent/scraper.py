@@ -5,6 +5,8 @@ Actions (CLI flag --action, or the ACTION environment variable set by GitHub Act
   search  Collect fresh startups / SaaS launches worldwide (Product Hunt, Hacker News, regional news in many
           languages via Google News RSS, startup media feeds), qualify them strictly, write a pitch in the
           founder's language and send Telegram cards. Emails wait for a confirmation tap by default.
+  strategy  james: weekly US/EU lead-hunting plan (agent/growth.py), saved to content-hub/weekly/.
+  content   james: trend scan + 3 instagram reel concepts for @ar_design_agency (agent/growth.py).
   send    Send the email for one confirmed lead (--lead-id / LEAD_ID) from agent/pending.json.
 
 Optional --query / SEARCH_QUERY narrows a search to the user's own request (Telegram: /search <query>).
@@ -43,7 +45,7 @@ CONFIG_PATH = ROOT / "config.json"
 TRACKER_PATH = ROOT / "tracker.json"
 PENDING_PATH = ROOT / "pending.json"
 PENDING_TTL_DAYS = 14
-UA = "Mozilla/5.0 (compatible; RSpaceOutreachBot/1.0; +https://t.me/r_design_space)"
+UA = "Mozilla/5.0 (compatible; RSpaceOutreachBot/1.0; +https://www.instagram.com/ar_design_agency)"
 AGGREGATOR_HOSTS = ("producthunt.com", "ycombinator.com", "news.ycombinator.com", "indiehackers.com",
                     "twitter.com", "x.com", "linkedin.com", "facebook.com", "github.com", "apple.com",
                     "google.com", "youtube.com", "instagram.com")
@@ -593,7 +595,7 @@ def send_pending(cfg: dict, lead_id: str) -> bool:
 
 def main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("--action", choices=["search", "send"])
+    ap.add_argument("--action", choices=["search", "send", "strategy", "content", "publish"])
     ap.add_argument("--query")
     ap.add_argument("--lead-id")
     args = ap.parse_args(argv)
@@ -604,6 +606,12 @@ def main(argv: list[str] | None = None) -> int:
         return 1
 
     action = args.action or os.getenv("ACTION") or "search"
+    if action == "publish":
+        import meta_publisher  # approved reels/posts -> Instagram + Facebook Page via the Meta Graph API
+        return meta_publisher.run_publish(cfg)
+    if action in ("strategy", "content"):
+        import growth  # james growth modules: weekly lead strategy / instagram content machine
+        return growth.run_strategy(cfg) if action == "strategy" else growth.run_content(cfg)
     if action == "send":
         return 0 if send_pending(cfg, (args.lead_id or os.getenv("LEAD_ID", "")).strip()) else 1
 

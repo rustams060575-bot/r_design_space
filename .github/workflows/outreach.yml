@@ -5,9 +5,9 @@ on:
   workflow_dispatch:         # started by /api/cron, Telegram (api/telegram.js) or by hand
     inputs:
       action:
-        description: "search = scan and send cards, send = send one confirmed email"
+        description: "search = scan and send cards, send = send one confirmed email, strategy = weekly US/EU lead plan, content = weekly reel concepts"
         type: choice
-        options: [search, send]
+        options: [search, send, strategy, content, publish]
         default: search
       query:
         description: "Optional custom search query (Telegram: /search <query>)"
@@ -72,12 +72,17 @@ jobs:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          IG_USER_ID: ${{ secrets.IG_USER_ID }}
+          IG_ACCESS_TOKEN: ${{ secrets.IG_ACCESS_TOKEN }}
+          FB_PAGE_ID: ${{ secrets.FB_PAGE_ID }}
+          FB_PAGE_TOKEN: ${{ secrets.FB_PAGE_TOKEN }}
+          META_PUBLISH_LIVE: ${{ secrets.META_PUBLISH_LIVE }}
 
       - name: Persist state (prevents duplicate outreach, keeps drafts for the Send button)
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add agent/tracker.json agent/pending.json
+          git add agent/tracker.json agent/pending.json content-hub/weekly content-hub/publish_queue.json
           if ! git diff --cached --quiet; then
             git commit -m "chore: update outreach state [skip ci]"
             git pull --rebase origin "${GITHUB_REF_NAME}"

@@ -30,6 +30,8 @@ COMMANDS = [
     {"command": "history", "description": "Хронология памяти"},
     {"command": "remember", "description": "Запомнить заметку"},
     {"command": "forget", "description": "Забыть запись по id"},
+    {"command": "strategy", "description": "План поиска лидов US/EU на неделю"},
+    {"command": "content", "description": "3 концепта Reels для Instagram"},
     {"command": "help", "description": "Справка"},
 ]
 

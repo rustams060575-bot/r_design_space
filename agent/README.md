@@ -131,6 +131,24 @@ Claude. 1–2 секунды недостижимы при любой архит
 **Безопасность.** Голосом команды не выполняются: «найди лидов» или «отправь письмо» не запустят поиск и не отправят почту,
 для этого есть `/search` и кнопки подтверждения. Звук отправляется в OpenAI (политику хранения данных смотрите у OpenAI).
 
+## James: рынок US/EU и контент-машина (@ar_design_agency)
+
+Стандарт бренда и тона: `agent/james/persona.md` (lowercase `ar design studio`, quiet luxury, всё наружу на английском).
+Настройки: блок `james` в `config.json` (рынки, ICP, ключевые сигналы, ленты трендов, хэштеги, число Reels).
+
+| Что | Как запустить | Результат |
+|---|---|---|
+| Стратегия поиска лидов на неделю | `/strategy` в Telegram, `python agent/scraper.py --action strategy`, `GET /api/cron?key=...&action=strategy` | `content-hub/weekly/<неделя>/lead_strategy.md` + сообщение в Telegram |
+| Концепты Reels на неделю | `/content`, `--action content`, `GET /api/cron?key=...&action=content` | `reels.json` и `reels.md` там же |
+
+- Скан трендов использует только публичные ленты (`james.trend_feeds`). С ключом `ANTHROPIC_API_KEY` модель пишет новые
+  концепты и результат проверяется кодом (хук ≤5 слов, 1,5 с, обязательные хэштеги, lowercase-бренд); без ключа или при
+  невалидном ответе берётся банк концептов из `growth.py`.
+- Behance, Awwwards, Upwork, LinkedIn не скрапятся (нет публичных лент или это запрещено условиями): используйте их
+  e-mail-оповещения и пересылайте боту.
+- Письма по-прежнему уходят только после кнопки «Отправить письмо» (`outreach.require_confirmation: true`).
+- Для недельного расписания добавьте в cron-job.org два задания: `...&action=strategy` (пн 09:00) и `...&action=content` (пн 09:30).
+
 ## Безопасность
 
 - Бот подчиняется только вашему `TELEGRAM_CHAT_ID`; webhook проверяет секретный заголовок Telegram.

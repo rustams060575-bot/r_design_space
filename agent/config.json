@@ -2,12 +2,14 @@
   "owner": {
     "name": "Rustam",
     "email": "rustams060575@gmail.com",
-    "telegram_handle": "@r_design_space",
-    "telegram_url": "https://t.me/r_design_space",
+    "telegram_handle": "@ar_design_agency",
+    "telegram_url": "https://t.me/ar_design_agency",
     "linkedin_url": "https://www.linkedin.com/in/rustam-akbarovich-45b187417/",
-    "postal_address": ""
+    "postal_address": "",
+    "instagram_handle": "@ar_design_agency",
+    "instagram_url": "https://www.instagram.com/ar_design_agency"
   },
-  "brand": "AR Design",
+  "brand": "ar design studio",
   "vercel_url": "",
   "keywords": [
     "CRM",
@@ -333,5 +335,112 @@
         "label": "Европа"
       }
     ]
+  },
+  "james": {
+    "persona_file": "james/persona.md",
+    "markets": [
+      "US",
+      "UK",
+      "DE",
+      "NL",
+      "FR",
+      "Nordics"
+    ],
+    "language": "en",
+    "icp": [
+      "funded startups (seed to series B)",
+      "luxury / DTC / hospitality brands",
+      "fintech and proptech",
+      "AI product companies",
+      "creative and branding agencies that outsource web engineering"
+    ],
+    "offers": [
+      "flagship web engineering",
+      "scroll-driven cinematic sites",
+      "custom animation systems",
+      "dashboard and SaaS interfaces",
+      "design systems"
+    ],
+    "signal_keywords": [
+      "awwwards",
+      "flagship website",
+      "brand website",
+      "website redesign",
+      "creative developer",
+      "design engineer",
+      "webgl",
+      "three.js",
+      "gsap",
+      "scroll animation",
+      "motion design",
+      "design system",
+      "launch page",
+      "interactive website"
+    ],
+    "sources": {
+      "used": [
+        {
+          "name": "Hacker News (hnrss)",
+          "type": "rss",
+          "note": "Ask/Show HN and whoishiring, filtered by signal keywords"
+        },
+        {
+          "name": "Dribbble Jobs",
+          "type": "rss",
+          "note": "public jobs feed"
+        },
+        {
+          "name": "We Work Remotely",
+          "type": "rss",
+          "note": "design + front-end categories"
+        },
+        {
+          "name": "Remotive / Jobicy",
+          "type": "api",
+          "note": "US and EMEA remote contract roles"
+        }
+      ],
+      "email_alerts_only": [
+        {
+          "name": "Behance Job List",
+          "why": "no public feed, bot protection"
+        },
+        {
+          "name": "Awwwards (Jobs, Sites of the Day)",
+          "why": "no public lead feed; used as trend reference by hand"
+        },
+        {
+          "name": "Upwork, Toptal, LinkedIn, Wellfound",
+          "why": "closed / forbidden by terms; use saved-search e-mail alerts, forward to the bot"
+        }
+      ]
+    },
+    "trend_feeds": [
+      {
+        "name": "HN: awwwards / webgl / scroll",
+        "url": "https://hnrss.org/newest?q=awwwards+OR+%22scroll+animation%22+OR+webgl+OR+%22three.js%22&points=20"
+      },
+      {
+        "name": "HN: creative coding showcases",
+        "url": "https://hnrss.org/show?q=animation+OR+interactive+OR+%22design+system%22&points=40"
+      }
+    ],
+    "weekly_strategy": {
+      "leads_target": "10 qualified US/EU leads per week, 3 sent outreach after approval"
+    },
+    "content": {
+      "handle": "@ar_design_agency",
+      "reels_per_week": 3,
+      "hook_seconds": 1.5,
+      "core_hashtags": [
+        "#uidesign",
+        "#webdevelopment",
+        "#webengineering",
+        "#minimalistdesign",
+        "#awwwards",
+        "#digitalagency"
+      ],
+      "out_dir": "../content-hub/weekly"
+    }
   }
 }

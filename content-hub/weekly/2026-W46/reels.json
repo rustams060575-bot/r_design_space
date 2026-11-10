@@ -1,0 +1,176 @@
+[
+  {
+    "id": "typed-to-shipped",
+    "title": "one line of code, one flagship hero",
+    "format": "reel 9:16 · 18 s · screen-capture + motion",
+    "hook": {
+      "seconds": 1.5,
+      "visual": "pure black. a green-on-black terminal line is typed at 4x speed and the final key hard-cuts into a full-bleed hero with a slow type reveal.",
+      "on_screen_text": "one line. one site."
+    },
+    "shots": [
+      {
+        "t": "0.0-1.5",
+        "visual": "terminal: `$ ship hero --cinematic` typed, enter, white flash frame.",
+        "on_screen": "one line. one site.",
+        "audio": "key clicks, sub hit on enter"
+      },
+      {
+        "t": "1.5-5.0",
+        "visual": "the hero resolves: oversized lowercase headline reveals line by line on a dark gradient, 600 ms ease-out.",
+        "on_screen": "",
+        "audio": "low pad rises"
+      },
+      {
+        "t": "5.0-10.0",
+        "visual": "split screen: editor (left) shows the gsap timeline, site (right) scrubs as the cursor drags the playhead.",
+        "on_screen": "motion is code.",
+        "audio": "tick per keyframe"
+      },
+      {
+        "t": "10.0-15.0",
+        "visual": "scroll continues: section transitions with masked kinetic type, devtools fps meter steady.",
+        "on_screen": "60 fps. no excuses.",
+        "audio": "pulse locks to scroll"
+      },
+      {
+        "t": "15.0-18.0",
+        "visual": "end card, centered, hairline rule: wordmark and handle.",
+        "on_screen": "ar design studio · flagship web engineering",
+        "audio": "single soft hit"
+      }
+    ],
+    "audio_direction": "minimal electronic, 90-100 bpm, one riser; no voiceover. a licensed or royalty-free track from the instagram audio library.",
+    "cta": "start a flagship build: link in bio.",
+    "caption": "motion is not decoration. it is engineering you can feel.\n\nflagship sites, built in code, finished to the pixel.\n\nstart a project: link in bio.",
+    "hashtags": [
+      "#uidesign",
+      "#webdevelopment",
+      "#webengineering",
+      "#minimalistdesign",
+      "#awwwards",
+      "#digitalagency",
+      "#creativecoding",
+      "#gsap",
+      "#webdesign"
+    ],
+    "why_it_works": "a typed command is a pattern interrupt; the payoff (finished hero) arrives inside the first two seconds, and the code-to-result loop invites replays.",
+    "build_notes": "recordable in html (typewriter + gsap); loop-friendly end: last frame cuts back to the terminal prompt."
+  },
+  {
+    "id": "template-vs-flagship",
+    "title": "same content, two builds",
+    "format": "reel 9:16 · 20 s · split screen",
+    "hook": {
+      "seconds": 1.5,
+      "visual": "vertical split, same page scrolling at the same speed: left stutters and snaps, right glides with choreographed type.",
+      "on_screen_text": "same content. different build."
+    },
+    "shots": [
+      {
+        "t": "0.0-1.5",
+        "visual": "hard split at frame 1; left jitters, right is silky. a thin vertical hairline divides them.",
+        "on_screen": "same content. different build.",
+        "audio": "glitchy tick left, clean tone right (panned)"
+      },
+      {
+        "t": "1.5-6.0",
+        "visual": "both scroll the hero: left fades in late with layout shift, right reveals type line by line with a mask.",
+        "on_screen": "layout shift vs. choreography",
+        "audio": ""
+      },
+      {
+        "t": "6.0-12.0",
+        "visual": "hover and cursor details: left cursor is default, right has a magnetic cta and a soft spotlight.",
+        "on_screen": "details are the product.",
+        "audio": "subtle whoosh on right only"
+      },
+      {
+        "t": "12.0-17.0",
+        "visual": "devtools overlay: lighthouse-style scores animate, right side fills green. (use measured numbers from the real demo only.)",
+        "on_screen": "built, not assembled.",
+        "audio": "riser"
+      },
+      {
+        "t": "17.0-20.0",
+        "visual": "left half fades to black, right expands full-width; end card.",
+        "on_screen": "ar design studio · link in bio",
+        "audio": "hit"
+      }
+    ],
+    "audio_direction": "dry, minimal; sound design carries the contrast (left rough, right clean).",
+    "cta": "want the right side? link in bio.",
+    "caption": "customers feel the difference before they can name it.\n\nbuilt, not assembled.\n\nflagship web engineering for brands that care: link in bio.",
+    "hashtags": [
+      "#uidesign",
+      "#webdevelopment",
+      "#webengineering",
+      "#minimalistdesign",
+      "#awwwards",
+      "#digitalagency",
+      "#frontend",
+      "#uxdesign",
+      "#brandidentity"
+    ],
+    "why_it_works": "comparison is instantly legible without sound and sparks comments (which one is which, what is the stack); the split is shareable to founders.",
+    "build_notes": "build one real demo page twice; record both at the same scroll speed. show only scores you actually measured."
+  },
+  {
+    "id": "scroll-is-the-story",
+    "title": "scroll is the story",
+    "format": "reel 9:16 · 22 s · cinematic scroll capture",
+    "hook": {
+      "seconds": 1.5,
+      "visual": "a single kinetic-type word explodes into letters that fly into a 3d scene; the camera starts moving on frame 1.",
+      "on_screen_text": "scroll. don't click."
+    },
+    "shots": [
+      {
+        "t": "0.0-1.5",
+        "visual": "kinetic type: 'scroll' letters scatter and reassemble into the product object in 3d.",
+        "on_screen": "scroll. don't click.",
+        "audio": "whoosh into bass hit"
+      },
+      {
+        "t": "1.5-7.0",
+        "visual": "one continuous scroll: object rotates, camera dollies, headline lines mask in and out.",
+        "on_screen": "",
+        "audio": "pad swell"
+      },
+      {
+        "t": "7.0-13.0",
+        "visual": "picture-in-picture: code editor with scrolltrigger `scrub: true`; the numbers move as the page moves.",
+        "on_screen": "one timeline. every frame.",
+        "audio": "tick locked to scrub"
+      },
+      {
+        "t": "13.0-19.0",
+        "visual": "section cuts: pricing, proof, cta; each enters with a distinct but related motion language.",
+        "on_screen": "story first. ui second.",
+        "audio": "pulse"
+      },
+      {
+        "t": "19.0-22.0",
+        "visual": "pull back to a phone mockup; end card on dark.",
+        "on_screen": "ar design studio · flagship web engineering",
+        "audio": "soft hit"
+      }
+    ],
+    "audio_direction": "cinematic minimal; a single bass hit on the hook, no melody until second 7.",
+    "cta": "your launch deserves a scroll like this: link in bio.",
+    "caption": "the page is the product demo.\n\nscroll-driven storytelling, engineered end to end.\n\nstart a project: link in bio.",
+    "hashtags": [
+      "#uidesign",
+      "#webdevelopment",
+      "#webengineering",
+      "#minimalistdesign",
+      "#awwwards",
+      "#digitalagency",
+      "#threejs",
+      "#webgl",
+      "#scrollanimation"
+    ],
+    "why_it_works": "continuous camera motion holds attention; the code overlay satisfies the engineer audience and signals depth to buyers.",
+    "build_notes": "three.js + gsap scrolltrigger demo; record at 60 fps; keep one continuous take."
+  }
+]

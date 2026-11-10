@@ -25,6 +25,8 @@ module.exports = async function handler(req, res) {
   const given = String((req.query && req.query.key) || "");
   if (!expected || !same(expected, given)) return res.status(401).end();
 
+  // ?action=strategy|content starts the weekly james jobs; anything else (or nothing) is the normal lead search.
+  const action = ["strategy", "content", "publish"].includes(String((req.query && req.query.action) || "")) ? req.query.action : "search";
   const repo = process.env.GITHUB_REPO || "rustams060575-bot/r_design_space";
   const workflow = process.env.GITHUB_WORKFLOW || "outreach.yml";
   const headers = {
@@ -37,14 +39,14 @@ module.exports = async function handler(req, res) {
     const out = await fetch(`https://api.github.com/repos/${repo}/actions/workflows/${workflow}/dispatches`, {
       method: "POST",
       headers: { ...headers, "content-type": "application/json" },
-      body: JSON.stringify({ ref: process.env.GITHUB_REF || "main", inputs: { action: "search", query: "", lead_id: "", scheduled: "true" } }),
+      body: JSON.stringify({ ref: process.env.GITHUB_REF || "main", inputs: { action, query: "", lead_id: "", scheduled: action === "search" ? "true" : "" } }),
       signal: AbortSignal.timeout(15000),
     });
     if (out.status !== 204) {
       console.error(`cron dispatch -> ${out.status}`);
       return res.status(502).json({ ok: false, github: out.status });
     }
-    return res.status(200).json({ ok: true, started: "search" });
+    return res.status(200).json({ ok: true, started: action });
   } catch (err) {
     console.error("cron dispatch error:", err && err.message);
     return res.status(502).json({ ok: false });
