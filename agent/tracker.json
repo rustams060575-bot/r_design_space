@@ -1882,6 +1882,72 @@
       "status": "rejected",
       "score": 1,
       "at": "2026-11-10T02:33:13+00:00"
+    },
+    "hn:50429498": {
+      "name": "Do you have daily voice conversations with AI?",
+      "status": "rejected",
+      "score": 2,
+      "at": "2026-11-10T04:58:18+00:00"
+    },
+    "hn:50434036": {
+      "name": "Playwright Stud – Record and run Playwright tests directly",
+      "status": "rejected",
+      "score": 3,
+      "at": "2026-11-10T04:58:22+00:00"
+    },
+    "job:dddfedd6c73a08aa": {
+      "name": "Website Onboarding Specialist - Thailand - Cloudbeds",
+      "status": "alert_only",
+      "score": 5,
+      "at": "2026-11-10T04:58:35+00:00"
+    },
+    "hn:50428670": {
+      "name": "We Gave AI Coding Agents Production Memory",
+      "status": "pending",
+      "score": 5,
+      "at": "2026-11-10T04:58:45+00:00"
+    },
+    "job:b64c7274ebae0bdc": {
+      "name": "Senior AI Engineer (AI Automation) - TRM Labs",
+      "status": "alert_only",
+      "score": 6,
+      "at": "2026-11-10T04:58:58+00:00"
+    },
+    "hn:50428496": {
+      "name": "Venzx",
+      "status": "pending",
+      "score": 5,
+      "at": "2026-11-10T04:59:08+00:00"
+    },
+    "hn:50428375": {
+      "name": "Traccia",
+      "status": "rejected",
+      "score": 5,
+      "at": "2026-11-10T04:59:11+00:00"
+    },
+    "hn:50425494": {
+      "name": "Askaboard",
+      "status": "alert_only",
+      "score": 5,
+      "at": "2026-11-10T04:59:26+00:00"
+    },
+    "hn:50420697": {
+      "name": "Mindfries- AI Interviewer based on real eng skill not on L**tC*de",
+      "status": "alert_only",
+      "score": 5,
+      "at": "2026-11-10T04:59:29+00:00"
+    },
+    "hn:50432130": {
+      "name": "ApiClay",
+      "status": "pending",
+      "score": 6,
+      "at": "2026-11-10T04:59:34+00:00"
+    },
+    "hn:50424056": {
+      "name": "Filepeek: a viewer for 658 file formats that runs in the browser",
+      "status": "alert_only",
+      "score": 5,
+      "at": "2026-11-10T04:59:36+00:00"
     }
   },
   "contacted_domains": []

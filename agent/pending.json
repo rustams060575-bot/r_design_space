@@ -1,1 +1,38 @@
-{}
+{
+  "hn:50428670": {
+    "name": "We Gave AI Coding Agents Production Memory",
+    "email": "hello@usecodela.com",
+    "domain": "usecodela.com",
+    "pitch": {
+      "subject": "UX/UI for the Codela dashboard and product site",
+      "body": "Hi,\n\nCodela's core idea is that agents repeat production mistakes because nobody feeds the failure back to them. That loop is hard to explain in text. It needs to be visible in the product.\n\nI would design the UX/UI for your web app: the key user flows, wireframes and a clickable prototype, before a line of code is written. That includes how a deploy check, a learned incident and a lesson passed to an agent appear on screen.\n\nAR Design specialises in CRM and SaaS dashboards. The work is pixel-perfect and the turnaround is fast.\n\nReply with a few details on your current stage, or ask for a short call, and I will send a scoped plan.\n\nRustam | AR Design",
+      "gist_ru": "Письмо предлагает основателю Codela спроектировать UX/UI дашборда: ключевые сценарии, вайрфреймы и кликабельный прототип, чтобы наглядно показать ценность «памяти из продакшена» для кодинг-агентов.",
+      "language": "en"
+    },
+    "created": "2026-11-10T04:58:45+00:00"
+  },
+  "hn:50428496": {
+    "name": "Venzx",
+    "email": "letstalk@venzx.com",
+    "domain": "venzx.com",
+    "pitch": {
+      "subject": "Dashboard UX/UI for VENZX approvals and audit log",
+      "body": "Hi,\n\nVENZX pauses AI agent tool calls until a human approves, and every decision goes into a tamper-evident log. That needs an interface where a reviewer can judge a call in seconds.\n\nI would design the dashboard UX/UI: a clear information hierarchy, KPI cards for allowed, blocked and paused calls, and filterable data tables for approvals, policies and the audit log. You get a responsive Figma kit your developers can build from.\n\nI specialize in CRM and SaaS dashboards. The work is pixel-perfect and the turnaround is fast.\n\nReply with a few details on your current screens and users, or suggest a short call. I will send a scoped plan.\n\nRustam | AR Design",
+      "gist_ru": "Предлагаю спроектировать UX/UI дашборда для VENZX (согласования, политики, аудит-лог) в виде Figma-кита, и прошу ответить с деталями или созвониться.",
+      "language": "en"
+    },
+    "created": "2026-11-10T04:59:07+00:00"
+  },
+  "hn:50432130": {
+    "name": "ApiClay",
+    "email": "support@apiclay.com",
+    "domain": "apiclay.com",
+    "pitch": {
+      "subject": "Dashboard UX/UI for ApiClay",
+      "body": "Hi ApiClay team,\n\nI saw your post about ApiClay: Turn a Website, Google Sheet or Database into a Paid API. Hi HN, I’m a reverse engineer, and I’ve seen the same problem repeatedly: people need data, but the pa.\n\nI'm Rustam from AR Design. For this I would deliver a dashboard UX/UI: a clear information hierarchy, KPI cards, filterable data tables and a responsive Figma kit your developers can build from.\n\nI specialise in CRM and SaaS dashboards: the work is pixel-perfect and the turnaround is fast.\n\nReply with a few details about the scope and I'll send a short plan, or we can talk on Telegram (@r_design_space).\n\nRustam | AR Design",
+      "gist_ru": "Короткое экспертное письмо: называет боль клиента, предлагает конкретное решение и следующий шаг.",
+      "language": "en"
+    },
+    "created": "2026-11-10T04:59:33+00:00"
+  }
+}
