@@ -268,7 +268,8 @@
       "explicit_request",
       "product_launch",
       "funding_signal"
-    ]
+    ],
+    "signal_min_score": 7
   },
   "outreach": {
     "require_confirmation": true

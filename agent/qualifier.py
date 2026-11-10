@@ -242,6 +242,8 @@ def qualify(lead: dict, cfg: dict) -> dict:
 def _qualify(lead: dict, cfg: dict) -> dict:
     qcfg = cfg.get("qualification", {})
     min_score = qcfg.get("min_score", 5)
+    if lead.get("source") == "signal":  # signals only become Telegram alerts for a human to judge, never automatic emails
+        min_score = qcfg.get("signal_min_score", min_score)
     if is_noise(lead):  # never spend a model call on funding / investment posts
         return {**_heuristic(lead, min_score), "reject_reason_ru": "Инвестиции, раунды или новости - не запрос на разработку."}
     if llm.available(cfg):
@@ -286,7 +288,7 @@ def apply_policy(result: dict, lead: dict, cfg: dict) -> dict:
         elif us is None:
             score = max(0, result["score"] - policy.get("unknown_location_penalty", 1))
             result = {**result, "score": score}
-            if score < policy.get("min_score", 8):
+            if score < (cfg.get("qualification", {}).get("signal_min_score", 7) if lead.get("source") == "signal" else policy.get("min_score", 8)):
                 reason = "Локация не подтверждена как США."
     if reason:
         return {**result, "relevant": False, "reject_reason_ru": reason}
