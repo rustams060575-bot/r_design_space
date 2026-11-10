@@ -1834,6 +1834,54 @@
       "status": "rejected",
       "score": 1,
       "at": "2026-11-09T10:55:36+00:00"
+    },
+    "hn:50425195": {
+      "name": "Forced to build my own Harvest alternative tracking and invoicing",
+      "status": "rejected",
+      "score": 2,
+      "at": "2026-11-10T02:32:48+00:00"
+    },
+    "hn:50432121": {
+      "name": "A Terminal UI for Hacker News, and CLI for Agents",
+      "status": "rejected",
+      "score": 1,
+      "at": "2026-11-10T02:32:51+00:00"
+    },
+    "job:82f978005e19d43b": {
+      "name": "Reedsy is hiring for a position of Book Designer (Fiction/Non-Fiction) in Remote",
+      "status": "rejected",
+      "score": 2,
+      "at": "2026-11-10T02:32:55+00:00"
+    },
+    "hn:50430415": {
+      "name": "Website to test if you can detect someone staring at your back",
+      "status": "rejected",
+      "score": 1,
+      "at": "2026-11-10T02:32:58+00:00"
+    },
+    "hn:50434678": {
+      "name": "FormaNest, Lay out a room in 3D in the browser and share it as a link",
+      "status": "rejected",
+      "score": 1,
+      "at": "2026-11-10T02:33:03+00:00"
+    },
+    "hn:50427746": {
+      "name": "SteamPunk",
+      "status": "rejected",
+      "score": 2,
+      "at": "2026-11-10T02:33:06+00:00"
+    },
+    "job:8512dabccca6760e": {
+      "name": "Marketing Manager (Maternity Cover) - saas.group",
+      "status": "rejected",
+      "score": 1,
+      "at": "2026-11-10T02:33:09+00:00"
+    },
+    "hn:50426314": {
+      "name": "Kiosk, a first-class AI assistants' intefrace to online services",
+      "status": "rejected",
+      "score": 1,
+      "at": "2026-11-10T02:33:13+00:00"
     }
   },
   "contacted_domains": []
