@@ -48,7 +48,7 @@ function hasSecret(text) {
 }
 
 function emptyMemory() {
-  return { version: 1, last_update_id: 0, items: [], projects: {}, history: [], lead_source: null };
+  return { version: 1, last_update_id: 0, items: [], projects: {}, history: [], lead_source: null, usage: { day: "", count: 0 } };
 }
 
 function normalize(mem) {
@@ -60,6 +60,7 @@ function normalize(mem) {
     projects: m.projects && typeof m.projects === "object" ? m.projects : {},
     history: Array.isArray(m.history) ? m.history : [],
     lead_source: m.lead_source && typeof m.lead_source === "object" ? m.lead_source : null,
+    usage: m.usage && typeof m.usage === "object" ? { day: String(m.usage.day || ""), count: Number(m.usage.count) || 0 } : { day: "", count: 0 },
   };
 }
 

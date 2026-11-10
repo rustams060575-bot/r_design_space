@@ -199,7 +199,7 @@ async function onMemoryCommand(chat, cmd) {
 // opts.trace collects step timings / the outcome for the Server-Timing and x-voice-result response headers.
 async function onChat(msg, updateId, opts = {}) {
   const chat = msg.chat.id;
-  const text = (msg.text || "").trim();
+  const text = (msg.text || "").trim().slice(0, MAX_CHAT_CHARS); // hard input cap: a pasted wall of text cannot blow up the prompt
   if (!env.get("ANTHROPIC_API_KEY")) {
     return tg("sendMessage", { chat_id: chat, text: "💬 Для диалога нужен ANTHROPIC_API_KEY в настройках Vercel (Environment Variables)." });
   }
@@ -220,16 +220,20 @@ async function onChat(msg, updateId, opts = {}) {
     memoryNote = `\n\n🧠 Память выключена: ${store.reason}.`;
   }
   if (updateId && updateId <= memory.last_update_id) return; // Telegram redelivered an update we already handled
+  const today = new Date(now).toISOString().slice(0, 10);
+  if (memory.usage && memory.usage.day === today && memory.usage.count >= CHAT_DAILY_LIMIT) {
+    return tg("sendMessage", { chat_id: chat, text: `⏸ Дневной лимит диалога с ИИ исчерпан (${CHAT_DAILY_LIMIT} запросов). Команды /memory, /history и кнопки писем работают, диалог продолжится завтра.` });
+  }
 
   let proposal;
   const claudeStart = Date.now();
   try {
     const raw = await askClaude({
       apiKey: env.get("ANTHROPIC_API_KEY"),
-      model: process.env.CHAT_MODEL || "claude-sonnet-5-5",
+      model: process.env.OWNER_CHAT_MODEL || process.env.CHAT_MODEL || "claude-haiku-5-5", // short Q&A and memory notes: the cheap model is enough
       system: opts.voice ? CHAT_SYSTEM + VOICE_ADDENDUM : CHAT_SYSTEM,
       user: `${mem.contextBlock(memory, text, now)}\n\n---\nСообщение пользователя:\n${text}`,
-      maxTokens: opts.voice ? 1200 : 1500, // room for the reply plus the memory JSON, so it is never cut mid-object
+      maxTokens: opts.voice ? 900 : 1100, // reply plus the memory JSON; still enough that the JSON is not cut mid-object
     });
     proposal = mem.parseModelJson(raw);
     if (opts.trace) opts.trace.claude = Date.now() - claudeStart;
@@ -248,6 +252,7 @@ async function onChat(msg, updateId, opts = {}) {
       const { result } = await store.update((m) => {
         if (updateId && updateId <= m.last_update_id) return [];
         const stored = mem.applyProposal(m, proposal, now);
+        m.usage = m.usage && m.usage.day === today ? { day: today, count: m.usage.count + 1 } : { day: today, count: 1 };
         mem.pushHistory(m, "user", text, now);
         mem.pushHistory(m, "assistant", proposal.reply, now);
         if (updateId) m.last_update_id = Math.max(m.last_update_id || 0, updateId);
@@ -271,6 +276,8 @@ async function onChat(msg, updateId, opts = {}) {
 // ---------------------------------------------------------------- voice (OpenAI Whisper -> Claude -> OpenAI tts-1)
 
 const MAX_VOICE_SECONDS = 180;
+const MAX_CHAT_CHARS = 2000; // characters of one owner message sent to the model
+const CHAT_DAILY_LIMIT = Number(process.env.CHAT_DAILY_LIMIT) || 150; // model calls per day for the owner dialog
 const MAX_VOICE_BYTES = 10 * 1024 * 1024;
 
 async function downloadTelegramFile(fileId) {

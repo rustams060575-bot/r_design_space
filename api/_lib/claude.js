@@ -2,7 +2,7 @@
 
 "use strict";
 
-async function askClaude({ apiKey, model, system, user, maxTokens = 1200, fetchImpl }) {
+async function askClaude({ apiKey, model, system, user, maxTokens = 800, fetchImpl }) {
   const doFetch = fetchImpl || ((...a) => globalThis.fetch(...a));
   const ctrl = new AbortController();
   const timer = setTimeout(() => ctrl.abort(), 45000); // Vercel function limit is 60s (vercel.json)
@@ -11,7 +11,7 @@ async function askClaude({ apiKey, model, system, user, maxTokens = 1200, fetchI
       method: "POST",
       signal: ctrl.signal,
       headers: { "x-api-key": apiKey, "anthropic-version": "2023-06-01", "content-type": "application/json" },
-      body: JSON.stringify({ model, max_tokens: maxTokens, system, messages: [{ role: "user", content: user }] }),
+      body: JSON.stringify({ model, max_tokens: maxTokens, system: [{ type: "text", text: system, cache_control: { type: "ephemeral" } }], messages: [{ role: "user", content: user }] }), // the static system prompt is cached: repeat calls pay a fraction for it
     });
     if (!res.ok) throw new Error(`Claude API HTTP ${res.status}`);
     const data = await res.json();
