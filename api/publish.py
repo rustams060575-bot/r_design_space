@@ -6,7 +6,7 @@
                                                   "confirm": true}
     POST /api/publish {"action": "finish", "container": "<id>"}   -> finish an Instagram container that was still processing
 
-Auth: header X-Publish-Key (or ?key=) = key derived from TELEGRAM_BOT_TOKEN: `python agent/meta_publisher.py key`.
+Auth: header X-Publish-Key (or ?key=) = PUBLISH_KEY (preferred) or the key derived from TELEGRAM_BOT_TOKEN.
 Without META_PUBLISH_LIVE=1 every publish is a dry run. Two-step Instagram publishing (container -> status -> media_publish)
 lives in agent/meta_publisher.py. Environment: ACCESS_TOKEN (or IG_ACCESS_TOKEN / FB_PAGE_TOKEN), IG_USER_ID, FB_PAGE_ID,
 META_PUBLISH_LIVE, TELEGRAM_BOT_TOKEN. Tokens are never logged or returned.
@@ -29,8 +29,9 @@ POLL_BUDGET = {"META_POLL_TRIES": "7", "META_POLL_SECONDS": "5"}  # ~35 s, insid
 
 
 def authorised(key: str) -> bool:
-    token = os.environ.get("TELEGRAM_BOT_TOKEN", "")
-    return bool(token and key) and hmac.compare_digest(mp.derived_key(token), key)
+    """PUBLISH_KEY (explicit secret) wins; otherwise the key derived from TELEGRAM_BOT_TOKEN."""
+    expected = os.environ.get("PUBLISH_KEY", "") or (mp.derived_key(os.environ["TELEGRAM_BOT_TOKEN"]) if os.environ.get("TELEGRAM_BOT_TOKEN") else "")
+    return bool(expected and key) and hmac.compare_digest(expected, key)
 
 
 def graph() -> "mp.Graph":
