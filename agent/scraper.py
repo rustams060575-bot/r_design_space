@@ -616,7 +616,7 @@ def send_pending(cfg: dict, lead_id: str) -> bool:
 
 def main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("--action", choices=["search", "send", "strategy", "content", "publish", "autopilot", "reeltest", "linkedin", "weekly"])
+    ap.add_argument("--action", choices=["search", "send", "strategy", "content", "publish", "autopilot", "reeltest", "linkedin", "weekly", "audit"])
     ap.add_argument("--query")
     ap.add_argument("--lead-id")
     args = ap.parse_args(argv)
@@ -633,6 +633,9 @@ def main(argv: list[str] | None = None) -> int:
     if action == "autopilot":
         import autopilot  # james: generate, render and publish posts + stories to Instagram and the Facebook Page
         return autopilot.run_autopilot(cfg)
+    if action == "audit":  # read-only reach diagnostics for Instagram + the Facebook Page
+        import audit
+        return audit.run_audit(cfg)
     if action == "publish":
         import meta_publisher  # approved reels/posts -> Instagram + Facebook Page via the Meta Graph API
         return meta_publisher.run_publish(cfg)
