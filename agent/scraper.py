@@ -8,7 +8,7 @@ Actions (CLI flag --action, or the ACTION environment variable set by GitHub Act
   send    Send the email for one confirmed lead (--lead-id / LEAD_ID) from agent/pending.json.
 
 Optional --query / SEARCH_QUERY narrows a search to the user's own request (Telegram: /search <query>).
-Emails are really sent only when DRY_RUN is exactly "false".
+Emails are sent only after the owner confirms a card in Telegram (the "Send" button).
 """
 from __future__ import annotations
 
@@ -87,8 +87,9 @@ def now_iso() -> str:
     return datetime.now(timezone.utc).isoformat(timespec="seconds")
 
 
-def is_dry_run() -> bool:
-    return os.getenv("DRY_RUN", "true").strip().lower() != "false"
+def is_scheduled_run() -> bool:
+    """True for the 09:00 / 21:00 runs: GitHub's own schedule or the external trigger (api/cron.js)."""
+    return os.getenv("GITHUB_EVENT_NAME", "") == "schedule" or os.getenv("SCHEDULED", "").strip().lower() == "true"
 
 
 # ---------------------------------------------------------------- helpers
@@ -476,11 +477,10 @@ def site_blurb(website: str, timeout: int) -> str:
 def run_search(cfg: dict, query: str | None = None) -> dict:
     tracker = load_tracker()
     pending = load_json(PENDING_PATH, {})
-    dry_run = is_dry_run()
     timeout = cfg["limits"]["request_timeout"]
     qcfg = cfg.get("qualification", {})
     confirm = cfg.get("outreach", {}).get("require_confirmation", True)
-    print(f"[agent] mode: {'DRY RUN' if dry_run else 'LIVE'}; confirmation: {confirm}; query: {query!r}")
+    print(f"[agent] confirmation required: {confirm}; query: {query!r}")
 
     # drop stale pending drafts
     cutoff = (datetime.now(timezone.utc) - timedelta(days=PENDING_TTL_DAYS)).isoformat()
@@ -488,8 +488,8 @@ def run_search(cfg: dict, query: str | None = None) -> dict:
 
     fresh = [l for l in collect_leads(cfg, query) if l["id"] not in tracker["processed"]]
     print(f"[agent] {len(fresh)} new candidates")
-    if not query and os.getenv("GITHUB_EVENT_NAME", "") == "schedule":
-        send_digest(fresh, dry_run)  # morning header: what was scanned today
+    if not query and is_scheduled_run():
+        send_digest(fresh)  # morning header: what was scanned today
 
     stats = {"candidates": len(fresh), "checked": 0, "rejected": 0, "approved": 0, "emails": 0}
     for lead in fresh[: qcfg.get("max_per_run", 25)]:
@@ -526,8 +526,6 @@ def run_search(cfg: dict, query: str | None = None) -> dict:
                 save_json(PENDING_PATH, pending)
             elif stats["emails"] >= cfg["limits"]["max_emails_per_run"]:
                 status = "email_cap_reached"
-            elif dry_run:
-                status = "dry_run"
             else:
                 try:
                     send_email(lead["email"], pitch["subject"], pitch["body"], cfg, pitch["language"])
@@ -538,7 +536,7 @@ def run_search(cfg: dict, query: str | None = None) -> dict:
                     print(f"[email] failed for {lead['name']}: {type(exc).__name__}")
                     status = "email_failed"
 
-        send_alert(lead, pitch, status, dry_run)
+        send_alert(lead, pitch, status)
         stats["approved"] += 1
         # Failed emails stay unprocessed so the next run retries them; everything else is final.
         if status != "email_failed":
@@ -549,8 +547,8 @@ def run_search(cfg: dict, query: str | None = None) -> dict:
 
     save_json(PENDING_PATH, pending)
     # Scheduled runs stay quiet when there is nothing to say; manual runs always answer.
-    if stats["checked"] or os.getenv("GITHUB_EVENT_NAME", "") != "schedule":
-        send_report(stats, dry_run, query)
+    if stats["checked"] or not is_scheduled_run():
+        send_report(stats, query)
     print(f"[agent] done: {stats}")
     return stats
 
@@ -572,12 +570,6 @@ def send_pending(cfg: dict, lead_id: str) -> bool:
         save_json(PENDING_PATH, pending)
         send_text(f"⏭ Домену {item['domain']} уже писали - повторно не отправляю.")
         return False
-    if is_dry_run():
-        send_text(f"🧪 DRY_RUN включён: письмо для {item['name']} ({item['email']}) НЕ отправлено.\n"
-                  "Чтобы отправлять по-настоящему, задайте в репозитории переменную DRY_RUN=false "
-                  "(Settings → Secrets and variables → Actions → Variables). Черновик остаётся в очереди.")
-        return True
-
     pitch = item["pitch"]
     try:
         send_email(item["email"], pitch["subject"], pitch["body"], cfg, pitch.get("language", "en"))

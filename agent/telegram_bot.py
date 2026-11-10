@@ -19,7 +19,6 @@ from qualifier import NEED_RU, URGENCY_RU
 STATUS_LABEL = {
     "pending": "⏳ Ждёт вашего подтверждения - нажмите «Отправить письмо»",
     "sent": "✅ Письмо отправлено",
-    "dry_run": "🧪 Письмо НЕ отправлено (тестовый режим)",
     "alert_only": "✋ Email не найден - напишите вручную",
     "email_failed": "⚠️ Не удалось отправить письмо (см. логи Actions)",
     "domain_already_contacted": "⏭ Этому домену уже писали",
@@ -53,7 +52,7 @@ HELP_TEXT = (
     "/remember <текст> - сохранить заметку\n/forget <id> - удалить запись (id в скобках)\n\n"
     "🎙 Голос. Отправьте голосовое (до 3 минут): распознаю речь (Whisper), отвечу текстом и коротким голосовым. Логика и память те же. "
     "Голосом команды не выполняются (письма и поиск - только кнопками и командами).\n\n"
-    "🧪 Пока в репозитории DRY_RUN=true, письма не отправляются."
+    "✉️ Письма клиентам - на английском (рынок США); письмо уходит только после вашего подтверждения."
 )
 POLL_ONLY_NOTE = (
     "🧠 Диалог и память работают в режиме webhook (Vercel). Локальный polling (bot_poll.py) умеет только "
@@ -61,11 +60,7 @@ POLL_ONLY_NOTE = (
 )
 
 
-def mode_label(dry_run: bool) -> str:
-    return "🧪 Режим: ТЕСТ (письма не уходят)" if dry_run else "🚀 Режим: БОЕВОЙ (письма уходят)"
-
-
-def build_card(lead: dict, status: str, dry_run: bool, language: str = "en") -> str:
+def build_card(lead: dict, status: str, language: str = "en") -> str:
     a = lead.get("analysis") or {}
     why = [f"• {x}" for x in a.get("why_ru", [])] or ["• -"]
     lines = [
@@ -74,7 +69,6 @@ def build_card(lead: dict, status: str, dry_run: bool, language: str = "en") -> 
         f"📍 {SOURCE_LABEL.get(lead['source'], lead['source'])}" + (f" · {lead['region']}" if lead.get("region") else ""),
         f"⭐ Оценка: {a.get('score', '?')}/10 · 🧩 {NEED_RU.get(a.get('need_type'), 'запрос')} · ⏱ {URGENCY_RU.get(a.get('urgency'), 'срок не указан')}",
         f"🌐 Язык письма: {langs.LANG_RU.get(language, language)}",
-        mode_label(dry_run),
         STATUS_LABEL.get(status, status),
         "",
         "📝 Кто и что просит",
@@ -143,29 +137,29 @@ def send_text(text: str, reply_markup: dict | None = None, chat_id: str | None =
     return call("sendMessage", payload, timeout) is not None
 
 
-def send_alert(lead: dict, pitch: dict, status: str, dry_run: bool = True) -> bool:
+def send_alert(lead: dict, pitch: dict, status: str) -> bool:
     language = pitch.get("language", "en")
     buttons = card_buttons(lead, status)
-    ok = send_text(build_card(lead, status, dry_run, language), {"inline_keyboard": buttons} if buttons else None)
+    ok = send_text(build_card(lead, status, language), {"inline_keyboard": buttons} if buttons else None)
     return send_text(build_draft(pitch)) and ok
 
 
-def send_digest(candidates: list[dict], dry_run: bool) -> bool:
+def send_digest(candidates: list[dict]) -> bool:
     """Morning header of the scheduled run: how many fresh postings came from which platform. Cards follow."""
     counts: dict[str, int] = {}
     for lead in candidates:
         label = (lead.get("region") or SOURCE_LABEL.get(lead["source"], lead["source"])).split(" · ")[0]
         counts[label] = counts.get(label, 0) + 1
     today = datetime.now(timezone.utc).strftime("%d.%m.%Y")
-    lines = [f"☀️ Утренняя сводка лидов · {today}", LINE, mode_label(dry_run), f"Свежих кандидатов: {len(candidates)}"]
+    lines = [f"☀️ Утренняя сводка лидов · {today}", LINE, f"Свежих кандидатов: {len(candidates)}"]
     lines += [f"• {name}: {n}" for name, n in sorted(counts.items(), key=lambda x: -x[1])]
-    lines += ["", "Дальше придут карточки лидов с готовым черновиком письма под каждого клиента." if candidates
+    lines += ["", "Дальше придут карточки лидов: письмо уйдёт клиенту только после вашего подтверждения." if candidates
               else "Новых объявлений нет. Следующая сводка завтра утром."]
     return send_text("\n".join(lines))
 
 
-def send_report(stats: dict, dry_run: bool, query: str | None = None) -> bool:
-    lines = ["📊 Отчёт запуска", LINE, mode_label(dry_run)]
+def send_report(stats: dict, query: str | None = None) -> bool:
+    lines = ["📊 Отчёт запуска", LINE]
     if query:
         lines.append(f"🔎 Запрос: {query}")
     lines += [

@@ -96,7 +96,7 @@ def main() -> int:
         print("A webhook is registered - polling would conflict. Run: python agent/set_webhook.py --delete")
         return 1
 
-    print(f"[bot] polling started, mode: {'DRY RUN' if scraper.is_dry_run() else 'LIVE'}. Ctrl+C to stop.")
+    print(f"[bot] polling started, confirmation required. Ctrl+C to stop.")
     offset = 0
     while True:
         resp = call("getUpdates", {"offset": offset, "timeout": 25, "allowed_updates": ["message", "callback_query"]}, timeout=40)

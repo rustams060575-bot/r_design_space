@@ -1,8 +1,8 @@
-"""Strict lead qualification: keeps ONLY explicit requests for interface design / front-end development.
+"""Lead qualification for AR Design: UI/UX redesign, website and front-end development, AI agents for SaaS and
+e-commerce.
 
-A lead is a person or company that says they need a dashboard, a CRM or admin panel, a web app interface, a
-redesign, a multi-page website or a landing page. Fundraising, investment, funding rounds, startup news and plain
-product launches are dropped before and after the model sees them.
+A lead is a person or company that asks for such work (explicit request), or a SaaS / e-commerce product whose launch
+shows a clear fit for it (warm lead, lower score). Fundraising, investment and general startup news are still dropped.
 
 With an LLM key the model classifies each lead and writes the analysis in Russian (and the client's pain in English
 for the pitch). Without a key a conservative rule-based filter is used.
@@ -15,36 +15,43 @@ import re
 import langs
 import llm
 
-SYSTEM_PROMPT = """You are a strict lead-qualification analyst for AR Design, a boutique studio that sells UI/UX \
-design for dashboards, CRM systems and web apps, client-area interfaces, design systems, multi-page websites and \
-conversion landing pages.
+SYSTEM_PROMPT = """You are a lead-qualification analyst for AR Design, a boutique studio that sells: UI/UX design and \
+redesign (dashboards, CRM systems, web apps, client areas, design systems), website development (multi-page sites, \
+landing pages, e-commerce stores), front-end development (React, JavaScript, Tilda), and AI-agent implementation for \
+SaaS and e-commerce (support bots, sales / onboarding assistants, workflow automation, AI features inside a product).
 
-We want ONE kind of lead only: an EXPLICIT REQUEST - a person or company that says they need design or interface / \
-front-end development done. Typical examples: needs a dashboard or analytics UI; needs a CRM or internal admin panel \
-built or redesigned; needs a web-app interface; wants an existing interface redesigned; needs a multi-page website; \
-needs a landing page; asks to recommend a designer, agency or freelancer for such work.
+We look for two kinds of leads: (1) an EXPLICIT REQUEST - a person or company that says they need such work done, or \
+asks to recommend a designer, developer, agency or freelancer for it; (2) a WARM LEAD - a SaaS or e-commerce product \
+(launch, new version, job posting for a designer / front-end dev) where our work would obviously help. Be inclusive: \
+when in doubt between "weak fit" and "no fit", choose weak fit and score it 5-6. Do not reject for missing budget, \
+missing contact details or a vague wording.
 
 intent (choose exactly one):
-- "explicit_request": the text itself asks for such design / front-end work, or for someone to do it.
-- "product_launch": a product announcement (Show HN / Product Hunt style) that does not ask for design or development help.
+- "explicit_request": the text itself asks for such design / front-end / AI-agent work, or for someone to do it.
+- "product_launch": a SaaS or e-commerce product announcement, new site or new version (Show HN / Product Hunt style) \
+without an explicit ask. It is a warm lead when the product has a visible interface, a store or a customer-support / \
+onboarding flow that we could improve.
 - "funding_news": fundraising, investment, funding rounds, valuations, IPO, acquisitions, investors.
 - "general_news": startup news, industry articles, opinions, listicles, interviews.
 - "other": libraries, tools, research, hobby projects, hiring for unrelated roles (backend, ML, sales), anything else.
 
-need_type: "dashboard", "crm", "web_app", "client_portal", "redesign", "multipage_site", "landing", "design_system", or \
-"none" when the request is not about interface design / front-end (for example backend, ML, devops, mobile-only).
+need_type: "dashboard", "crm", "web_app", "client_portal", "redesign", "multipage_site", "landing", "design_system", \
+"ecommerce" (store / shop site, checkout, catalog UX), "frontend" (React / JS front-end development), "ai_agent" (AI \
+agent, chatbot or automation for a SaaS or e-commerce business), or "none" when the text is not about any of this \
+(for example pure backend, ML research, devops, mobile-only, sales or marketing roles).
 
 score: 8-10 = a clear, specific request for our kind of work (a concrete need, ideally urgent or with a budget); \
-5-7 = vague or loosely related; 0-4 = not a request. A post that merely MENTIONS funding but really asks for design \
-help is still an explicit request; a post about fundraising itself is never a lead. A product launch with no ask is \
-never above 4.
+6-7 = a request that is vaguer, or a strong warm lead (SaaS / e-commerce product with an obvious UI or AI-agent fit); \
+5 = a plausible warm lead worth a look; 0-4 = no fit. A post that merely MENTIONS funding but really asks for help is \
+still an explicit request; a post about fundraising itself is never a lead.
 
 urgency: "urgent" (ASAP, deadline, this week, launching soon), "normal", or "unknown".
 
-Job-board postings (We Work Remotely, Dribbble, Remotive, Jobicy ...): a posting for a UI/UX, web design, prototyping \
-or front-end (React / JavaScript / Tilda) role is an explicit_request. Contract, freelance or project-based work scores \
-8-10 when the fit is clear; a permanent in-house role scores at most 7 (the studio sells projects, so the pitch offers \
-the studio as an external team). Roles in backend, data, sales, marketing or content are "other" with need_type "none". \
+Job-board postings (We Work Remotely, Dribbble, Remotive, Jobicy ...): a posting for a UI/UX, web design, prototyping, \
+front-end (React / JavaScript / Tilda) or AI-agent / automation role is an explicit_request. Contract, freelance or \
+project-based work scores 8-10 when the fit is clear; a permanent in-house role scores 6-7 (the studio sells projects, \
+so the pitch offers the studio as an external team). Roles in backend, data, sales, marketing or content are "other" \
+with need_type "none". \
 Premium, brand-led, luxury, fashion, hospitality, real-estate and fintech projects that value a restrained "quiet \
 luxury" visual style are a strong fit: add 1 point.
 
@@ -59,16 +66,17 @@ Reply with ONLY one JSON object, no markdown:
  "pain_ru": "the client's pain / need in one sentence",
  "pain_en": "the client's pain / need in one English sentence",
  "why_ru": ["2-3 short reasons this is (or is not) a good lead"],
- "need_ru": "one sentence: the concrete solution AR Design would offer (UX/UI for the dashboard, client-area interface, design system, conversion landing...)",
+ "need_ru": "one sentence: the concrete solution AR Design would offer (UX/UI redesign, website, front-end, AI agent for support or sales...)",
  "reject_reason_ru": "short reason in Russian if rejected, else empty string"}"""
 
 NEED_RU = {
     "dashboard": "дашборд", "crm": "CRM-система", "web_app": "веб-приложение", "client_portal": "личный кабинет",
     "redesign": "редизайн интерфейса", "multipage_site": "многостраничный сайт", "landing": "лендинг",
-    "design_system": "дизайн-система", "none": "не по профилю",
+    "design_system": "дизайн-система", "ecommerce": "интернет-магазин", "frontend": "фронтенд-разработка",
+    "ai_agent": "ИИ-агент", "none": "не по профилю",
 }
 INTENT_RU = {
-    "explicit_request": "запрос на разработку/дизайн", "product_launch": "анонс продукта", "funding_news": "инвестиции и раунды",
+    "explicit_request": "запрос на разработку/дизайн", "product_launch": "тёплый лид: анонс продукта", "funding_news": "инвестиции и раунды",
     "general_news": "новости", "other": "другое",
 }
 URGENCY_RU = {"urgent": "срочно", "normal": "обычный срок", "unknown": "срок не указан"}
@@ -85,6 +93,9 @@ SOLUTIONS = {
     "multipage_site": "a multi-page website: sitemap, reusable page templates and a consistent visual system, built to load fast",
     "landing": "a conversion-focused landing page: message hierarchy, proof blocks and one clear call to action, built to load fast",
     "design_system": "a design system: tokens, components and states in Figma, so every new screen ships consistent and fast",
+    "ecommerce": "an e-commerce storefront: catalog, product page and checkout flow designed and built around conversion, fast on mobile",
+    "frontend": "front-end development: clean, responsive React / JavaScript implementation of your designs, ready for your backend",
+    "ai_agent": "an AI agent for your product or store: it answers customers, qualifies leads and automates repetitive workflows, wired into your existing tools",
 }
 
 # ---------------------------------------------------------------- rule-based layer (pre-filter and fallback)
@@ -104,7 +115,9 @@ REQUEST_CUE = re.compile(
 
 SCOPE = re.compile(
     r"(dashboard|\bcrm\b|web ?app|admin panel|back ?office|client (area|portal)|customer portal|portal|cabinet|личн\w+ кабинет|"
-    r"redesign|re-design|landing|web ?site|multi-?page|\bui\b|\bux\b|ui/ux|front-?end|interface|design system|figma|designer)", re.I)
+    r"redesign|re-design|landing|web ?site|multi-?page|\bui\b|\bux\b|ui/ux|front-?end|interface|design system|figma|designer|"
+    r"e-?commerce|online (store|shop)|shopify|woocommerce|storefront|checkout|react|next\.?js|tilda|"
+    r"ai agents?|\bagents?\b|chat ?bots?|llm|automation|copilot|assistant)", re.I)
 
 URGENT = re.compile(r"(asap|urgent\w*|immediately|this week|right away|срочно|deadline)", re.I)
 
@@ -112,6 +125,9 @@ NEED_RULES = [  # first match wins
     ("design_system", r"design system"), ("crm", r"\bcrm\b"), ("dashboard", r"dashboard|analytics ui|admin panel|back ?office"),
     ("client_portal", r"client (area|portal)|customer portal|portal|cabinet|личн\w+ кабинет"),
     ("web_app", r"web ?app"), ("landing", r"landing"), ("redesign", r"redesign|re-design|rebuild"),
+    ("ecommerce", r"e-?commerce|online (store|shop)|shopify|woocommerce|storefront|checkout"),
+    ("ai_agent", r"ai agents?|\bagents?\b|chat ?bots?|llm|automation|copilot|assistant"),
+    ("frontend", r"front-?end|react|next\.?js|tilda"),
     ("multipage_site", r"multi-?page|web ?site"),
 ]
 
@@ -142,11 +158,14 @@ def _heuristic(lead: dict, min_score: int) -> dict:
         intent, score = "funding_news", 0
     elif cue and scope and need != "none":
         intent = "explicit_request"
-        score = 6 + (2 if lead["source"] == "hackernews_ask" else 0) + (1 if URGENT.search(text) else 0) + (1 if len(lead.get("summary", "")) > 80 else 0)
+        score = 5 + (2 if lead["source"] == "hackernews_ask" else 0) + (1 if URGENT.search(text) else 0) + (1 if len(lead.get("summary", "")) > 80 else 0)
+    elif scope and lead["source"] in ("hackernews", "producthunt", "jobboard"):
+        need = guess_need(text)
+        intent, score = "product_launch", (5 if need != "none" else 2)
     else:
         intent, score = ("product_launch" if lead["source"] in ("hackernews", "producthunt") else "other"), 2
     score = max(0, min(10, score))
-    relevant = intent == "explicit_request" and score >= min_score
+    relevant = intent in ("explicit_request", "product_launch") and need != "none" and score >= min_score
     hits = ", ".join(lead.get("keywords", []) + lead.get("signals", [])) or "-"
     return {
         "relevant": relevant, "score": score, "intent": intent, "need_type": need,
@@ -157,7 +176,7 @@ def _heuristic(lead: dict, min_score: int) -> dict:
         "pain_en": (lead.get("summary") or lead["name"])[:200],
         "why_ru": [f"Совпадения по ключевым словам и сигналам: {hits}", "Оценка выставлена простым правилом без ИИ - проверьте вручную"],
         "need_ru": "Предложить UX/UI под их задачу - уточните по тексту поста.",
-        "reject_reason_ru": "" if relevant else "Нет явного запроса на дизайн или разработку интерфейса (или это инвестиции/новости).",
+        "reject_reason_ru": "" if relevant else "Нет запроса и явной связи с редизайном, сайтами, фронтендом или ИИ-агентами (или это инвестиции/новости).",
         "method": "heuristic",
     }
 
@@ -204,14 +223,14 @@ def _from_model(text: str, min_score: int, accepted: tuple[str, ...] = ("explici
 
 def qualify(lead: dict, cfg: dict) -> dict:
     qcfg = cfg.get("qualification", {})
-    min_score = qcfg.get("min_score", 7)
+    min_score = qcfg.get("min_score", 5)
     if is_noise(lead):  # never spend a model call on funding / investment posts
         return {**_heuristic(lead, min_score), "reject_reason_ru": "Инвестиции, раунды или новости - не запрос на разработку."}
     if llm.available(cfg):
         text = llm.complete(SYSTEM_PROMPT, _lead_prompt(lead), cfg, max_tokens=900)
         if text:
             try:
-                return _from_model(text, min_score, tuple(qcfg.get("accepted_intents", ["explicit_request"])))
+                return _from_model(text, min_score, tuple(qcfg.get("accepted_intents", ["explicit_request", "product_launch"])))
             except (ValueError, TypeError, json.JSONDecodeError) as exc:
                 print(f"[qualifier] bad model output ({type(exc).__name__}) - using rules")
     return _heuristic(lead, min_score)

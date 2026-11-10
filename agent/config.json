@@ -17,7 +17,11 @@
     "React",
     "Frontend",
     "Web Design",
-    "Prototyping"
+    "Prototyping",
+    "E-commerce",
+    "Shopify",
+    "AI agent",
+    "Redesign"
   ],
   "design_signals": [
     "designer",
@@ -45,7 +49,14 @@
     "React",
     "JavaScript",
     "luxury",
-    "premium"
+    "premium",
+    "AI agent",
+    "chatbot",
+    "automation",
+    "e-commerce",
+    "Shopify",
+    "redesign",
+    "website"
   ],
   "hackernews": {
     "max_age_hours": 24,
@@ -56,7 +67,9 @@
       "UX",
       "frontend",
       "dashboard",
-      "landing"
+      "landing",
+      "AI agent",
+      "e-commerce"
     ],
     "ask_queries": [
       "looking for a designer",
@@ -69,7 +82,11 @@
       "build a web app",
       "redesign our website",
       "CRM developer",
-      "looking for a freelancer"
+      "looking for a freelancer",
+      "need a website",
+      "Shopify developer",
+      "AI agent for customer support",
+      "chatbot for my SaaS"
     ]
   },
   "sources": {
@@ -238,11 +255,12 @@
     "max_age_days": 30
   },
   "qualification": {
-    "min_score": 7,
+    "min_score": 5,
     "max_per_run": 25,
     "enrich_site": true,
     "accepted_intents": [
-      "explicit_request"
+      "explicit_request",
+      "product_launch"
     ]
   },
   "outreach": {

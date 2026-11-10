@@ -37,7 +37,7 @@ module.exports = async function handler(req, res) {
     const out = await fetch(`https://api.github.com/repos/${repo}/actions/workflows/${workflow}/dispatches`, {
       method: "POST",
       headers: { ...headers, "content-type": "application/json" },
-      body: JSON.stringify({ ref: process.env.GITHUB_REF || "main", inputs: { action: "search", query: "", lead_id: "" } }),
+      body: JSON.stringify({ ref: process.env.GITHUB_REF || "main", inputs: { action: "search", query: "", lead_id: "", scheduled: "true" } }),
       signal: AbortSignal.timeout(15000),
     });
     if (out.status !== 204) {

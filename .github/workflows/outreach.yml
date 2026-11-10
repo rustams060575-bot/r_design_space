@@ -22,6 +22,10 @@ on:
         description: "Lead id for action=send (from the Telegram button)"
         type: string
         default: ""
+      scheduled:
+        description: "true when started by the external 09:00/21:00 trigger (api/cron.js): sends the morning digest"
+        type: string
+        default: ""
 
 permissions:
   contents: write            # needed to commit agent/tracker.json and agent/pending.json back
@@ -66,8 +70,7 @@ jobs:
           ACTION: ${{ inputs.action || 'search' }}
           SEARCH_QUERY: ${{ inputs.query }}
           LEAD_ID: ${{ inputs.lead_id }}
-          # Emails are only sent when the repository variable DRY_RUN is set to "false".
-          DRY_RUN: ${{ vars.DRY_RUN || 'true' }}
+          SCHEDULED: ${{ inputs.scheduled }}
           GMAIL_APP_PASSWORD: ${{ secrets.GMAIL_APP_PASSWORD }}
           GMAIL_CREDENTIALS: ${{ secrets.GMAIL_CREDENTIALS }}
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}

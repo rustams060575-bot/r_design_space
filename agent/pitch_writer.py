@@ -12,7 +12,7 @@ from qualifier import SOLUTIONS
 SYSTEM_PROMPT = (
     "You write cold emails for Rustam of AR Design, a boutique studio for UI/UX, SaaS/CRM dashboards, "
     "client-area interfaces, design systems, multi-page websites and conversion landing pages. "
-    "LANGUAGE: write the email in {language}. "
+    "LANGUAGE: write the email in polished, natural American English for a US business reader (US spelling, no idioms from other regions, no translated-sounding phrasing). "
     "VOICE: confident, expert, direct. Short sentences. No buzzwords, no flattery, no 'great idea' or 'cool project', "
     "no exclamation marks, no emojis, no apologies. You are a specialist offering a solution, not asking for a favour. "
     "FOCUS ON THE CLIENT'S PAIN, in this order: "
@@ -47,6 +47,7 @@ FALLBACKS = {  # (subject, body, gist) for the offline case; {name} {pain} {solu
            "Короткое экспертное письмо: называет боль клиента, предлагает конкретное решение и следующий шаг."),
 }
 NEED_SUBJECT = {
+    "ecommerce": "Store UX and checkout", "frontend": "Front-end development", "ai_agent": "AI agent for your product",
     "dashboard": "Dashboard UX/UI", "crm": "CRM interface", "web_app": "Web app UX/UI", "client_portal": "Client-area interface",
     "redesign": "Interface redesign", "multipage_site": "Multi-page website", "landing": "Landing page", "design_system": "Design system",
 }
@@ -106,9 +107,7 @@ def fallback_pitch(lead: dict, cfg: dict, language: str = "en") -> dict:
 
 def write_pitch(lead: dict, cfg: dict) -> dict:
     """Returns {subject, body, gist_ru, language}; the language comes from the qualifier's analysis."""
-    language = langs.normalize((lead.get("analysis") or {}).get("language"))
-    if lead["source"] in ("hackernews", "hackernews_ask"):
-        language = "en"  # Hacker News is an English-language community: pitch in English
+    language = "en"  # every pitch targets the US market: polished American English, whatever the lead's language
     system = SYSTEM_PROMPT.replace("{language}", langs.LANG_NAMES[language])
     text = llm.complete(system, _prompt(lead, cfg, language), cfg)
     if text:

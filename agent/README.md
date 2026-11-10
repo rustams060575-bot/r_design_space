@@ -59,7 +59,7 @@ Product Hunt, Hacker News (Show HN и Ask HN), **Google News RSS** на 15 ре�
 ## Настройка (один раз)
 
 1. **GitHub → Settings → Secrets and variables → Actions → Secrets:** `ANTHROPIC_API_KEY`, `TELEGRAM_BOT_TOKEN`,
-   `TELEGRAM_CHAT_ID`, `GMAIL_APP_PASSWORD`. Variables: `DRY_RUN=true` (на `false` только после проверки карточек).
+   `TELEGRAM_CHAT_ID`, `GMAIL_APP_PASSWORD`. Письма уходят только после вашего подтверждения кнопкой.
 2. **Токен для запуска Actions из Vercel:** GitHub → Settings → Developer settings → Fine-grained tokens →
    только этот репозиторий, право **Actions: Read and write**.
 3. **Vercel → Project → Settings → Environment Variables:** `TELEGRAM_BOT_TOKEN`, `TELEGRAM_CHAT_ID`,
@@ -136,7 +136,7 @@ Claude. 1–2 секунды недостижимы при любой архит
 - Бот подчиняется только вашему `TELEGRAM_CHAT_ID`; webhook проверяет секретный заголовок Telegram.
 - Память хранится только в приватном репозитории; в публичный бот не пишет (`MEMORY_ALLOW_PUBLIC` не включайте).
 - Текст запроса передаётся в workflow через переменные окружения, а не в команду shell.
-- Письмо = одно на домен, с отпиской; `DRY_RUN` блокирует реальную отправку даже после нажатия кнопки.
+- Письмо = одно на домен, с отпиской; письмо уходит только после вашей кнопки «Отправить письмо», автоотправки нет.
 - Если подряд нажать «Отправить» у нескольких лидов, GitHub оставляет в очереди только последний запуск;
   нажмите кнопку у пропущенного письма ещё раз.
 
