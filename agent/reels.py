@@ -53,10 +53,10 @@ def scenes_from_concept(concept: dict) -> list[dict]:
     lines = [concept["hook"]["on_screen_text"]]
     for shot in concept["shots"][1:]:
         text = shot.get("on_screen", "").strip()
-        if text and "ar design" not in text and "link in bio" not in text and text not in lines:
+        if text and "ar design" not in text.lower() and "link in bio" not in text and text not in lines:
             lines.append(text)
     out = [{"text": accent_last(t), "seconds": HOOK_SECONDS if i == 0 else SCENE_SECONDS, "hook": i == 0} for i, t in enumerate(lines)]
-    out.append({"text": "ar design studio", "sub": concept["cta"], "seconds": END_SECONDS, "end": True})
+    out.append({"text": "AR Design", "sub": concept["cta"], "seconds": END_SECONDS, "end": True})
     return out
 
 

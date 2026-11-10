@@ -53,7 +53,7 @@ def build_footer(cfg: dict, lang: str = "en", body: str = "") -> str:
     owner = cfg["owner"]
     parts = [
         "--",
-        f"{owner['name']} | {cfg.get('brand', 'ar design studio')} - flagship web engineering, motion & dashboard UX",
+        f"{owner['name']} | {cfg.get('brand', 'AR Design')} - flagship web engineering, motion & dashboard UX",
         f"Telegram: {owner['telegram_handle']} ({owner['telegram_url']})",
     ]
     linkedin = owner.get("linkedin_url")
@@ -77,7 +77,7 @@ def send_email(to_addr: str, subject: str, body: str, cfg: dict, lang: str = "en
 
     sender, password = load_credentials(cfg)
     msg = EmailMessage()
-    msg["From"] = formataddr((f"{cfg['owner']['name']} | {cfg.get('brand', 'ar design studio')}", sender))
+    msg["From"] = formataddr((f"{cfg['owner']['name']} | {cfg.get('brand', 'AR Design')}", sender))
     msg["To"] = to_addr
     msg["Reply-To"] = sender
     msg["Subject"] = subject

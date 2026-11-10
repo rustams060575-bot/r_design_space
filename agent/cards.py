@@ -1,4 +1,4 @@
-"""james · renders ar design studio cards (feed carousel slides 1080x1350, stories 1080x1920) as JPEG with Pillow.
+"""james · renders AR Design cards (feed carousel slides 1080x1350, stories 1080x1920) as JPEG with Pillow.
 
 Style: quiet luxury. near-black ground, warm off-white type, one champagne accent word per card, hairline frame, lowercase
 mono label. Instagram accepts JPEG (not PNG) for feed images, so everything is saved as high-quality JPEG.
@@ -14,7 +14,7 @@ from PIL import Image, ImageDraw, ImageFont
 BG, INK, STONE, ACCENT, LINE = (14, 14, 15), (237, 232, 224), (184, 175, 163), (183, 155, 107), (52, 51, 50)
 POST_SIZE, STORY_SIZE = (1080, 1350), (1080, 1920)
 HANDLE = "@ar_design_agency"
-LABEL = "ar design studio"
+LABEL = "AR Design"
 
 FONT_CANDIDATES = {
     "serif": ["georgia.ttf", "/usr/share/fonts/truetype/dejavu/DejaVuSerif.ttf", "DejaVuSerif.ttf"],

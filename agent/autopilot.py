@@ -3,7 +3,7 @@
     python agent/scraper.py --action autopilot        # what GitHub Actions runs (twice a day)
 
 One run: pick today's content -> render JPEG cards (cards.py) -> commit them to the public repo so Meta can fetch them by
-https URL -> publish to @ar_design_agency and the "AR Design Studio" Page in sync -> log -> telegram report.
+https URL -> publish to @ar_design_agency and the "AR Design" Page in sync -> log -> telegram report.
 
 Guardrails (autonomy is bounded, not unlimited):
   * at most 1 feed post and 2 stories per UTC day (state in content-hub/autopilot_state.json);
@@ -83,7 +83,7 @@ CAROUSELS = [
         {"h": "no *templates*.", "b": "every build starts from your story, not from a theme."},
         {"h": "no *stock* anything.", "b": "no filler imagery, no borrowed motion, no decorative noise."},
         {"h": "no *shortcuts* in code.", "b": "clean, readable, maintainable. you can hand it to any engineer."},
-        {"h": "just *flagship* work.", "b": "ar design studio. web engineering with taste."}],
+        {"h": "just *flagship* work.", "b": "AR Design. web engineering with taste."}],
      "caption": "restraint is a feature. fewer things, done properly."},
 ]
 
@@ -99,7 +99,7 @@ STORIES = [
     {"id": "s-restraint", "h": "restraint is a *feature*."},
     {"id": "s-system", "h": "design systems keep *brands* consistent.", "b": "components that refuse to drift."},
     {"id": "s-cta", "h": "have a launch *coming up*?", "b": "link in bio. tell us about the project."},
-    {"id": "s-flagship", "h": "flagship web engineering.", "b": "ar design studio"},
+    {"id": "s-flagship", "h": "flagship web engineering.", "b": "AR Design"},
 ]
 
 # ---------------------------------------------------------------- validation of any (model-written) copy
@@ -122,7 +122,7 @@ def validate_story(s: dict) -> bool:
     return validate_copy(s.get("h", ""), s.get("b", "")) and 0 < len(s.get("h", "")) <= 70 and len(s.get("b", "")) <= 90
 
 
-MODEL_SYSTEM = """You write instagram carousel copy for ar design studio (always lowercase), a studio for flagship web engineering. Voice: quiet luxury,
+MODEL_SYSTEM = """You write instagram carousel copy for AR Design (always written exactly as AR Design, never with Studio or Space), a studio for flagship web engineering. Voice: quiet luxury,
 clean code, minimalism, kinetic typography, complex UX/UI. American english, all lowercase, no emojis, no exclamation marks, no hype.
 Hard rules: no numbers with %, $, k or m; no prices, awards, guarantees, rankings, client names or statistics; make timeless craft statements only.
 Mark the single accent word of a headline with *asterisks*. Reply with ONLY one JSON object:

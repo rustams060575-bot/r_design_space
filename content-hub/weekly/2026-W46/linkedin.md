@@ -41,7 +41,7 @@ if you are shaping how your brand meets the world online, we would love to hear 
 
 connection note options (no pitch, under 300 chars):
 
-- hi {first}, i follow {company}'s product work. i run ar design studio, a small web engineering studio. glad to connect.
+- hi {first}, i follow {company}'s product work. i run AR Design, a small web engineering studio. glad to connect.
 - hi {first}, saw {company}'s recent launch and liked the restraint in the interface. connecting, would love to follow your work.
 - hi {first}, i build flagship web experiences for founders in the us. {company} is on my radar. happy to connect.
 

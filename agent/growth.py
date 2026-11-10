@@ -5,7 +5,7 @@
 
 Both write into content-hub/weekly/<YYYY-Www>/ and send a short summary to Telegram. They work without any API key
 (rule-based fallback from the concept bank below); with a key, the model writes fresh concepts from the live trend scan.
-Everything is english, lowercase brand, quiet luxury (see agent/james/persona.md). Nothing here sends email or posts
+Everything is english, brand always "AR Design", quiet luxury (see agent/james/persona.md). Nothing here sends email or posts
 to instagram: the owner publishes manually.
 """
 from __future__ import annotations
@@ -23,7 +23,7 @@ import llm
 ROOT = Path(__file__).resolve().parent
 PERSONA = ROOT / "james" / "persona.md"
 UA = "Mozilla/5.0 (compatible; ar-design-james/1.0; +https://www.instagram.com/ar_design_agency)"
-BRAND = "ar design studio"
+BRAND = "AR Design"
 
 
 # ---------------------------------------------------------------- helpers
@@ -47,8 +47,8 @@ def persona_text() -> str:
         return f"{BRAND}: quiet luxury, clean code, english only."
 
 
-def lowercase_brand(text: str) -> str:
-    """Enforces the branding rule on any generated text."""
+def normalize_brand(text: str) -> str:
+    """Enforces the single brand spelling "AR Design" on any generated text (no "Studio", no "Space")."""
     return re.sub(r"\bAR[ _]?Design(?:[ _]?Space)?(?:[ _]?Studio)?\b", BRAND, text, flags=re.I) if text else text
 
 
@@ -147,7 +147,7 @@ CONCEPT_BANK: list[dict] = [
             {"t": "1.5-5.0", "visual": "the hero resolves: oversized lowercase headline reveals line by line on a dark gradient, 600 ms ease-out.", "on_screen": "", "audio": "low pad rises"},
             {"t": "5.0-10.0", "visual": "split screen: editor (left) shows the gsap timeline, site (right) scrubs as the cursor drags the playhead.", "on_screen": "motion is code.", "audio": "tick per keyframe"},
             {"t": "10.0-15.0", "visual": "scroll continues: section transitions with masked kinetic type, devtools fps meter steady.", "on_screen": "smooth. by design.", "audio": "pulse locks to scroll"},
-            {"t": "15.0-18.0", "visual": "end card, centered, hairline rule: wordmark and handle.", "on_screen": "ar design studio · flagship web engineering", "audio": "single soft hit"},
+            {"t": "15.0-18.0", "visual": "end card, centered, hairline rule: wordmark and handle.", "on_screen": "AR Design · flagship web engineering", "audio": "single soft hit"},
         ],
         "audio_direction": "minimal electronic, 90-100 bpm, one riser; no voiceover. a licensed or royalty-free track from the instagram audio library.",
         "cta": "start a flagship build: link in bio.",
@@ -170,7 +170,7 @@ CONCEPT_BANK: list[dict] = [
             {"t": "1.5-6.0", "visual": "both scroll the hero: left fades in late with layout shift, right reveals type line by line with a mask.", "on_screen": "layout shift vs. choreography", "audio": ""},
             {"t": "6.0-12.0", "visual": "hover and cursor details: left cursor is default, right has a magnetic cta and a soft spotlight.", "on_screen": "details are the product.", "audio": "subtle whoosh on right only"},
             {"t": "12.0-17.0", "visual": "devtools overlay: lighthouse-style scores animate, right side fills green. (use measured numbers from the real demo only.)", "on_screen": "built, not assembled.", "audio": "riser"},
-            {"t": "17.0-20.0", "visual": "left half fades to black, right expands full-width; end card.", "on_screen": "ar design studio · link in bio", "audio": "hit"},
+            {"t": "17.0-20.0", "visual": "left half fades to black, right expands full-width; end card.", "on_screen": "AR Design · link in bio", "audio": "hit"},
         ],
         "audio_direction": "dry, minimal; sound design carries the contrast (left rough, right clean).",
         "cta": "book a flagship build: link in bio.",
@@ -193,7 +193,7 @@ CONCEPT_BANK: list[dict] = [
             {"t": "1.5-7.0", "visual": "one continuous scroll: object rotates, camera dollies, headline lines mask in and out.", "on_screen": "", "audio": "pad swell"},
             {"t": "7.0-13.0", "visual": "picture-in-picture: code editor with scrolltrigger `scrub: true`; the numbers move as the page moves.", "on_screen": "one timeline. every frame.", "audio": "tick locked to scrub"},
             {"t": "13.0-19.0", "visual": "section cuts: pricing, proof, cta; each enters with a distinct but related motion language.", "on_screen": "story first. ui second.", "audio": "pulse"},
-            {"t": "19.0-22.0", "visual": "pull back to a phone mockup; end card on dark.", "on_screen": "ar design studio · flagship web engineering", "audio": "soft hit"},
+            {"t": "19.0-22.0", "visual": "pull back to a phone mockup; end card on dark.", "on_screen": "AR Design · flagship web engineering", "audio": "soft hit"},
         ],
         "audio_direction": "cinematic minimal; a single bass hit on the hook, no melody until second 7.",
         "cta": "your launch deserves a scroll like this: link in bio.",
@@ -216,7 +216,7 @@ CONCEPT_BANK: list[dict] = [
             {"t": "1.5-4.5", "visual": "a generic template hero dissolves into a custom hero with a masked type reveal.", "on_screen": "your story is not a theme.", "audio": "riser"},
             {"t": "4.5-8.5", "visual": "code editor: one clean component, cursor blink, the interface updates live next to it.", "on_screen": "every detail is engineered.", "audio": "tick per keystroke"},
             {"t": "8.5-11.5", "visual": "slow scroll through the finished site, steady and smooth.", "on_screen": "quiet. fast. yours.", "audio": "pad swell"},
-            {"t": "11.5-13.0", "visual": "end card on dark.", "on_screen": "ar design studio · link in bio", "audio": "soft hit"},
+            {"t": "11.5-13.0", "visual": "end card on dark.", "on_screen": "AR Design · link in bio", "audio": "soft hit"},
         ],
         "audio_direction": "minimal, tense, one riser into a clean resolve.",
         "cta": "book a flagship build: link in bio.",
@@ -239,7 +239,7 @@ CONCEPT_BANK: list[dict] = [
             {"t": "1.5-4.5", "visual": "kilobytes count down as images and fonts are trimmed.", "on_screen": "every kilobyte is a decision.", "audio": "ticks"},
             {"t": "4.5-8.5", "visual": "two pages load side by side: one flickers, one lands clean.", "on_screen": "fast pages feel expensive.", "audio": "clean tone right"},
             {"t": "8.5-11.5", "visual": "devtools quiet, nothing red.", "on_screen": "craft you can feel.", "audio": "pad"},
-            {"t": "11.5-13.0", "visual": "end card.", "on_screen": "ar design studio · link in bio", "audio": "soft hit"},
+            {"t": "11.5-13.0", "visual": "end card.", "on_screen": "AR Design · link in bio", "audio": "soft hit"},
         ],
         "audio_direction": "dry and minimal; clicks carry the rhythm.",
         "cta": "book a flagship build: link in bio.",
@@ -262,7 +262,7 @@ CONCEPT_BANK: list[dict] = [
             {"t": "1.5-4.5", "visual": "transitions that do nothing are struck through one by one.", "on_screen": "motion must earn its place.", "audio": "strike ticks"},
             {"t": "4.5-8.5", "visual": "the remaining motion plays: three precise moves.", "on_screen": "meaning over decoration.", "audio": "tonal rise"},
             {"t": "8.5-11.5", "visual": "clean code panel scrolls by, nothing extra.", "on_screen": "clean code. quiet screens.", "audio": "pad"},
-            {"t": "11.5-13.0", "visual": "end card.", "on_screen": "ar design studio · link in bio", "audio": "soft hit"},
+            {"t": "11.5-13.0", "visual": "end card.", "on_screen": "AR Design · link in bio", "audio": "soft hit"},
         ],
         "audio_direction": "sparse; strike ticks, then one tonal rise.",
         "cta": "book a flagship build: link in bio.",
@@ -276,9 +276,9 @@ CONCEPT_BANK: list[dict] = [
 
 # ---------------------------------------------------------------- reel generation
 
-CONTENT_SYSTEM = """You are james, content strategist and creative producer of ar design studio (always lowercase), an instagram account (@ar_design_agency) \
+CONTENT_SYSTEM = """You are james, content strategist and creative producer of AR Design (always written exactly as AR Design, never with Studio or Space), an instagram account (@ar_design_agency) \
 growing toward 1M+ reach. Voice: quiet luxury, hardcore digital engineering, minimalism, clean-code aesthetic, kinetic typography, complex UX/UI. \
-Everything is in american english, lowercase brand, no emojis, no exclamation marks, no hype.
+Everything is in american english, brand always written "AR Design", no emojis, no exclamation marks, no hype.
 
 Task: from the trend scan, produce {n} reel concepts for this week. Rules for each reel:
 - a 1.5-second visual hook: motion in frame 1, no logo, on-screen text of at most 5 words, understandable without sound;
@@ -317,7 +317,7 @@ def validate_concept(c: dict, hashtags_required: list[str]) -> dict | None:
     for t in hashtags_required:
         if t not in tags:
             tags.append(t)
-    fixed = json.loads(lowercase_brand(json.dumps(c, ensure_ascii=False)))
+    fixed = json.loads(normalize_brand(json.dumps(c, ensure_ascii=False)))
     fixed["hashtags"] = tags
     fixed["hook"]["seconds"] = 1.5
     return fixed
@@ -400,7 +400,7 @@ def render_preview(week: str, concepts: list[dict], mode: str) -> str:
 
 LINKEDIN_BANK = [
     {"id": "li-template", "hook": "a template is somebody else's decision.",
-     "body": "when a founder picks a theme, the site inherits someone else's hierarchy, someone else's pacing, someone else's idea of what matters.\n\nat ar design studio we start from the story, then engineer the page around it: type, motion and code as one system.\n\nflagship work is not louder. it is more deliberate.",
+     "body": "when a founder picks a theme, the site inherits someone else's hierarchy, someone else's pacing, someone else's idea of what matters.\n\nat AR Design we start from the story, then engineer the page around it: type, motion and code as one system.\n\nflagship work is not louder. it is more deliberate.",
      "cta": "if a launch is on your calendar, i'd like to hear about it.", "tags": ["#webdesign", "#startups", "#productdesign", "#frontend", "#designsystems"]},
     {"id": "li-performance", "hook": "slow is a design flaw.",
      "body": "performance is the first thing a visitor feels and the last thing most teams design.\n\nweight, fonts, images, motion budget: every one is a design decision. a page that lands fast reads as confident before a single word is read.",
@@ -420,12 +420,12 @@ LINKEDIN_BANK = [
 ]
 
 CONNECT_NOTES = [
-    "hi {first}, i follow {company}'s product work. i run ar design studio, a small web engineering studio. glad to connect.",
+    "hi {first}, i follow {company}'s product work. i run AR Design, a small web engineering studio. glad to connect.",
     "hi {first}, saw {company}'s recent launch and liked the restraint in the interface. connecting, would love to follow your work.",
     "hi {first}, i build flagship web experiences for founders in the us. {company} is on my radar. happy to connect.",
 ]
 
-LINKEDIN_SYSTEM = """You are james, content strategist of ar design studio (always lowercase), flagship web engineering for US founders and brands. Write {n} LinkedIn
+LINKEDIN_SYSTEM = """You are james, content strategist of AR Design (always written exactly as AR Design, never with Studio or Space), flagship web engineering for US founders and brands. Write {n} LinkedIn
 posts for the owner to publish (american english, all lowercase, no emojis, no exclamation marks, quiet luxury, clean code, kinetic typography).
 Each: a first-line hook (max 8 words), a body of 2 short paragraphs, one soft call to action, 4-5 hashtags (#webdesign #startups #productdesign #frontend plus one topical).
 Hard rules: no numbers with %, $, k or m; no prices, awards, guarantees, rankings, client names or statistics.

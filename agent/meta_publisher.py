@@ -9,7 +9,7 @@ Flow: concept (reels.json) -> queue item -> owner approval -> due time -> publis
 
 What the Meta APIs really allow (so the logic matches them):
   * Instagram Reels / images: POST /{ig-user-id}/media (container) -> poll status_code -> POST /{ig-user-id}/media_publish.
-    The Instagram Content Publishing API has NO native scheduling, so ar design studio schedules in this queue: the job runs
+    The Instagram Content Publishing API has NO native scheduling, so AR Design schedules in this queue: the job runs
     periodically and publishes every approved item whose time has come.
   * Facebook Page videos / posts: native scheduling exists (published=false + scheduled_publish_time, 10 min to 30 days ahead),
     used when the item is approved ahead of its time.
@@ -66,9 +66,9 @@ def parse_time(value: str) -> datetime:
 # ---------------------------------------------------------------- caption and item validation
 
 def build_caption(concept: dict) -> str:
-    from growth import lowercase_brand
+    from growth import normalize_brand
     tags = " ".join(concept.get("hashtags", [])[:30])
-    return lowercase_brand(f"{concept['caption'].strip()}\n\n{tags}".strip())
+    return normalize_brand(f"{concept['caption'].strip()}\n\n{tags}".strip())
 
 
 def validate_item(item: dict) -> list[str]:

@@ -15,7 +15,7 @@ import re
 import langs
 import llm
 
-SYSTEM_PROMPT = """You are a lead-qualification analyst for ar design studio (always lowercase), a boutique studio for flagship web engineering in the US and Western Europe (scroll-driven cinematic sites, custom animation) that also sells UI/UX design and \
+SYSTEM_PROMPT = """You are a lead-qualification analyst for AR Design (always written exactly as AR Design, never with Studio or Space), a boutique studio for flagship web engineering in the US and Western Europe (scroll-driven cinematic sites, custom animation) that also sells UI/UX design and \
 redesign (dashboards, CRM systems, web apps, client areas, design systems), website development (multi-page sites, \
 landing pages, e-commerce stores), front-end development (React, JavaScript, Tilda), and AI-agent implementation for \
 SaaS and e-commerce (support bots, sales / onboarding assistants, workflow automation, AI features inside a product).
@@ -75,7 +75,7 @@ Reply with ONLY one JSON object, no markdown:
  "pain_ru": "the client's pain / need in one sentence",
  "pain_en": "the client's pain / need in one English sentence",
  "why_ru": ["2-3 short reasons this is (or is not) a good lead"],
- "need_ru": "one sentence: the concrete solution ar design studio would offer (UX/UI redesign, website, front-end, AI agent for support or sales...)",
+ "need_ru": "one sentence: the concrete solution AR Design would offer (UX/UI redesign, website, front-end, AI agent for support or sales...)",
  "reject_reason_ru": "short reason in Russian if rejected, else empty string"}"""
 
 NEED_RU = {
