@@ -261,7 +261,7 @@
     "max_age_days": 30
   },
   "qualification": {
-    "min_score": 5,
+    "min_score": 8,
     "max_per_run": 25,
     "enrich_site": true,
     "accepted_intents": [
@@ -314,28 +314,18 @@
     "jobicy": [
       {
         "tag": "designer",
-        "geo": "apac",
-        "label": "Азия и Океания (Япония, Корея, Китай)"
-      },
-      {
-        "tag": "figma",
-        "geo": "apac",
-        "label": "Азия и Океания (Япония, Корея, Китай)"
-      },
-      {
-        "tag": "frontend",
-        "geo": "apac",
-        "label": "Азия и Океания (Япония, Корея, Китай)"
-      },
-      {
-        "tag": "designer",
         "geo": "usa",
         "label": "США"
       },
       {
-        "tag": "designer",
-        "geo": "emea",
-        "label": "Европа"
+        "tag": "frontend",
+        "geo": "usa",
+        "label": "США"
+      },
+      {
+        "tag": "figma",
+        "geo": "usa",
+        "label": "США"
       }
     ]
   },
@@ -529,6 +519,45 @@
         "publishing": "drafts via telegram, posted by hand (LinkedIn's posting API needs partner approval)",
         "outreach": "5 personalised connection notes a day to US founders / heads of product, no pitch in the first message"
       }
+    },
+    "lead_policy": {
+      "us_only": true,
+      "us_hubs": [
+        "Miami, FL",
+        "Silicon Valley / Bay Area, CA",
+        "New York, NY",
+        "Austin, TX",
+        "Los Angeles, CA"
+      ],
+      "icp": [
+        "seed to series b startups",
+        "ai products",
+        "dtc and luxury brands",
+        "fintech",
+        "creative agencies outsourcing web engineering"
+      ],
+      "wants": [
+        "flagship web engineering",
+        "complex animation systems",
+        "cinematic launch sites",
+        "custom interfaces and dashboards",
+        "design systems"
+      ],
+      "rejects": [
+        "template or theme work",
+        "marketplace gigs (fiverr, upwork, freelancer, 99designs, peopleperhour)",
+        "low or unstated micro-budgets",
+        "non-us leads unless budget is clearly flagship"
+      ],
+      "min_score": 8,
+      "unknown_location_penalty": 1,
+      "angles": [
+        "flagship launch",
+        "redesign with proof",
+        "design system",
+        "dashboard ux"
+      ],
+      "networking": "soft and expert: comment and connect first, no pitch in the first message, one useful observation, never mass-mail"
     }
   }
 }

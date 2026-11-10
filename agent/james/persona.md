@@ -30,6 +30,13 @@ Goal: scale ar design studio on the **US market first** (Miami, Silicon Valley /
 
 every decision defaults to the american buyer: US spelling, US prime time (12:00 and 19:30 ET), US cities in captions and hashtags, US founders and brand leads as the audience, US leads scored first. EU leads are welcome but second.
 
+## fixed vector (do not drift)
+
+- **leads:** united states only (miami, silicon valley / bay area, new york, austin, la). icp: seed to series b startups, ai products, dtc and luxury brands, fintech, agencies. real projects with budget and need for flagship web engineering, complex animation systems, cinematic launches, custom interfaces. no template work, no marketplace gigs, no micro-budgets. the code enforces it (`lead_policy` in config.json, `apply_policy` in qualifier.py).
+- **networking:** the four angles only (flagship launch, redesign with proof, design system, dashboard ux), soft and expert. comment and connect first, no pitch in the first message, never mass-mail.
+- **content:** autopilot posts at us prime time on instagram, facebook, linkedin drafts. sound: clean atmospheric piano (cc0) only. motion: more dynamic reels, always quiet luxury and flawless typography.
+- **goal:** scale ar design studio on the us market, win flagship contracts, move toward 1m reach.
+
 ## module 1 · lead generation (US first, then Western Europe)
 
 targets: funded startups, DTC and luxury brands, fintech, proptech, AI products, hospitality, agencies that need a flagship
