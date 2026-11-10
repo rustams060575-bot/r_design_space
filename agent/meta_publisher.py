@@ -2,7 +2,7 @@
 
 Flow: concept (reels.json) -> queue item -> owner approval -> due time -> publish.
 
-    python agent/meta_publisher.py add --concept <id> --video-url https://... --at 2026-11-12T16:00:00Z [--platforms instagram,facebook]
+    python agent/meta_publisher.py add --concept <id> --video-url https://... --at 2026-11-12T16:00:00Z [--platforms instagram,facebook] [--kind reel|image|post]
     python agent/meta_publisher.py approve <queue-id>
     python agent/meta_publisher.py list
     python agent/meta_publisher.py run            # also: python agent/scraper.py --action publish (GitHub Actions / cron)
@@ -230,6 +230,7 @@ def main(argv=None) -> int:
     a.add_argument("--at", required=True)
     a.add_argument("--platforms", default="instagram,facebook")
     a.add_argument("--week", default=None)
+    a.add_argument("--kind", choices=KINDS, default="reel")
     ap_ = sub.add_parser("approve")
     ap_.add_argument("id")
     sub.add_parser("list")
@@ -243,7 +244,7 @@ def main(argv=None) -> int:
         if not concept:
             print(f"concept {args.concept} not found in {path}")
             return 1
-        print("queued as draft:", add_item(items, concept, args.video_url, args.at, args.platforms.split(","))["id"])
+        print("queued as draft:", add_item(items, concept, args.video_url, args.at, args.platforms.split(","), args.kind)["id"])
     elif args.cmd == "approve":
         item = next((i for i in items if i["id"] == args.id), None)
         if not item or item["status"] != "draft":

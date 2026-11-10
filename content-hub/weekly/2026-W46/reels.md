@@ -94,6 +94,18 @@ start a project: link in bio.
 
 ## trend scan (public feeds)
 
+- [HN: awwwards / webgl / scroll] Amazon saves millions by replacing Sonnet 4.6 with Strands Decider — https://strandsagents.com/blog/amazon-saves-millions-replacing-sonnet-with-strands-decider/
+- [HN: awwwards / webgl / scroll] Fable 5.2 one-shotted my nephew's dream game — https://notesbylex.com/fable-5-2-one-shotted-my-nephews-dream-game
+- [HN: awwwards / webgl / scroll] Claude Fable 5.2 scores 65 on Artificial Analysis, highest so far — https://artificialanalysis.ai/models/claude-fable-5-2
+- [HN: awwwards / webgl / scroll] Parking-app convenience fees in 312 U.S. cities (median $0.35 per session) — https://parkgraph.com/parking-app-fees
+- [HN: awwwards / webgl / scroll] Claude Fable 5.2 launch offers — https://support.claude.com/en/articles/17506494-claude-fable-5-2-launch-offers
+- [HN: awwwards / webgl / scroll] Claude Fable 5.2 — https://twitter.com/claudeai/status/2119867114450268322
+- [HN: awwwards / webgl / scroll] Claude Fable 5.2 and Mythos 5.2 — https://www.anthropic.com/claude-fable-and-mythos-5-2
+- [HN: awwwards / webgl / scroll] Claude Fable 5.2 and Mythos 5.2 — https://www.anthropic.com/claude-fable-and-mythos-5-2
+- [HN: awwwards / webgl / scroll] The same H100 costs $2.69 or $12.29 an hour depending where you rent it — https://github.com/datareceipts/data-receipts/tree/main/109-gpu-pricing
+- [HN: awwwards / webgl / scroll] Is Opus 5.5 nerfed? Thinking patterns changed on November 3 — https://twitter.com/shanemelaugh/status/2119192075505893695
+- [HN: awwwards / webgl / scroll] Show HN: Flide: Make Jev-like decision models up to 9.5x faster — https://github.com/OmniJev/Flide
+- [HN: awwwards / webgl / scroll] Tell HN: A flood of reports of Opus 5.5 being nerfed — https://news.ycombinator.com/item?id=50419019
 - [HN: creative coding showcases] Show HN: Codemap – one-page interactive map of any Go repository — https://github.com/peterretief/codemap
 - [HN: creative coding showcases] Show HN: Interactive notes on RLHF, attention, LoRA and LLM evals — https://concepts.laxmena.com/
 - [HN: creative coding showcases] Show HN: Warsaw in voxels – An interactive 3D map of the city centre — https://p.migdal.pl/warsaw-vibe-voxel/

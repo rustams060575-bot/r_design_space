@@ -310,5 +310,14 @@ def run_content(cfg: dict) -> int:
     md = render_reels_md(week, concepts, trends, mode)
     (folder / "reels.md").write_text(md, encoding="utf-8")
     print(f"[content] {len(concepts)} concepts ({mode}), {len(trends)} trend items -> {folder}")
-    _telegram(md)
+    _telegram(render_preview(week, concepts, mode))
     return 0
+
+
+def render_preview(week: str, concepts: list[dict], mode: str) -> str:
+    """Short telegram notification: the full shot list stays in content-hub/weekly/<week>/reels.md."""
+    lines = [f"reel concepts · {week} · @ar_design_agency", f"source: {'model' if mode == 'model' else 'concept bank'} · status: drafts only, live posting waits for meta tokens", ""]
+    for i, c in enumerate(concepts, 1):
+        lines += [f"{i}. {c['title']}", f"   hook (1.5 s): {c['hook']['on_screen_text']}", f"   cta: {c['cta']}", ""]
+    lines.append(f"full shot-by-shot plan, captions and hashtags: content-hub/weekly/{week}/reels.md")
+    return "\n".join(lines)
