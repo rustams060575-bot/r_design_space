@@ -147,7 +147,7 @@ async function dispatch(inputs) {
       Authorization: `Bearer ${env.get("GH_DISPATCH_TOKEN")}`,
       Accept: "application/vnd.github+json",
       "X-GitHub-Api-Version": "2022-11-28",
-      "User-Agent": "r-design-space-bot",
+      "User-Agent": "ar-design-bot",
       "content-type": "application/json",
     },
     body: JSON.stringify({ ref: process.env.GITHUB_REF || "main", inputs }),

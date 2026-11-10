@@ -33,7 +33,7 @@ function createStore(env, fetchImpl, opts = {}) {
     Authorization: `Bearer ${token}`,
     Accept: "application/vnd.github+json",
     "X-GitHub-Api-Version": "2022-11-28",
-    "User-Agent": "r-design-space-bot",
+    "User-Agent": "ar-design-bot",
     "content-type": "application/json",
   };
   let verified = false;

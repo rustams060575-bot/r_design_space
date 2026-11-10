@@ -204,7 +204,7 @@ def main() -> None:
     slides = sorted(data["slides"], key=lambda s: s["slide_number"])
     out = (HERE / args.out) if not Path(args.out).is_absolute() else Path(args.out)
     out.mkdir(parents=True, exist_ok=True)
-    brand = data.get("brand", "R DESIGN SPACE")
+    brand = data.get("brand", "AR DESIGN")
     for s in slides:
         path = out / f"slide_{s['slide_number']}.png"
         render_slide(s, len(slides), brand).save(path, optimize=True)

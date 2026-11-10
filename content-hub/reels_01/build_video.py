@@ -239,7 +239,7 @@ def lux_site(img, box, grid_t=1.0, reveal=1.0):
                                    fill=with_alpha(GOLD, 0.16), width=1)
         img.paste(layer, (0, 0), layer)
     a = ease_out(reveal)
-    draw_text(img, (x0 + cw * 0.5, y0 + 110), "R Design Space", text_font(28), STONE, a, rise=14 * (1 - a))
+    draw_text(img, (x0 + cw * 0.5, y0 + 110), "AR Design", text_font(28), STONE, a, rise=14 * (1 - a))
     draw_text(img, (x0 + cw * 0.5, y0 + 260), "Interfaces", serif(104, 400), LIGHT, a, rise=20 * (1 - a))
     draw_text(img, (x0 + cw * 0.5, y0 + 385), "that feel", serif_it(104, 400), GOLD, ease_out(reveal - 0.1), rise=20 * (1 - a))
     draw_text(img, (x0 + cw * 0.5, y0 + 510), "expensive.", serif(104, 400), LIGHT, ease_out(reveal - 0.2), rise=20 * (1 - a))
@@ -578,7 +578,7 @@ def fit_one(text: str, size: int, max_w: int = W - 160):
 def j_hook(img, t, dur, hook):
     faint_grid(img, t)
     a = ease_out(t / 0.5)
-    draw_text(img, (W / 2, 190), "R DESIGN SPACE", text_font(30), STONE, a, anchor="mm", rise=10 * (1 - a))
+    draw_text(img, (W / 2, 190), "AR DESIGN", text_font(30), STONE, a, anchor="mm", rise=10 * (1 - a))
     hline(img, W // 2 - int(90 * ease_out(t / 0.9)), W // 2 + int(90 * ease_out(t / 0.9)), 240, GOLD, 0.7, 1)
     parts = re.split(r"\s+vs\.?\s+", hook, maxsplit=1, flags=re.I)
     if len(parts) == 2:
@@ -597,7 +597,7 @@ def j_hook(img, t, dur, hook):
 
 def j_point(img, t, dur, text, idx):
     faint_grid(img, t)
-    marker(img, t, f"{idx:02d}", "R Design Space")
+    marker(img, t, f"{idx:02d}", "AR Design")
     lines, size = fit_lines(text)
     y = 760 - int((len(lines) - 1) * size * 0.64 / 2)
     caption(img, lines, t, y, size=size, f=serif(size, 500), accent=last_word(lines), delay=0.3, center=False)
@@ -740,7 +740,7 @@ def spaced(img, cx, y, s, f, color, a, track=7):
 
 def tag(img, t, P, y=170, cx=W // 2):
     a = ease_out(t / 0.7)
-    spaced(img, cx, y, "R DESIGN SPACE", sans_font(25), P["stone"], a)
+    spaced(img, cx, y, "AR DESIGN", sans_font(25), P["stone"], a)
 
 
 def block(img, lines, f, x, y, lh, color, t, delay=0.0, stagger=0.18, align="left", acc=None, acc_words=(), ul_words=()):
@@ -1027,7 +1027,7 @@ def L_bento(img, t, dur, sc, P):
         x0, x1, y0, y1 = (W - 700) // 2, (W + 700) // 2, 330, 1590
         card(img, (x0, y0, x1, y1), P, a, gold=True, radius=80)
         hline(img, W // 2 - 60, W // 2 + 60, y0 + 44, P["stone"], 0.6 * a, 4)
-        spaced(img, W // 2, y0 + 120, "R DESIGN SPACE", sans_font(24), P["stone"], ease_out((t - 0.3) / 0.6), track=6)
+        spaced(img, W // 2, y0 + 120, "AR DESIGN", sans_font(24), P["stone"], ease_out((t - 0.3) / 0.6), track=6)
         lines, size = fit_lines(text, sizes=(76, 68, 60), max_w=560, max_lines=4)
         block(img, lines, serif(size, 500), W // 2, y0 + 260, int(size * 1.24), P["text"], t, delay=0.5, align="center")
         yb = y0 + 260 + len(lines) * int(size * 1.24) + 70
@@ -1064,9 +1064,9 @@ def L_bento(img, t, dur, sc, P):
     a = ease_out(t / 0.7)
     card(img, box, P, a, gold=("central" in vd))
     if wmax < 600:  # узкая карточка: подпись бренда слева сверху
-        put_text(img, (lab_x, box[1] + 56), "R DESIGN SPACE", sans_font(24, True), P["acc"], ease_out((t - 0.3) / 0.6))
+        put_text(img, (lab_x, box[1] + 56), "AR DESIGN", sans_font(24, True), P["acc"], ease_out((t - 0.3) / 0.6))
     elif "central" in vd:
-        spaced(img, W // 2, box[1] + 56, "R DESIGN SPACE", sans_font(24), P["acc"], ease_out((t - 0.3) / 0.6), track=6)
+        spaced(img, W // 2, box[1] + 56, "AR DESIGN", sans_font(24), P["acc"], ease_out((t - 0.3) / 0.6), track=6)
     lines, size = fit_lines(text, sizes=(76, 66, 58, 52), max_w=wmax, max_lines=5)
     lh = int(size * 1.22)
     ty = box[1] + 130

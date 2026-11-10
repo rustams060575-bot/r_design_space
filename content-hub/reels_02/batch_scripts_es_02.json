@@ -1,6 +1,6 @@
 {
   "filename": "batch_scripts_es_02.json",
-  "brand": "R DESIGN SPACE",
+  "brand": "AR DESIGN",
   "language": "es",
   "audience": [
     "Fundadores",
@@ -131,7 +131,7 @@
           "text": "Revisemos cómo se percibe tu marca.",
           "secondary_text": "Auditoría UX gratuita · Telegram\n@r_design_space_bot",
           "voiceover": "Solicita tu auditoría UX gratuita en nuestro bot de Telegram.",
-          "visual_direction": "Tarjeta vertical desplazada a la derecha con una pequeña etiqueta superior: R DESIGN SPACE."
+          "visual_direction": "Tarjeta vertical desplazada a la derecha con una pequeña etiqueta superior: AR DESIGN."
         }
       ]
     },
