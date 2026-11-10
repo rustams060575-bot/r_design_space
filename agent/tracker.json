@@ -1999,9 +1999,9 @@
     },
     "hn:50434751": {
       "name": "I built a tool that babysits your agents",
-      "status": "pending",
+      "status": "sent",
       "score": 6,
-      "at": "2026-11-10T06:11:38+00:00"
+      "at": "2026-11-10T06:29:43+00:00"
     },
     "hn:50376975": {
       "name": "Any way to have inbuild second screen for AI to control",
@@ -2040,5 +2040,7 @@
       "at": "2026-11-10T06:12:13+00:00"
     }
   },
-  "contacted_domains": []
+  "contacted_domains": [
+    "physicsbase.ai"
+  ]
 }

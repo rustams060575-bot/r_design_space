@@ -46,17 +46,5 @@
       "language": "en"
     },
     "created": "2026-11-10T05:00:32+00:00"
-  },
-  "hn:50434751": {
-    "name": "I built a tool that babysits your agents",
-    "email": "support@physicsbase.ai",
-    "domain": "physicsbase.ai",
-    "pitch": {
-      "subject": "Dashboard UX/UI for your agent control layer",
-      "body": "Your control layer gives each agent an identity, a policy and a vault. Your users now need to see what those agents are doing and stop them fast.\n\nI would design that dashboard: an information hierarchy built around risk, KPI cards for blocked and approved calls, filterable audit tables, and a kill-switch flow. You get a responsive Figma kit your developers can build from.\n\nI specialize in CRM and SaaS dashboards. The work is pixel-perfect and the turnaround is fast.\n\nReply with a few details on your main user roles and the actions they must take. I will send a scoped plan. A short call also works. My LinkedIn profile is linked below.\n\nRustam | AR Design\nLinkedIn: https://www.linkedin.com/in/rustam-akbarovich-45b187417/",
-      "gist_ru": "Предлагаю спроектировать UX/UI дашборда для контрольного слоя ИИ-агентов: иерархию, KPI-карточки, таблицы с фильтрами и Figma-кит, затем созвон или план работ.",
-      "language": "en"
-    },
-    "created": "2026-11-10T06:11:37+00:00"
   }
 }
