@@ -39,7 +39,7 @@ QUEUE_PATH = ROOT.parent / "content-hub" / "publish_queue.json"
 GRAPH = "https://graph.facebook.com"
 FB_MIN_AHEAD, FB_MAX_AHEAD = timedelta(minutes=10), timedelta(days=30)
 PLATFORMS = ("instagram", "facebook")
-KINDS = ("reel", "image", "post", "carousel")
+KINDS = ("reel", "image", "post", "carousel", "story")
 PUBLISH_SCOPES = ("instagram_basic", "instagram_content_publish", "pages_show_list", "pages_manage_posts", "pages_read_engagement")
 STATUS_POLL_SECONDS, STATUS_POLL_TRIES = 6, 30
 
@@ -82,12 +82,10 @@ def validate_item(item: dict) -> list[str]:
         urls = item.get("media_urls") or []
         if not 2 <= len(urls) <= 10 or not all(str(u).startswith("https://") for u in urls):
             problems.append("carousel needs 2-10 public https image URLs in media_urls")
-        if item.get("platforms") != ["instagram"]:
-            problems.append("carousel is instagram-only")
     elif item.get("kind") != "post" and not str(item.get("media_url", "")).startswith("https://"):
         problems.append("media_url must be a public https URL")
     caption = item.get("caption", "")
-    if not caption or len(caption) > 2200:
+    if (not caption and item.get("kind") != "story") or len(caption) > 2200:
         problems.append("caption is empty or longer than 2200 characters")
     if len(re.findall(r"#\w+", caption)) > 30:
         problems.append("more than 30 hashtags")
@@ -108,8 +106,9 @@ class Graph:
         # ACCESS_TOKEN (a user token) is the generic fallback; a dedicated Page token is preferred for Facebook.
         generic = env.get("ACCESS_TOKEN", "")
         self.user_token = generic
-        self.ig_id, self.ig_token = env.get("IG_USER_ID", ""), env.get("IG_ACCESS_TOKEN") or generic
+        self.ig_id = env.get("IG_USER_ID", "")
         self.fb_id, self.fb_token = env.get("FB_PAGE_ID", ""), env.get("FB_PAGE_TOKEN", "")
+        self.ig_token = env.get("IG_ACCESS_TOKEN") or self.fb_token or generic
         self.live = env.get("META_PUBLISH_LIVE") == "1"
         self.poll_tries = int(env.get("META_POLL_TRIES") or STATUS_POLL_TRIES)
         self.poll_seconds = int(env.get("META_POLL_SECONDS") or STATUS_POLL_SECONDS)
@@ -148,6 +147,12 @@ class Graph:
                        "ig_username": (pg.get("instagram_business_account") or {}).get("username")} for pg in pages],
         }
 
+    def exchange_long_lived(self, app_id: str, app_secret: str) -> dict:
+        """Short-lived user token -> long-lived (about 60 days). Page tokens derived from a long-lived user token do not expire."""
+        data = self._call("GET", "oauth/access_token", f"{app_id}|{app_secret}", grant_type="fb_exchange_token",
+                          client_id=app_id, client_secret=app_secret, fb_exchange_token=self.user_token)
+        return {"access_token": data["access_token"], "expires_in": data.get("expires_in")}
+
     def page_token(self) -> str:
         """Facebook posting needs a Page token: FB_PAGE_TOKEN, or derived from the user token through /{page}?fields=access_token."""
         if not self.fb_token and self.fb_id and self.user_token:
@@ -178,6 +183,8 @@ class Graph:
         caption = item["caption"]
         if item["kind"] == "reel":
             return self._container({"caption": caption, "media_type": "REELS", "video_url": item["media_url"], "share_to_feed": "true"})
+        if item["kind"] == "story":
+            return self._container({"media_type": "STORIES", "image_url": item["media_url"]})
         if item["kind"] == "carousel":
             children = [self._container({"image_url": u, "is_carousel_item": "true"}) for u in item["media_urls"]]
             for child in children:
@@ -190,8 +197,17 @@ class Graph:
         return self.finish_instagram(self.create_instagram_container(item))
 
     # facebook page (native scheduling when `when` is given)
+    def _fb_photo(self, url: str) -> str:
+        """Uploads a photo to the Page without publishing it (used for stories and multi-photo posts)."""
+        return self._call("POST", f"{self.fb_id}/photos", self.fb_token, url=url, published="false")["id"]
+
     def publish_facebook(self, item: dict, when: datetime | None = None) -> str:
         self.page_token()
+        if item["kind"] == "story":
+            return self._call("POST", f"{self.fb_id}/photo_stories", self.fb_token, photo_id=self._fb_photo(item["media_url"]))["post_id"]
+        if item["kind"] == "carousel":
+            attached = {f"attached_media[{i}]": json.dumps({"media_fbid": self._fb_photo(u)}) for i, u in enumerate(item["media_urls"])}
+            return self._call("POST", f"{self.fb_id}/feed", self.fb_token, message=item["caption"], **attached)["id"]
         sched = {"published": "false", "scheduled_publish_time": int(when.timestamp())} if when else {}
         if item["kind"] == "reel":
             return self._call("POST", f"{self.fb_id}/videos", self.fb_token, file_url=item["media_url"], description=item["caption"], **sched)["id"]

@@ -441,6 +441,15 @@
         "#digitalagency"
       ],
       "out_dir": "../content-hub/weekly"
+    },
+    "autopilot": {
+      "posts_per_day": 1,
+      "stories_per_day": 2,
+      "model_generation": true,
+      "platforms": [
+        "instagram",
+        "facebook"
+      ]
     }
   }
 }

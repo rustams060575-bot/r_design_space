@@ -100,7 +100,17 @@ class handler(BaseHTTPRequestHandler):
     def do_GET(self):  # noqa: N802
         if not authorised(self._key()):
             return self._send(401, {"ok": False})
-        if (parse_qs(urlparse(self.path).query).get("action") or [""])[0] != "discover":
+        action = (parse_qs(urlparse(self.path).query).get("action") or [""])[0]
+        if action == "exchange":  # one-time: long-lived user token + non-expiring page token, using IG_APP_SECRET stored on Vercel
+            try:
+                g = graph()
+                long = g.exchange_long_lived(os.environ.get("META_APP_ID", ""), os.environ.get("META_APP_SECRET") or os.environ.get("IG_APP_SECRET", ""))
+                g.user_token = g.ig_token = long["access_token"]
+                g.fb_token = ""
+                return self._send(200, {"ok": True, "user_token": long["access_token"], "expires_in": long["expires_in"], "page_token": g.page_token()})
+            except RuntimeError as exc:
+                return self._send(502, {"ok": False, "error": str(exc)})
+        if action != "discover":
             return self._send(400, {"ok": False, "error": "use ?action=discover"})
         try:
             return self._send(200, {"ok": True, **graph().discover()})
