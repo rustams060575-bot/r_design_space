@@ -1954,6 +1954,90 @@
       "status": "pending",
       "score": 5,
       "at": "2026-11-10T05:00:33+00:00"
+    },
+    "hn:50364183": {
+      "name": "If an AI agent chooses a tool to use, will it pay the tool?",
+      "status": "rejected",
+      "score": 1,
+      "at": "2026-11-10T06:11:07+00:00"
+    },
+    "hn:50392586": {
+      "name": "OpenClaw SaaS?",
+      "status": "rejected",
+      "score": 2,
+      "at": "2026-11-10T06:11:11+00:00"
+    },
+    "hn:50426070": {
+      "name": "How do you evaluate the skills your AI agents use?",
+      "status": "rejected",
+      "score": 2,
+      "at": "2026-11-10T06:11:14+00:00"
+    },
+    "hn:50420252": {
+      "name": "Is it normal to not write code for a years as software engineer?",
+      "status": "rejected",
+      "score": 1,
+      "at": "2026-11-10T06:11:18+00:00"
+    },
+    "hn:50403153": {
+      "name": "How do you manage your AI agents' context across clients and projects?",
+      "status": "rejected",
+      "score": 2,
+      "at": "2026-11-10T06:11:21+00:00"
+    },
+    "hn:50391647": {
+      "name": "Is anyone running multi/always-on agents that don't cost a fortune?",
+      "status": "rejected",
+      "score": 2,
+      "at": "2026-11-10T06:11:25+00:00"
+    },
+    "hn:50390444": {
+      "name": "Engineers Focus Using AI",
+      "status": "rejected",
+      "score": 0,
+      "at": "2026-11-10T06:11:27+00:00"
+    },
+    "hn:50434751": {
+      "name": "I built a tool that babysits your agents",
+      "status": "pending",
+      "score": 6,
+      "at": "2026-11-10T06:11:38+00:00"
+    },
+    "hn:50376975": {
+      "name": "Any way to have inbuild second screen for AI to control",
+      "status": "rejected",
+      "score": 1,
+      "at": "2026-11-10T06:11:41+00:00"
+    },
+    "hn:50429817": {
+      "name": "MergeAtlas",
+      "status": "alert_only",
+      "score": 5,
+      "at": "2026-11-10T06:11:52+00:00"
+    },
+    "hn:50374984": {
+      "name": "What's the worst bug an AI coding agent silently introduced into your code?",
+      "status": "rejected",
+      "score": 1,
+      "at": "2026-11-10T06:11:55+00:00"
+    },
+    "hn:50422833": {
+      "name": "Control Layer Demo for AI Coding Agents",
+      "status": "rejected",
+      "score": 3,
+      "at": "2026-11-10T06:12:00+00:00"
+    },
+    "hn:50406105": {
+      "name": "Tell HN: Hanzo AI Is Spamming From GitHub Contributions",
+      "status": "rejected",
+      "score": 1,
+      "at": "2026-11-10T06:12:02+00:00"
+    },
+    "hn:50415476": {
+      "name": "Email-like interface to review, decide, and annotate agent work",
+      "status": "alert_only",
+      "score": 6,
+      "at": "2026-11-10T06:12:13+00:00"
     }
   },
   "contacted_domains": []
