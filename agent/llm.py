@@ -61,5 +61,13 @@ def complete(system: str, prompt: str, cfg: dict, max_tokens: int | None = None)
             return call(system, prompt, cfg, max_tokens or cfg["llm"]["max_tokens"],
                         cfg["limits"]["request_timeout"] * 4)
         except (requests.RequestException, KeyError, ValueError) as exc:
-            print(f"[llm] {call.__name__} failed: {type(exc).__name__}")  # never print URLs/keys
+            resp = getattr(exc, "response", None)
+            detail = ""
+            if resp is not None:
+                try:
+                    err = resp.json().get("error", {})
+                    detail = f" {resp.status_code} {err.get('type', '')}: {str(err.get('message', ''))[:120]}"
+                except ValueError:
+                    detail = f" {resp.status_code}"
+            print(f"[llm] {call.__name__} failed: {type(exc).__name__}{detail}")  # never print URLs/keys
     return None
