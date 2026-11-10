@@ -3,6 +3,7 @@ name: Outreach agent
 on:
   schedule:                # james autopilot: posts + stories to Instagram and the Facebook Page (UTC)
     - cron: "0 17 * * *"      # prime slot: 12:00 ET / 09:00 PT (reel, carousel, story)
+    - cron: "0 15 * * 1"      # monday 10:00 ET (11:00 EDT): weekly strategy + reel concepts + linkedin drafts
     - cron: "30 0 * * *"      # evening slot: 19:30 ET / 16:30 PT (story)
   # No GitHub schedule: the 09:00 and 21:00 (Europe/Madrid) runs come from the external trigger /api/cron.
   workflow_dispatch:         # started by /api/cron, Telegram (api/telegram.js) or by hand
@@ -10,7 +11,7 @@ on:
       action:
         description: "search = scan and send cards, send = send one confirmed email, strategy = weekly US/EU lead plan, content = weekly reel concepts"
         type: choice
-        options: [search, send, strategy, content, publish, autopilot, reeltest]
+        options: [search, send, strategy, content, publish, autopilot, reeltest, linkedin, weekly]
         default: search
       query:
         description: "Optional custom search query (Telegram: /search <query>)"
@@ -65,7 +66,7 @@ jobs:
         run: python agent/scraper.py
         env:
           # Inputs go through env (never interpolated into the shell command) to avoid script injection.
-          ACTION: ${{ inputs.action || (github.event_name == 'schedule' && 'autopilot') || 'search' }}
+          ACTION: ${{ inputs.action || (github.event.schedule == '0 15 * * 1' && 'weekly') || (github.event_name == 'schedule' && 'autopilot') || 'search' }}
           SEARCH_QUERY: ${{ inputs.query }}
           LEAD_ID: ${{ inputs.lead_id }}
           SCHEDULED: ${{ inputs.scheduled }}

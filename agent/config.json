@@ -378,7 +378,13 @@
       "motion design",
       "design system",
       "launch page",
-      "interactive website"
+      "interactive website",
+      "miami startup",
+      "bay area startup",
+      "nyc startup",
+      "series a website",
+      "brand refresh",
+      "product launch page"
     ],
     "sources": {
       "used": [
@@ -429,7 +435,7 @@
       }
     ],
     "weekly_strategy": {
-      "leads_target": "10 qualified US/EU leads per week, 3 sent outreach after approval"
+      "leads_target": "10 qualified US leads per week (EU only as a secondary pool), 3 sent outreach after approval, 5 LinkedIn connection notes a day"
     },
     "content": {
       "handle": "@ar_design_agency",
@@ -492,6 +498,37 @@
       "ig_location_ids": {},
       "fb_place_ids": {},
       "note": "location_id lookup needs Page Public Content Access (Meta App Review). Until then: caption line, hashtags and on-card label."
+    },
+    "primary_market": "US",
+    "audience": {
+      "primary": "United States: founders, heads of product/marketing and brand leads at startups, DTC/luxury brands, funded tech",
+      "us_hubs": [
+        "Miami, FL",
+        "Silicon Valley / Bay Area, CA",
+        "New York, NY",
+        "Austin, TX",
+        "Los Angeles, CA"
+      ],
+      "weights": {
+        "US": 0.7,
+        "UK+EU": 0.3
+      },
+      "instagram": {
+        "hashtags_per_post": "8-12 targeted (niche + geo), never 30",
+        "geo": "city line in caption + city hashtags until location_id is approved",
+        "levers": [
+          "post at US prime time (12:00 / 19:30 ET)",
+          "reels 3x a week",
+          "comment daily on US founder/studio accounts",
+          "collabs with US creators",
+          "paid boost with US-only targeting (ads_management)"
+        ]
+      },
+      "linkedin": {
+        "cadence": "3 posts a week (Tue/Wed/Thu, 08:30 ET)",
+        "publishing": "drafts via telegram, posted by hand (LinkedIn's posting API needs partner approval)",
+        "outreach": "5 personalised connection notes a day to US founders / heads of product, no pitch in the first message"
+      }
     }
   }
 }

@@ -595,7 +595,7 @@ def send_pending(cfg: dict, lead_id: str) -> bool:
 
 def main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("--action", choices=["search", "send", "strategy", "content", "publish", "autopilot", "reeltest"])
+    ap.add_argument("--action", choices=["search", "send", "strategy", "content", "publish", "autopilot", "reeltest", "linkedin", "weekly"])
     ap.add_argument("--query")
     ap.add_argument("--lead-id")
     args = ap.parse_args(argv)
@@ -615,9 +615,9 @@ def main(argv: list[str] | None = None) -> int:
     if action == "publish":
         import meta_publisher  # approved reels/posts -> Instagram + Facebook Page via the Meta Graph API
         return meta_publisher.run_publish(cfg)
-    if action in ("strategy", "content"):
-        import growth  # james growth modules: weekly lead strategy / instagram content machine
-        return growth.run_strategy(cfg) if action == "strategy" else growth.run_content(cfg)
+    if action in ("strategy", "content", "linkedin", "weekly"):
+        import growth  # james growth modules: weekly lead strategy / instagram content machine / linkedin drafts
+        return {"strategy": growth.run_strategy, "content": growth.run_content, "linkedin": growth.run_linkedin, "weekly": growth.run_weekly}[action](cfg)
     if action == "send":
         return 0 if send_pending(cfg, (args.lead_id or os.getenv("LEAD_ID", "")).strip()) else 1
 

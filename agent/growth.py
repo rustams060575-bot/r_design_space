@@ -87,7 +87,7 @@ def render_strategy(cfg: dict, week: str) -> str:
     ask_queries = "\n".join(f"- `{q}`" for q in cfg["hackernews"]["ask_queries"][:8])
     return f"""# lead strategy · {week} · US / western europe
 
-goal: {j['weekly_strategy']['leads_target']}. all outreach in english, sent only after owner approval.
+goal: {j['weekly_strategy']['leads_target']}. us-first: {j['audience']['primary']}. all outreach in english, sent only after owner approval.
 
 ## who we hunt (ICP)
 {icp}
@@ -108,6 +108,10 @@ e-mail alerts only (no scraping, forward alerts to the bot):
 - mon: refresh ICP list by hand (10 funded startups from public funding news, no investor-only leads).
 - tue-thu: send approved outreach (cap {cfg['limits']['max_emails_per_run']} per run), 4-step angle below.
 - fri: review replies, update tracker, adjust queries.
+
+## channels (us audience)
+- **instagram / facebook:** autopilot posts at 12:00 and 19:30 ET; reels mon/wed/fri; us city line and hashtags in every caption. organic reach cannot be targeted by country: it follows who engages, so the levers are niche hashtags, daily comments on us accounts, collabs, and a us-only paid boost when we want certainty.
+- **linkedin:** 3 drafted posts a week (tue/wed/thu 08:30 et) sent to telegram, plus 5 personalised connection notes a day to us founders and heads of product. no pitch in the first message.
 
 ## outreach angles (pick one per lead, never invent facts)
 1. **flagship launch**: "your product page explains the product; it could also sell it. we engineer scroll-driven launch sites."
@@ -390,3 +394,86 @@ def render_preview(week: str, concepts: list[dict], mode: str) -> str:
         lines += [f"{i}. {c['title']}", f"   hook (1.5 s): {c['hook']['on_screen_text']}", f"   cta: {c['cta']}", ""]
     lines.append(f"full shot-by-shot plan, captions and hashtags: content-hub/weekly/{week}/reels.md")
     return "\n".join(lines)
+
+
+# ---------------------------------------------------------------- linkedin (us audience): drafts for the owner to post
+
+LINKEDIN_BANK = [
+    {"id": "li-template", "hook": "a template is somebody else's decision.",
+     "body": "when a founder picks a theme, the site inherits someone else's hierarchy, someone else's pacing, someone else's idea of what matters.\n\nat ar design studio we start from the story, then engineer the page around it: type, motion and code as one system.\n\nflagship work is not louder. it is more deliberate.",
+     "cta": "if a launch is on your calendar, i'd like to hear about it.", "tags": ["#webdesign", "#startups", "#productdesign", "#frontend", "#designsystems"]},
+    {"id": "li-performance", "hook": "slow is a design flaw.",
+     "body": "performance is the first thing a visitor feels and the last thing most teams design.\n\nweight, fonts, images, motion budget: every one is a design decision. a page that lands fast reads as confident before a single word is read.",
+     "cta": "we build flagship sites that feel fast. send me a launch you're proud of.", "tags": ["#webperformance", "#ux", "#webdevelopment", "#startups", "#brand"]},
+    {"id": "li-scroll", "hook": "the scroll is the story.",
+     "body": "a launch page is not a list of sections. it is a sequence with a beginning, a turn and a close.\n\nscroll-driven storytelling lets the interface argue the case: one idea per screen, motion that explains, type that carries tone.",
+     "cta": "building a launch page for a us audience? let's talk.", "tags": ["#webdesign", "#motiondesign", "#creativecoding", "#startups", "#siliconvalley"]},
+    {"id": "li-systems", "hook": "a design system is quiet infrastructure.",
+     "body": "you notice it only when it is missing: pages drifting off-brand, designers reviewing every pixel, engineers rebuilding the same button.\n\ntokens first, components that refuse to drift, rules written in code. teams ship faster when the decisions are already made.",
+     "cta": "scaling a product? a system pays for itself. dm me.", "tags": ["#designsystems", "#productdesign", "#saas", "#frontend", "#ux"]},
+    {"id": "li-restraint", "hook": "restraint is a feature.",
+     "body": "the premium brands we admire say less, move less, and mean more.\n\nwe apply the same rule to web engineering: motion must earn its place, copy must carry weight, code must be clean enough to hand to any engineer.",
+     "cta": "flagship builds for brands that care about the details.", "tags": ["#minimalism", "#webdesign", "#brandidentity", "#luxurybrands", "#digitalagency"]},
+    {"id": "li-dashboard", "hook": "dashboards should feel calm.",
+     "body": "dense data does not have to feel dense. lead with the decision, not the data; remove every click that does not earn its place; design the empty state as carefully as the full one.",
+     "cta": "complex product? we make the interface quiet. message me.", "tags": ["#saas", "#ux", "#dashboarddesign", "#startups", "#productdesign"]},
+]
+
+CONNECT_NOTES = [
+    "hi {first}, i follow {company}'s product work. i run ar design studio, a small web engineering studio. glad to connect.",
+    "hi {first}, saw {company}'s recent launch and liked the restraint in the interface. connecting, would love to follow your work.",
+    "hi {first}, i build flagship web experiences for founders in the us. {company} is on my radar. happy to connect.",
+]
+
+LINKEDIN_SYSTEM = """You are james, content strategist of ar design studio (always lowercase), flagship web engineering for US founders and brands. Write {n} LinkedIn
+posts for the owner to publish (american english, all lowercase, no emojis, no exclamation marks, quiet luxury, clean code, kinetic typography).
+Each: a first-line hook (max 8 words), a body of 2 short paragraphs, one soft call to action, 4-5 hashtags (#webdesign #startups #productdesign #frontend plus one topical).
+Hard rules: no numbers with %, $, k or m; no prices, awards, guarantees, rankings, client names or statistics.
+Reply with ONLY a JSON array of {{"id": "li-slug", "hook": "...", "body": "...", "cta": "...", "tags": ["#..."]}}."""
+
+
+def linkedin_posts(cfg: dict, n: int = 3) -> tuple[list[dict], str]:
+    import autopilot  # local import: autopilot imports growth
+    text = llm.complete(LINKEDIN_SYSTEM.format(n=n), "Write the posts for this week.", cfg, max_tokens=1600, model=cfg["llm"].get("anthropic_model"))
+    posts = []
+    for raw in _parse_json_array(text) or []:
+        try:
+            if autopilot.validate_copy(raw["hook"], raw["body"], raw["cta"]) and len(raw["hook"].split()) <= 10 and 3 <= len(raw["tags"]) <= 6:
+                posts.append({k: raw[k] for k in ("id", "hook", "body", "cta", "tags")})
+        except (KeyError, TypeError):
+            continue
+    if len(posts) >= n:
+        return posts[:n], "model"
+    start = (date.today().isocalendar()[1] * n) % len(LINKEDIN_BANK)
+    return [LINKEDIN_BANK[(start + i) % len(LINKEDIN_BANK)] for i in range(n)], "bank"
+
+
+def render_linkedin(week: str, posts: list[dict], mode: str, cfg: dict) -> str:
+    days = ["tue 08:30 ET", "wed 08:30 ET", "thu 08:30 ET"]
+    lines = [f"# linkedin drafts · {week} · us audience", f"source: {mode}. post by hand at the times shown (linkedin's posting api needs partner approval).", ""]
+    for i, p in enumerate(posts):
+        lines += [f"## {days[i % 3]} · {p['id']}", "", p["hook"], "", p["body"], "", p["cta"], "", " ".join(p["tags"]), ""]
+    lines += ["## daily outreach (5 per day, us founders / heads of product)", "",
+              "connection note options (no pitch, under 300 chars):", ""] + [f"- {n}" for n in CONNECT_NOTES]
+    lines += ["", "after they accept: wait for a reply or a reaction before any message about work. comment on their posts first.", "",
+              "audience: " + cfg["james"]["audience"]["primary"], "hubs: " + ", ".join(cfg["james"]["audience"]["us_hubs"])]
+    return "\n".join(lines) + "\n"
+
+
+def run_linkedin(cfg: dict) -> int:
+    week = iso_week()
+    posts, mode = linkedin_posts(cfg)
+    md = render_linkedin(week, posts, mode, cfg)
+    path = out_dir(cfg, week) / "linkedin.md"
+    path.write_text(md, encoding="utf-8")
+    print(f"[linkedin] {len(posts)} drafts ({mode}) -> {path}")
+    _telegram(md)
+    return 0
+
+
+def run_weekly(cfg: dict) -> int:
+    """Monday 10:00 ET: lead strategy, reel concepts and linkedin drafts for the week."""
+    rc = run_strategy(cfg)
+    rc |= run_content(cfg)
+    rc |= run_linkedin(cfg)
+    return rc

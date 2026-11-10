@@ -30,7 +30,7 @@
       {
         "t": "10.0-15.0",
         "visual": "scroll continues: section transitions with masked kinetic type, devtools fps meter steady.",
-        "on_screen": "60 fps. no excuses.",
+        "on_screen": "smooth. by design.",
         "audio": "pulse locks to scroll"
       },
       {
@@ -99,7 +99,7 @@
       }
     ],
     "audio_direction": "dry, minimal; sound design carries the contrast (left rough, right clean).",
-    "cta": "want the right side? link in bio.",
+    "cta": "book a flagship build: link in bio.",
     "caption": "customers feel the difference before they can name it.\n\nbuilt, not assembled.\n\nflagship web engineering for brands that care: link in bio.",
     "hashtags": [
       "#uidesign",
