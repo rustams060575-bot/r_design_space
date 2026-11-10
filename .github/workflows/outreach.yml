@@ -4,6 +4,7 @@ on:
   schedule:                # james autopilot: posts + stories to Instagram and the Facebook Page (UTC)
     - cron: "0 17 * * *"      # prime slot: 12:00 ET / 09:00 PT (reel, carousel, story)
     - cron: "0 15 * * 1"      # monday 10:00 ET (11:00 EDT): weekly strategy + reel concepts + linkedin drafts
+    - cron: "30 14 * * 1-6"   # 10:30 ET mon-sat: comment drafts for the day (engage)
     - cron: "30 0 * * *"      # evening slot: 19:30 ET / 16:30 PT (story)
   # No GitHub schedule: the 09:00 and 21:00 (Europe/Madrid) runs come from the external trigger /api/cron.
   workflow_dispatch:         # started by /api/cron, Telegram (api/telegram.js) or by hand
@@ -11,7 +12,7 @@ on:
       action:
         description: "search = scan and send cards, send = send one confirmed email, strategy = weekly US/EU lead plan, content = weekly reel concepts"
         type: choice
-        options: [search, send, strategy, content, publish, autopilot, reeltest, linkedin, weekly, audit]
+        options: [search, send, strategy, content, publish, autopilot, reeltest, linkedin, weekly, audit, engage]
         default: search
       query:
         description: "Optional custom search query (Telegram: /search <query>)"
@@ -66,7 +67,7 @@ jobs:
         run: python agent/scraper.py
         env:
           # Inputs go through env (never interpolated into the shell command) to avoid script injection.
-          ACTION: ${{ inputs.action || (github.event.schedule == '0 15 * * 1' && 'weekly') || (github.event_name == 'schedule' && 'autopilot') || 'search' }}
+          ACTION: ${{ inputs.action || (github.event.schedule == '0 15 * * 1' && 'weekly') || (github.event.schedule == '30 14 * * 1-6' && 'engage') || (github.event_name == 'schedule' && 'autopilot') || 'search' }}
           SEARCH_QUERY: ${{ inputs.query }}
           LEAD_ID: ${{ inputs.lead_id }}
           SCHEDULED: ${{ inputs.scheduled }}
@@ -87,7 +88,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add agent/tracker.json agent/pending.json content-hub/weekly content-hub/publish_queue.json content-hub/autopilot_state.json
+          git add agent/tracker.json agent/pending.json content-hub/weekly content-hub/publish_queue.json content-hub/autopilot_state.json content-hub/engage_state.json
           if ! git diff --cached --quiet; then
             git commit -m "chore: update outreach state [skip ci]"
             git pull --rebase origin "${GITHUB_REF_NAME}"

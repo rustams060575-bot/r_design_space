@@ -35,8 +35,8 @@ ROOT = Path(__file__).resolve().parent
 REPO_ROOT = ROOT.parent
 STATE_PATH = REPO_ROOT / "content-hub" / "autopilot_state.json"
 MEDIA_DIR = REPO_ROOT / "content-hub" / "published"
-MAX_POSTS_PER_DAY, MAX_STORIES_PER_DAY, MAX_REELS_PER_DAY = 1, 2, 1
-REEL_WEEKDAYS = (0, 2, 4)  # mon, wed, fri: three reels a week
+MAX_POSTS_PER_DAY, MAX_STORIES_PER_DAY, MAX_REELS_PER_DAY = 1, 0, 1  # strictly 1 reel + 1 carousel a day, no stories
+REEL_WEEKDAYS = (0, 1, 2, 3, 4, 5, 6)  # a reel every day (prime slot)
 CORE_TAGS = ["#uidesign", "#webdevelopment", "#webengineering", "#minimalistdesign", "#awwwards", "#digitalagency"]
 CTA = "start a project: link in bio."
 
@@ -250,9 +250,9 @@ def run_autopilot(cfg: dict) -> int:
     reel_music = next((w for w in query[1:] if w not in ("light", "dark") and not any(c["id"] == w for c in CONCEPT_BANK)), None)
     if not evening and (forced == "reel" or (et.weekday() in REEL_WEEKDAYS and done_today(state, "reel", today) < MAX_REELS_PER_DAY)):
         jobs.append("reel")
-    if not evening and done_today(state, "post", today) < MAX_POSTS_PER_DAY:
+    if evening and done_today(state, "post", today) < MAX_POSTS_PER_DAY:  # carousel goes out in the evening slot, 7+ hours after the reel
         jobs.append("post")
-    if done_today(state, "story", today) < MAX_STORIES_PER_DAY:
+    if MAX_STORIES_PER_DAY and done_today(state, "story", today) < MAX_STORIES_PER_DAY:
         jobs.append("story")
     if not jobs:
         print("[autopilot] daily quota reached")

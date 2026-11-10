@@ -445,7 +445,7 @@
     },
     "autopilot": {
       "posts_per_day": 1,
-      "stories_per_day": 2,
+      "stories_per_day": 0,
       "model_generation": true,
       "platforms": [
         "instagram",
@@ -456,9 +456,16 @@
       "evening_slot_utc": "00:30",
       "reel_weekdays": [
         "mon",
+        "tue",
         "wed",
-        "fri"
-      ]
+        "thu",
+        "fri",
+        "sat",
+        "sun"
+      ],
+      "reels_per_day": 1,
+      "reel_slot": "prime (12:00 ET)",
+      "post_slot": "evening (19:30 ET)"
     },
     "geo": {
       "locations": [
@@ -560,6 +567,36 @@
         "dashboard ux"
       ],
       "networking": "soft and expert: comment and connect first, no pitch in the first message, one useful observation, never mass-mail"
+    },
+    "engagement": {
+      "enabled": true,
+      "mode": "drafts to telegram, owner posts by hand (instagram's api cannot comment on other accounts; bots cause shadow bans)",
+      "targets": [
+        "figma",
+        "framer",
+        "webflow",
+        "awwwards",
+        "vercel",
+        "linear.app",
+        "ycombinator",
+        "stripe",
+        "notionhq",
+        "readymag"
+      ],
+      "ramp": [
+        5,
+        8,
+        12
+      ],
+      "max_per_day": 12,
+      "per_account_week": 2,
+      "max_post_age_hours": 36,
+      "rest_weekdays": [
+        6
+      ],
+      "min_gap_minutes": 8,
+      "window_et": "10:00-20:00",
+      "targets_note": "edit this list: us design / web / startup accounts that are professional (business or creator) instagram accounts"
     }
   },
   "signals": {
