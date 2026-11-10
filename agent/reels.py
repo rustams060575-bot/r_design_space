@@ -4,7 +4,7 @@
 
 Frames are drawn with Pillow (same quiet-luxury style as cards.py) and piped straight into ffmpeg: no MoviePy/OpenCV needed.
 Structure: 1.5-2 s hook (motion in the very first frame, <=5 words), one scene per on-screen line, end card with the cta.
-Video: 1080x1920 (9:16), 24 fps, yuv420p, faststart. Audio: original ambient bed from audio.py (hits on cuts, fade in/out, -15 LUFS); a silent result is rejected.
+Video: 1080x1920 (9:16), 24 fps, yuv420p, faststart. Audio: CC0 piano recording from assets/music via audio.py (fade in/out, about -15 LUFS); a silent result is rejected.
 """
 from __future__ import annotations
 

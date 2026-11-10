@@ -1,0 +1,75 @@
+[
+  {
+    "file": "gymnopedie-1.m4a",
+    "license": "CC0",
+    "title": "Gymnopedie No. 1..ogg",
+    "source": "https://commons.wikimedia.org/wiki/File:Gymnopedie_No._1..ogg",
+    "file_url": "https://upload.wikimedia.org/wikipedia/commons/b/b7/Gymnopedie_No._1..ogg",
+    "author": "Teknopazzo",
+    "starts": [
+      14,
+      16,
+      18,
+      34,
+      36,
+      38,
+      40,
+      42,
+      44,
+      46
+    ]
+  },
+  {
+    "file": "chopin-op15-no1.m4a",
+    "license": "CC0",
+    "title": "Chopin - Nocturne Op. 15 no. 1 in F major.ogg",
+    "source": "https://commons.wikimedia.org/wiki/File:Chopin_-_Nocturne_Op._15_no._1_in_F_major.ogg",
+    "file_url": "https://upload.wikimedia.org/wikipedia/commons/5/56/Chopin_-_Nocturne_Op._15_no._1_in_F_major.ogg",
+    "author": "Frédéric Chopin",
+    "starts": [
+      14,
+      16,
+      18
+    ]
+  },
+  {
+    "file": "gnossienne-1.m4a",
+    "license": "CC0",
+    "title": "Jaan Patterson - 05 - Gnossiennes No1 ric Alfred Leslie Satie.ogg",
+    "source": "https://commons.wikimedia.org/wiki/File:Jaan_Patterson_-_05_-_Gnossiennes_No1_ric_Alfred_Leslie_Satie.ogg",
+    "file_url": "https://upload.wikimedia.org/wikipedia/commons/c/c2/Jaan_Patterson_-_05_-_Gnossiennes_No1_ric_Alfred_Leslie_Satie.ogg",
+    "author": "Jaan Patterson",
+    "starts": [
+      4,
+      6,
+      8,
+      10,
+      12,
+      14,
+      16,
+      18,
+      20,
+      22
+    ]
+  },
+  {
+    "file": "chopin-posth-cm.m4a",
+    "license": "CC0",
+    "title": "Chopin Nocturne 21 in C minor Posthumous Diana Hughes.ogg",
+    "source": "https://commons.wikimedia.org/wiki/File:Chopin_Nocturne_21_in_C_minor_Posthumous_Diana_Hughes.ogg",
+    "file_url": "https://upload.wikimedia.org/wikipedia/commons/a/a0/Chopin_Nocturne_21_in_C_minor_Posthumous_Diana_Hughes.ogg",
+    "author": "Diana Hughes",
+    "starts": [
+      2,
+      4,
+      6,
+      8,
+      10,
+      12,
+      14,
+      16,
+      18,
+      20
+    ]
+  }
+]
