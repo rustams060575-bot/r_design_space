@@ -1,43 +1,41 @@
 # linkedin drafts · 2026-W46 · us audience
-source: bank. post by hand at the times shown (linkedin's posting api needs partner approval).
+source: model. post by hand at the times shown (linkedin's posting api needs partner approval).
 
-## tue 08:30 ET · li-template
+## tue 08:30 ET · li-type-that-moves-with-intent
 
-a template is somebody else's decision.
+type should move only when it means something.
 
-when a founder picks a theme, the site inherits someone else's hierarchy, someone else's pacing, someone else's idea of what matters.
+kinetic typography is easy to overdo. when every headline slides, spins and fades, the page stops speaking and starts performing. the best motion is the kind a visitor feels before they notice it: a weight shift, a measured reveal, a line that settles into place as they arrive.
 
-at ar design studio we start from the story, then engineer the page around it: type, motion and code as one system.
+we treat motion as part of the typographic system, not a layer added at the end. easing, timing and rhythm are set the same way spacing and scale are set, so the movement feels like the brand speaking in its own voice.
 
-flagship work is not louder. it is more deliberate.
+if your headline could use a quieter kind of motion, we are happy to talk it through.
 
-if a launch is on your calendar, i'd like to hear about it.
+#webdesign #startups #productdesign #frontend #kinetictypography
 
-#webdesign #startups #productdesign #frontend #designsystems
+## wed 08:30 ET · li-clean-code-is-a-design-decision
 
-## wed 08:30 ET · li-performance
+clean code is a design decision too.
 
-slow is a design flaw.
+visitors never read your markup, but they feel it. a well-structured front end loads calmly, responds without hesitation and holds its shape on every screen. that steadiness is what makes a site feel expensive, even when nothing on the page is loud.
 
-performance is the first thing a visitor feels and the last thing most teams design.
+it also keeps the future cheaper for a growing team. clear components, honest naming and few moving parts mean the next feature is an afternoon of work instead of a negotiation with old decisions.
 
-weight, fonts, images, motion budget: every one is a design decision. a page that lands fast reads as confident before a single word is read.
+curious how your front end is holding up? send us a note and we will take a look together.
 
-we build flagship sites that feel fast. send me a launch you're proud of.
+#webdesign #startups #productdesign #frontend #cleancode
 
-#webperformance #ux #webdevelopment #startups #brand
+## thu 08:30 ET · li-quiet-luxury-for-founder-sites
 
-## thu 08:30 ET · li-scroll
+your website should never have to shout.
 
-the scroll is the story.
+quiet luxury online looks like generous space, restrained color, and type that is confident enough to stay still. nothing competes for attention, so the one thing that matters on each screen gets all of it. for a founder, that restraint reads as clarity about the business itself.
 
-a launch page is not a list of sections. it is a sequence with a beginning, a turn and a close.
+the discipline is in what gets left out. every element has to earn its place, and what remains feels deliberate, unhurried and easy to trust. that is the impression a first visit should leave.
 
-scroll-driven storytelling lets the interface argue the case: one idea per screen, motion that explains, type that carries tone.
+if you are shaping how your brand meets the world online, we would love to hear where you are headed.
 
-building a launch page for a us audience? let's talk.
-
-#webdesign #motiondesign #creativecoding #startups #siliconvalley
+#webdesign #startups #productdesign #frontend #quietluxury
 
 ## daily outreach (5 per day, us founders / heads of product)
 
