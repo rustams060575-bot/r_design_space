@@ -15,6 +15,7 @@ Guardrails (autonomy is bounded, not unlimited):
 from __future__ import annotations
 
 import json
+import os
 import re
 import subprocess
 import time
@@ -26,12 +27,15 @@ import requests
 import cards
 import llm
 import meta_publisher as mp
+import reels
+from growth import CONCEPT_BANK
 
 ROOT = Path(__file__).resolve().parent
 REPO_ROOT = ROOT.parent
 STATE_PATH = REPO_ROOT / "content-hub" / "autopilot_state.json"
 MEDIA_DIR = REPO_ROOT / "content-hub" / "published"
-MAX_POSTS_PER_DAY, MAX_STORIES_PER_DAY = 1, 2
+MAX_POSTS_PER_DAY, MAX_STORIES_PER_DAY, MAX_REELS_PER_DAY = 1, 2, 1
+REEL_WEEKDAYS = (0, 2, 4)  # mon, wed, fri: three reels a week
 CORE_TAGS = ["#uidesign", "#webdevelopment", "#webengineering", "#minimalistdesign", "#awwwards", "#digitalagency"]
 CTA = "start a project: link in bio."
 
@@ -147,6 +151,7 @@ def load_state() -> dict:
         state = {}
     state.setdefault("carousel_i", 0)
     state.setdefault("story_i", 0)
+    state.setdefault("reel_i", 0)
     state.setdefault("log", [])
     return state
 
@@ -232,6 +237,9 @@ def run_autopilot(cfg: dict) -> int:
     today = now.strftime("%Y-%m-%d")
     state = load_state()
     jobs = []
+    forced = os.getenv("SEARCH_QUERY", "").strip().lower()  # manual run: query "reel" forces a reel today
+    if (now.weekday() in REEL_WEEKDAYS and now.hour < 16 or forced == "reel") and done_today(state, "reel", today) < MAX_REELS_PER_DAY:
+        jobs.append("reel")
     if done_today(state, "post", today) < MAX_POSTS_PER_DAY:
         jobs.append("post")
     if done_today(state, "story", today) < MAX_STORIES_PER_DAY:
@@ -245,7 +253,18 @@ def run_autopilot(cfg: dict) -> int:
 
     for job in jobs:
         used = [e["id"] for e in state["log"] if e["kind"] == job]
-        if job == "post":
+        if job == "reel":
+            c, source = CONCEPT_BANK[state["reel_i"] % len(CONCEPT_BANK)], "bank"
+            stem = f"{c['id']}-{now.strftime('%H%M')}"
+            try:
+                paths = [reels.render_reel(c, MEDIA_DIR / today / f"{stem}.mp4")]
+            except (RuntimeError, OSError) as exc:
+                print(f"[autopilot] reel render failed: {exc}")
+                report.append(f"⚠️ reel {c['id']}: render failed, skipped")
+                continue
+            tags = " ".join(dict.fromkeys(CORE_TAGS + c["hashtags"]))
+            item = {"kind": "reel", "platforms": platforms, "media_url": "", "caption": f"{c['caption'].strip()}\n\n{c['cta']}\n\n{tags}", "publish_at": now.isoformat()}
+        elif job == "post":
             c = model_carousel(cfg, used) if llm.available(cfg) and cfg["james"].get("autopilot", {}).get("model_generation", True) else None
             source = "model"
             if not c:
@@ -286,7 +305,7 @@ def run_autopilot(cfg: dict) -> int:
         entry["result"], entry["ok"] = result, any(v.startswith("published") for v in result.values())
         state["log"].append(entry)
         if entry["ok"]:
-            state["carousel_i" if job == "post" else "story_i"] += 1
+            state[{"post": "carousel_i", "story": "story_i", "reel": "reel_i"}[job]] += 1
         report.append(f"{'✅' if entry['ok'] else '⚠️'} {job} · {c['id']} · " + ", ".join(f"{k}: {v.split(':')[0]}" for k, v in result.items()))
         print(f"[autopilot] {job} {c['id']}: {result}")
 

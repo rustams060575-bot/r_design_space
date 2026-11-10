@@ -142,7 +142,7 @@ CONCEPT_BANK: list[dict] = [
             {"t": "0.0-1.5", "visual": "terminal: `$ ship hero --cinematic` typed, enter, white flash frame.", "on_screen": "one line. one site.", "audio": "key clicks, sub hit on enter"},
             {"t": "1.5-5.0", "visual": "the hero resolves: oversized lowercase headline reveals line by line on a dark gradient, 600 ms ease-out.", "on_screen": "", "audio": "low pad rises"},
             {"t": "5.0-10.0", "visual": "split screen: editor (left) shows the gsap timeline, site (right) scrubs as the cursor drags the playhead.", "on_screen": "motion is code.", "audio": "tick per keyframe"},
-            {"t": "10.0-15.0", "visual": "scroll continues: section transitions with masked kinetic type, devtools fps meter steady.", "on_screen": "60 fps. no excuses.", "audio": "pulse locks to scroll"},
+            {"t": "10.0-15.0", "visual": "scroll continues: section transitions with masked kinetic type, devtools fps meter steady.", "on_screen": "smooth. by design.", "audio": "pulse locks to scroll"},
             {"t": "15.0-18.0", "visual": "end card, centered, hairline rule: wordmark and handle.", "on_screen": "ar design studio · flagship web engineering", "audio": "single soft hit"},
         ],
         "audio_direction": "minimal electronic, 90-100 bpm, one riser; no voiceover. a licensed or royalty-free track from the instagram audio library.",
