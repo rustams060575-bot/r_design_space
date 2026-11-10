@@ -49,13 +49,16 @@ OPT_OUT = {  # one-time-contact notice + opt-out line, localized like the email 
 }
 
 
-def build_footer(cfg: dict, lang: str = "en") -> str:
+def build_footer(cfg: dict, lang: str = "en", body: str = "") -> str:
     owner = cfg["owner"]
     parts = [
         "--",
         f"{owner['name']} | {cfg.get('brand', 'AR Design')} - UI/UX, dashboards, frontend & Tilda Zero Block",
         f"Telegram: {owner['telegram_handle']} ({owner['telegram_url']})",
     ]
+    linkedin = owner.get("linkedin_url")
+    if linkedin and linkedin not in body:  # the pitch normally carries the link already; never print it twice
+        parts.append(f"LinkedIn: {linkedin}")
     if cfg.get("vercel_url"):
         parts.append(f"Portfolio: {cfg['vercel_url']}")
     if owner.get("postal_address"):
@@ -79,7 +82,7 @@ def send_email(to_addr: str, subject: str, body: str, cfg: dict, lang: str = "en
     msg["Reply-To"] = sender
     msg["Subject"] = subject
     msg["List-Unsubscribe"] = f"<mailto:{sender}?subject=unsubscribe>"
-    msg.set_content(f"{body.rstrip()}\n\n{build_footer(cfg, lang)}\n")
+    msg.set_content(f"{body.rstrip()}\n\n{build_footer(cfg, lang, body)}\n")
 
     with smtplib.SMTP_SSL(SMTP_HOST, SMTP_PORT, context=ssl.create_default_context(), timeout=30) as smtp:
         smtp.login(sender, password)
