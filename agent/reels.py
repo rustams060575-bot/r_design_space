@@ -22,6 +22,13 @@ import cards
 W, H, FPS = 1080, 1920, 24
 HOOK_SECONDS, SCENE_SECONDS, END_SECONDS = 2.0, 2.6, 2.6
 
+THEMES = {
+    "dark": dict(BG=(14, 14, 15), INK=(237, 232, 224), STONE=(184, 175, 163), ACCENT=(183, 155, 107), LINE=(52, 51, 50), GRID=(24, 24, 25)),
+    # quiet-luxury light: warm ivory ground, near-black ink, deep champagne accent
+    "light": dict(BG=(245, 242, 236), INK=(26, 26, 28), STONE=(124, 117, 107), ACCENT=(150, 116, 58), LINE=(214, 208, 197), GRID=(236, 232, 224)),
+}
+GRID = THEMES["dark"]["GRID"]
+
 
 def ease(x: float) -> float:
     x = max(0.0, min(1.0, x))
@@ -66,7 +73,7 @@ def background(t: float) -> Image.Image:
     d = ImageDraw.Draw(img)
     for i in range(1, 6):  # five hairlines drift very slowly
         x = (i * W // 6 + int(t * 6)) % W
-        d.line([x, 0, x, H], fill=(24, 24, 25), width=1)
+        d.line([x, 0, x, H], fill=GRID, width=1)
     sweep = int((t * 140) % (H + 400)) - 200  # a single champagne scan hairline
     d.line([0, sweep, W, sweep], fill=mix(cards.ACCENT, cards.BG, 0.22), width=2)
     d.rectangle([40, 40, W - 40, H - 40], outline=cards.LINE, width=2)
@@ -78,7 +85,7 @@ def draw_scene(img: Image.Image, scene: dict, prepared, local_t: float, total_t:
     d = ImageDraw.Draw(img)
     lead = int(fnt.size * 1.12)
     block_h = len(lines) * lead
-    y0 = (H - block_h) // 2 - (40 if scene.get("end") else 0)
+    y0 = (H - block_h) // 2 - (40 if scene.get("end") else 0) - int(14 * local_t / max(scene["seconds"], 0.1))  # slow upward camera drift
     stagger = 0.10 if scene.get("hook") else 0.17
     fade_out = 1.0 - ease((local_t - (scene["seconds"] - 0.3)) / 0.3) if local_t > scene["seconds"] - 0.3 else 1.0
     pos = 0
@@ -96,6 +103,9 @@ def draw_scene(img: Image.Image, scene: dict, prepared, local_t: float, total_t:
                 d.text((cx, y0 + li * lead + rise), word, font=fnt, fill=color)
             cx += fnt.getlength(word + " ")
             pos += 1
+    ux = int((W - 192) * 0.22 * ease((local_t - 0.5) / 0.7))  # micro-interaction: an accent underline draws in under the headline
+    if ux > 2:
+        d.line([96, y0 + block_h + 14, 96 + ux, y0 + block_h + 14], fill=mix(cards.ACCENT, cards.BG, fade_out), width=3)
     if scene.get("sub"):
         a = ease((local_t - 0.9) / 0.5) * fade_out
         d.text((96, y0 + block_h + 36), scene["sub"], font=sub_font, fill=mix(cards.STONE, cards.BG, a))
@@ -104,7 +114,24 @@ def draw_scene(img: Image.Image, scene: dict, prepared, local_t: float, total_t:
     d.rectangle([96, H - 190, 96 + int((W - 192) * (total_t / total)), H - 187], fill=cards.ACCENT)  # progress hairline
 
 
-def render_reel(concept: dict, out_path: Path, footer: str = cards.HANDLE) -> Path:
+def render_reel(concept: dict, out_path: Path, footer: str = cards.HANDLE, theme: str = "dark", music: str | None = None) -> Path:
+    """theme: "dark" | "light". music: optional track slug from assets/music (default: picked by the concept id)."""
+    global GRID
+    saved = {k: getattr(cards, k) for k in ("BG", "INK", "STONE", "ACCENT", "LINE")}
+    for k, v in THEMES[theme].items():
+        if k == "GRID":
+            GRID = v
+        else:
+            setattr(cards, k, v)
+    try:
+        return _render_reel(concept, out_path, footer, music)
+    finally:
+        for k, v in saved.items():
+            setattr(cards, k, v)
+        GRID = THEMES["dark"]["GRID"]
+
+
+def _render_reel(concept: dict, out_path: Path, footer: str, music_slug: str | None) -> Path:
     try:
         ffmpeg = audio.ffmpeg_exe()  # system ffmpeg, else the static binary from the imageio-ffmpeg wheel
     except Exception as exc:
@@ -118,7 +145,7 @@ def render_reel(concept: dict, out_path: Path, footer: str = cards.HANDLE) -> Pa
         cuts.append(round(acc, 3))
         acc += sc["seconds"]
     seed = sum(ord(ch) for ch in concept["id"])
-    music = audio.make_track(total, seed, cuts, out_path.with_suffix(".wav"))
+    music = audio.make_track(total, seed, cuts, out_path.with_suffix(".wav"), music_slug)
     cmd = [ffmpeg, "-y", "-loglevel", "error", "-f", "rawvideo", "-pix_fmt", "rgb24", "-s", f"{W}x{H}", "-r", str(FPS), "-i", "-",
            "-i", str(music), "-t", f"{total:.2f}",
            "-c:v", "libx264", "-preset", "medium", "-crf", "22", "-pix_fmt", "yuv420p", "-profile:v", "high", "-movflags", "+faststart",

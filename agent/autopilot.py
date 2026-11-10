@@ -242,7 +242,12 @@ def run_autopilot(cfg: dict) -> int:
     geo = cfg["james"].get("geo", {}).get("locations", [])
     loc = geo[len(state["log"]) % len(geo)] if geo else {"name": "", "tags": []}
     jobs = []
-    forced = os.getenv("SEARCH_QUERY", "").strip().lower()  # manual run: query "reel" forces a reel today
+    query = os.getenv("SEARCH_QUERY", "").strip().lower().split()  # manual run: "reel [concept-id] [light|dark] [track-slug]"
+    forced = "reel" if query[:1] == ["reel"] else ""
+    options = {w: True for w in query[1:]}
+    reel_theme = "light" if "light" in options else "dark"
+    reel_concept = next((c for c in CONCEPT_BANK if c["id"] in options), None)
+    reel_music = next((w for w in query[1:] if w not in ("light", "dark") and not any(c["id"] == w for c in CONCEPT_BANK)), None)
     if not evening and (forced == "reel" or (et.weekday() in REEL_WEEKDAYS and done_today(state, "reel", today) < MAX_REELS_PER_DAY)):
         jobs.append("reel")
     if not evening and done_today(state, "post", today) < MAX_POSTS_PER_DAY:
@@ -259,16 +264,18 @@ def run_autopilot(cfg: dict) -> int:
     for job in jobs:
         used = [e["id"] for e in state["log"] if e["kind"] == job]
         if job == "reel":
-            c, source = CONCEPT_BANK[state["reel_i"] % len(CONCEPT_BANK)], "bank"
+            c, source = reel_concept or CONCEPT_BANK[state["reel_i"] % len(CONCEPT_BANK)], "bank"
             stem = f"{c['id']}-{now.strftime('%H%M')}"
             try:
-                paths = [reels.render_reel(c, MEDIA_DIR / today / f"{stem}.mp4", footer=f"{cards.HANDLE} · {loc['name']}")]
+                paths = [reels.render_reel(c, MEDIA_DIR / today / f"{stem}.mp4", footer=f"{cards.HANDLE} · {loc['name']}", theme=reel_theme, music=reel_music)]
             except (RuntimeError, OSError) as exc:
                 print(f"[autopilot] reel render failed: {exc}")
                 report.append(f"⚠️ reel {c['id']}: render failed, skipped")
                 continue
-            tags = " ".join(dict.fromkeys(CORE_TAGS + c["hashtags"] + loc["tags"]))
-            item = {"kind": "reel", "platforms": platforms, "media_url": "", "caption": f"{c['caption'].strip()}\n\n{c['cta']}\n\n{loc['name']}\n\n{tags}", "publish_at": now.isoformat()}
+            all_geo = geo or [loc]
+            tags = " ".join(dict.fromkeys(CORE_TAGS + c["hashtags"] + [t for g in all_geo for t in g["tags"]]))
+            places = " / ".join(g["name"] for g in all_geo)
+            item = {"kind": "reel", "platforms": platforms, "media_url": "", "caption": f"{c['caption'].strip()}\n\n{c['cta']}\n\n{places}\n\n{tags}", "publish_at": now.isoformat()}
         elif job == "post":
             c = model_carousel(cfg, used) if llm.available(cfg) and cfg["james"].get("autopilot", {}).get("model_generation", True) else None
             source = "model"

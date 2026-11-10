@@ -31,17 +31,21 @@ def library() -> list[dict]:
     return [t for t in tracks if t.get("starts") and (MUSIC_DIR / t["file"]).exists()]
 
 
-def pick(seed: int) -> tuple[dict, int]:
+def pick(seed: int, slug: str | None = None) -> tuple[dict, int]:
     tracks = library()
     if not tracks:
         raise RuntimeError("no piano tracks in assets/music")
+    if slug:
+        chosen = [t for t in tracks if t["file"].startswith(slug)]
+        if chosen:
+            return chosen[0], chosen[0]["starts"][seed % len(chosen[0]["starts"])]
     track = tracks[seed % len(tracks)]
     start = track["starts"][(seed // len(tracks)) % len(track["starts"])]
     return track, start
 
 
-def make_track(duration: float, seed: int, hits: list[float], out_wav: Path) -> Path:
-    track, start = pick(seed)
+def make_track(duration: float, seed: int, hits: list[float], out_wav: Path, slug: str | None = None) -> Path:
+    track, start = pick(seed, slug)
     out_wav.parent.mkdir(parents=True, exist_ok=True)
     cmd = [ffmpeg_exe(), "-y", "-loglevel", "error", "-ss", str(start), "-t", f"{duration + 1.0:.2f}", "-i", str(MUSIC_DIR / track["file"]),
            "-ac", "2", "-ar", str(SR), str(out_wav)]
