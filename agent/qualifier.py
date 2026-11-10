@@ -242,7 +242,7 @@ def _qualify(lead: dict, cfg: dict) -> dict:
     if is_noise(lead):  # never spend a model call on funding / investment posts
         return {**_heuristic(lead, min_score), "reject_reason_ru": "Инвестиции, раунды или новости - не запрос на разработку."}
     if llm.available(cfg):
-        text = llm.complete(SYSTEM_PROMPT, _lead_prompt(lead), cfg, max_tokens=1000, model=cfg["llm"].get("qualifier_model"))
+        text = llm.complete(SYSTEM_PROMPT, _lead_prompt(lead), cfg, max_tokens=1300, model=cfg["llm"].get("qualifier_model"))
         if text:
             try:
                 return _from_model(text, min_score, tuple(qcfg.get("accepted_intents", ["explicit_request", "product_launch"])))
