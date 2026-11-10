@@ -1948,6 +1948,12 @@
       "status": "alert_only",
       "score": 5,
       "at": "2026-11-10T04:59:36+00:00"
+    },
+    "hn:50401374": {
+      "name": "Roomzine",
+      "status": "pending",
+      "score": 5,
+      "at": "2026-11-10T05:00:33+00:00"
     }
   },
   "contacted_domains": []
