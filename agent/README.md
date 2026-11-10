@@ -149,7 +149,7 @@ Claude. 1–2 секунды недостижимы при любой архит
 `qualifier.py`): проектная работа и контракты выше найма в штат, премиальные «quiet luxury» проекты получают плюс.
 
 Источники добавляются в `job_boards.feeds` (RSS), `remotive_categories` и `jobicy` (тег + регион). Время запуска
-меняется строкой `cron` в workflow.
+меняется в cron-job.org (ссылка из `python agent/cron_key.py <url>`); расписания GitHub в workflow нет.
 
 Upwork, Toptal, LinkedIn, Wellfound, RocketPunch и TokyoDev не опрашиваются: публичных лент нет, доступ закрыт
 защитой от ботов или запрещён условиями сервиса. Для них используйте их собственные email-оповещения по сохранённым

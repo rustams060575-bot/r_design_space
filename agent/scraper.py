@@ -88,7 +88,7 @@ def now_iso() -> str:
 
 
 def is_scheduled_run() -> bool:
-    """True for the 09:00 / 21:00 runs: GitHub's own schedule or the external trigger (api/cron.js)."""
+    """True for the 09:00 / 21:00 runs: the external trigger (api/cron.js, scheduled=true)."""
     return os.getenv("GITHUB_EVENT_NAME", "") == "schedule" or os.getenv("SCHEDULED", "").strip().lower() == "true"
 
 
