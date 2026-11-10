@@ -122,7 +122,8 @@ def render_reel(concept: dict, out_path: Path, footer: str = cards.HANDLE) -> Pa
     cmd = [ffmpeg, "-y", "-loglevel", "error", "-f", "rawvideo", "-pix_fmt", "rgb24", "-s", f"{W}x{H}", "-r", str(FPS), "-i", "-",
            "-i", str(music), "-t", f"{total:.2f}",
            "-c:v", "libx264", "-preset", "medium", "-crf", "22", "-pix_fmt", "yuv420p", "-profile:v", "high", "-movflags", "+faststart",
-           "-c:a", "aac", "-b:a", "160k", "-ar", "44100", *audio.mix_args(total), "-shortest", str(out_path)]
+           "-map", "0:v:0", "-map", "1:a:0", "-c:a", "aac", "-b:a", "192k", "-ar", "44100", "-ac", "2",
+           *audio.mix_args(total), "-shortest", str(out_path)]
     proc = subprocess.Popen(cmd, stdin=subprocess.PIPE)
     frames = int(math.ceil(total * FPS))
     try:
@@ -141,10 +142,44 @@ def render_reel(concept: dict, out_path: Path, footer: str = cards.HANDLE) -> Pa
     music.unlink(missing_ok=True)
     if proc.returncode != 0 or not out_path.exists():
         raise RuntimeError("ffmpeg failed")
-    level = mean_volume_db(ffmpeg, out_path)
-    if level is None or level < -45:  # never ship a silent reel
-        raise RuntimeError(f"reel audio is silent (mean {level} dB)")
+    verify_av(ffmpeg, out_path, total)  # never ship a reel whose audio is silent, truncated or missing
     return out_path
+
+
+def audio_info(ffmpeg: str, path: Path) -> dict:
+    """Parses `ffmpeg -i` output: audio stream present, codec, rate, channels and bitrate (kb/s)."""
+    import re
+    err = subprocess.run([ffmpeg, "-hide_banner", "-i", str(path)], capture_output=True, text=True).stderr
+    m = re.search(r"Stream #\d+:\d+.*?Audio: (\w+).*?(\d+) Hz, (\w+).*?(?:(\d+) kb/s)?\s*(?:\(default\))?\s*$", err, re.M)
+    dur = re.search(r"Duration: (\d+):(\d+):([\d.]+)", err)
+    return {"codec": m.group(1) if m else None, "rate": int(m.group(2)) if m else 0, "layout": m.group(3) if m else None,
+            "kbps": int(m.group(4)) if m and m.group(4) else 0, "duration": (int(dur.group(1)) * 3600 + int(dur.group(2)) * 60 + float(dur.group(3))) if dur else 0.0}
+
+
+def window_db(ffmpeg: str, path: Path, start: float, length: float) -> float | None:
+    done = subprocess.run([ffmpeg, "-hide_banner", "-ss", f"{start:.2f}", "-t", f"{length:.2f}", "-i", str(path), "-vn", "-af", "volumedetect", "-f", "null", "-"],
+                          capture_output=True, text=True)
+    for line in done.stderr.splitlines():
+        if "mean_volume:" in line:
+            return float(line.split("mean_volume:")[1].split("dB")[0])
+    return None
+
+
+def verify_av(ffmpeg: str, path: Path, total: float) -> None:
+    info = audio_info(ffmpeg, path)
+    problems = []
+    if info["codec"] != "aac" or info["rate"] != 44100 or info["layout"] != "stereo":
+        problems.append(f"audio stream wrong: {info}")
+    if info["kbps"] and info["kbps"] < 96:
+        problems.append(f"audio bitrate too low: {info['kbps']} kb/s")
+    if info["duration"] < total - 0.4:
+        problems.append(f"file shorter than the reel: {info['duration']:.2f}s < {total:.2f}s")
+    for name, start in (("early", 1.0), ("middle", total / 2 - 0.5), ("late", max(1.0, total - 3.0))):
+        db = window_db(ffmpeg, path, start, 1.0)
+        if db is None or db < -42:
+            problems.append(f"{name} section is silent ({db} dB)")
+    if problems:
+        raise RuntimeError("reel audio check failed: " + "; ".join(problems))
 
 
 def mean_volume_db(ffmpeg: str, path: Path) -> float | None:

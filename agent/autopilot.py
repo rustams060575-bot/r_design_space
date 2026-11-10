@@ -243,7 +243,7 @@ def run_autopilot(cfg: dict) -> int:
     loc = geo[len(state["log"]) % len(geo)] if geo else {"name": "", "tags": []}
     jobs = []
     forced = os.getenv("SEARCH_QUERY", "").strip().lower()  # manual run: query "reel" forces a reel today
-    if not evening and (et.weekday() in REEL_WEEKDAYS or forced == "reel") and done_today(state, "reel", today) < MAX_REELS_PER_DAY:
+    if not evening and (forced == "reel" or (et.weekday() in REEL_WEEKDAYS and done_today(state, "reel", today) < MAX_REELS_PER_DAY)):
         jobs.append("reel")
     if not evening and done_today(state, "post", today) < MAX_POSTS_PER_DAY:
         jobs.append("post")
@@ -326,7 +326,7 @@ def run_reel_test() -> int:
     import audio
     concept = CONCEPT_BANK[0]
     out = Path(tempfile.mkdtemp()) / "reeltest.mp4"
-    reels.render_reel(concept, out)
-    level = reels.mean_volume_db(audio.ffmpeg_exe(), out)
-    print(f"[reeltest] ok: {out.stat().st_size // 1024} KB, mean volume {level} dB")
+    reels.render_reel(concept, out)  # render_reel raises if the audio is missing, silent or truncated
+    info = reels.audio_info(audio.ffmpeg_exe(), out)
+    print(f"[reeltest] ok: {out.stat().st_size // 1024} KB, audio {info}")
     return 0
