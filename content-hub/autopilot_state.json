@@ -1,6 +1,6 @@
 {
   "carousel_i": 1,
-  "story_i": 1,
+  "story_i": 2,
   "log": [
     {
       "date": "2026-11-10",
@@ -27,6 +27,20 @@
         "instagram": "published:18040113572889394",
         "facebook": "published:2621364404993656"
       }
+    },
+    {
+      "date": "2026-11-10",
+      "time": "11:46",
+      "kind": "story",
+      "id": "s-space",
+      "source": "bank",
+      "live": true,
+      "ok": true,
+      "result": {
+        "instagram": "published:18116521814580897",
+        "facebook": "published:2175737000493977"
+      }
     }
-  ]
+  ],
+  "reel_i": 0
 }
