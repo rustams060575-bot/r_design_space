@@ -92,3 +92,29 @@ start a project: link in bio.
 **why it should work:** continuous camera motion holds attention; the code overlay satisfies the engineer audience and signals depth to buyers.
 **build:** three.js + gsap scrolltrigger demo; record at 60 fps; keep one continuous take.
 
+## trend scan (public feeds)
+
+- [HN: awwwards / webgl / scroll] To deter bioterrorism, U.S. imposes new rules on ordering synthetic DNA — https://www.science.org/content/article/deter-bioterrorism-u-s-imposes-new-rules-ordering-synthetic-dna
+- [HN: awwwards / webgl / scroll] AI is becoming an information gateway. Audiences still don’t want it making news — https://www.niemanlab.org/2026/11/ai-is-becoming-an-information-gateway-audiences-still-dont-want-it-making-their-news/
+- [HN: awwwards / webgl / scroll] Saltline: First-person shooter built by Fable 5.2 — https://claude.ai/artifact/BGY1SztrAYcJQHSsnHHGmp
+- [HN: awwwards / webgl / scroll] .name Grandfathered — https://neil.fraser.name/news/2026/11/10/
+- [HN: awwwards / webgl / scroll] Blender 5.3 released with Gaussian Splat support — https://www.blender.org/download/releases/5-3/
+- [HN: awwwards / webgl / scroll] Announcing .NET 11 — https://devblogs.microsoft.com/dotnet/announcing-dotnet-11/
+- [HN: awwwards / webgl / scroll] The U.S. Is Driving Away Young Scientists — https://www.nytimes.com/interactive/2026/11/09/science/trump-funding-cuts-young-scientists-phd-research.html
+- [HN: awwwards / webgl / scroll] Wake me up when AI can... — https://stoppels.ch/2026/10/03/wake-me-up-when-ai-can.html
+- [HN: awwwards / webgl / scroll] Anthropic to Seek $1.3T Valuation in IPO — https://www.wsj.com/finance/stocks/anthropic-to-seek-1-3-trillion-valuation-in-ipo-8337b669
+- [HN: awwwards / webgl / scroll] What's new in the .NET 11 runtime — https://learn.microsoft.com/en-us/dotnet/core/whats-new/dotnet-11/runtime
+- [HN: awwwards / webgl / scroll] S.t.a.l.k.e.r. Call of Pripyat in WASM and WebGPU — https://stalker-online.xyz/
+- [HN: awwwards / webgl / scroll] Amazon saves millions by replacing Sonnet 4.6 with Strands Decider — https://strandsagents.com/blog/amazon-saves-millions-replacing-sonnet-with-strands-decider/
+- [HN: creative coding showcases] Show HN: Codemap – one-page interactive map of any Go repository — https://github.com/peterretief/codemap
+- [HN: creative coding showcases] Show HN: Interactive notes on RLHF, attention, LoRA and LLM evals — https://concepts.laxmena.com/
+- [HN: creative coding showcases] Show HN: Warsaw in voxels – An interactive 3D map of the city centre — https://p.migdal.pl/warsaw-vibe-voxel/
+- [HN: creative coding showcases] Show HN: I've updated my Linux System Call website and API — https://syscall.sh/
+- [HN: creative coding showcases] Show HN: Uberblok – an interactive museum of ZFS internals — https://uberblok.storagebits.workers.dev/
+- [HN: creative coding showcases] Show HN: I built a task system to handle the drudgery so I could focus on tasks — https://3anddoneapp.com/try
+- [HN: creative coding showcases] Show HN: SVG Spark – 10 client-side SVG design and dev tools — https://svg-spark.vercel.app/
+- [HN: creative coding showcases] Show HN: Real-time Solar System with 526k asteroids and all tracked satellites — https://space.bl2.net/
+- [HN: creative coding showcases] Show HN: Dental Scope – Interactive 3D dental anatomy — https://dental-scope.com/
+- [HN: creative coding showcases] Show HN: Free alternative to graphics design giants — https://scissor.studio/
+- [HN: creative coding showcases] Show HN: Whiteboard (YC W26) – An open-source IDE for thoughtful software design — https://github.com/devdotfast/whiteboard
+- [HN: creative coding showcases] Show HN: An atlas of system designs with interactive architecture diagrams — https://atlas-sysdes.vercel.app/
