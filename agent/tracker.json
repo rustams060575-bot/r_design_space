@@ -2272,6 +2272,366 @@
       "status": "rejected",
       "score": 3,
       "at": "2026-11-10T16:05:02+00:00"
+    },
+    "hn:50455176": {
+      "name": "An open-source macOS file browser built with GPUI",
+      "status": "rejected",
+      "score": 2,
+      "at": "2026-11-11T17:23:08+00:00"
+    },
+    "signal:392769421d98bf37": {
+      "name": "Archgen launches AI agent that finds and fixes chip design problems on its own",
+      "status": "rejected",
+      "score": 5,
+      "at": "2026-11-11T17:23:14+00:00"
+    },
+    "hn:50452894": {
+      "name": "Blazly recently pivoted from a marketing SaaS platform to a prompt-only platform",
+      "status": "rejected",
+      "score": 5,
+      "at": "2026-11-11T17:23:17+00:00"
+    },
+    "job:7d5a5537960f4f5d": {
+      "name": "Sr. UX Researcher (UXR-2-112026) - Koru UX Design LLP",
+      "status": "rejected",
+      "score": 2,
+      "at": "2026-11-11T17:23:20+00:00"
+    },
+    "hn:50443128": {
+      "name": "Mismo",
+      "status": "rejected",
+      "score": 2,
+      "at": "2026-11-11T17:23:24+00:00"
+    },
+    "signal:f218b23931fa859a": {
+      "name": "6 Product Design Agencies SaaS Founders Should Know in 2027",
+      "status": "rejected",
+      "score": 1,
+      "at": "2026-11-11T17:23:27+00:00"
+    },
+    "hn:50444072": {
+      "name": "Life as a Software Developer in 2026",
+      "status": "rejected",
+      "score": 1,
+      "at": "2026-11-11T17:23:29+00:00"
+    },
+    "job:b0c2629199e6b00e": {
+      "name": "CUNY Central Office is hiring for a position of Web Designer in New York City, NY",
+      "status": "rejected",
+      "score": 6,
+      "at": "2026-11-11T17:23:33+00:00"
+    },
+    "hn:50453034": {
+      "name": "Editmamei",
+      "status": "rejected",
+      "score": 2,
+      "at": "2026-11-11T17:23:36+00:00"
+    },
+    "hn:50451455": {
+      "name": "Ascope",
+      "status": "rejected",
+      "score": 5,
+      "at": "2026-11-11T17:23:44+00:00"
+    },
+    "hn:50453411": {
+      "name": "Hubzoid",
+      "status": "rejected",
+      "score": 5,
+      "at": "2026-11-11T17:23:48+00:00"
+    },
+    "signal:efb3b0c297320a80": {
+      "name": "How Metagenics rebuilt B2B and DTC commerce in six months on Shopify",
+      "status": "rejected",
+      "score": 4,
+      "at": "2026-11-11T17:23:53+00:00"
+    },
+    "hn:50452926": {
+      "name": "Komrad",
+      "status": "rejected",
+      "score": 3,
+      "at": "2026-11-11T17:24:00+00:00"
+    },
+    "signal:1bceb226e6dc615e": {
+      "name": "Automation startup Rox raises $100 million at $1.3 billion valuation",
+      "status": "rejected",
+      "score": 6,
+      "at": "2026-11-11T17:24:05+00:00"
+    },
+    "job:fc80ecf87c08bd3f": {
+      "name": "Senior Developer - Instrument",
+      "status": "rejected",
+      "score": 5,
+      "at": "2026-11-11T17:24:10+00:00"
+    },
+    "hn:50444931": {
+      "name": "Lovable for Photoshop",
+      "status": "rejected",
+      "score": 6,
+      "at": "2026-11-11T17:24:14+00:00"
+    },
+    "hn:50452389": {
+      "name": "NoDOM high performance WASM UI kit for DuckDB-WASM",
+      "status": "rejected",
+      "score": 2,
+      "at": "2026-11-11T17:24:18+00:00"
+    },
+    "signal:2b6e50c5f794e5ae": {
+      "name": "HeyClicky's Farza Majeed says founders should skip the polished launch and post a rough demo every week",
+      "status": "rejected",
+      "score": 2,
+      "at": "2026-11-11T17:24:22+00:00"
+    },
+    "job:4503b831cfd2d907": {
+      "name": "Freelance Product and Brand Designers – Join Our Network - Instrument",
+      "status": "alert_only",
+      "score": 9,
+      "at": "2026-11-11T17:24:35+00:00"
+    },
+    "hn:50452257": {
+      "name": "Aq",
+      "status": "rejected",
+      "score": 2,
+      "at": "2026-11-11T17:24:39+00:00"
+    },
+    "hn:50452040": {
+      "name": "Pots",
+      "status": "rejected",
+      "score": 5,
+      "at": "2026-11-11T17:24:44+00:00"
+    },
+    "hn:50450624": {
+      "name": "GraphFlow",
+      "status": "rejected",
+      "score": 5,
+      "at": "2026-11-11T17:24:48+00:00"
+    },
+    "hn:50442692": {
+      "name": "Crewplane, you design and own the workflows, agents run them",
+      "status": "rejected",
+      "score": 2,
+      "at": "2026-11-11T17:24:52+00:00"
+    },
+    "hn:50442258": {
+      "name": "Ilo Musi 8",
+      "status": "rejected",
+      "score": 1,
+      "at": "2026-11-11T17:24:54+00:00"
+    },
+    "signal:e8a7f87e79a5003e": {
+      "name": "AI 'amnesia' startup Graphon raises $35M Series A",
+      "status": "rejected",
+      "score": 6,
+      "at": "2026-11-11T17:24:59+00:00"
+    },
+    "job:22a749ed88fb7459": {
+      "name": "Senior Product Designer - Tremendous",
+      "status": "rejected",
+      "score": 6,
+      "at": "2026-11-11T17:25:03+00:00"
+    },
+    "hn:50453221": {
+      "name": "Zaelar, self-hostable life agent with voice, UI and network A2A",
+      "status": "rejected",
+      "score": 5,
+      "at": "2026-11-11T17:25:07+00:00"
+    },
+    "signal:bf89de435634b3f2": {
+      "name": "Graphon Labs raises $35m to give AI agents a memory that lasts",
+      "status": "rejected",
+      "score": 5,
+      "at": "2026-11-11T17:25:11+00:00"
+    },
+    "job:c67dec86c92c3694": {
+      "name": "Senior Product Designer - Medium",
+      "status": "rejected",
+      "score": 6,
+      "at": "2026-11-11T17:25:16+00:00"
+    },
+    "hn:50443812": {
+      "name": "Get your coding agent off ~2019 JavaScript, onto modern web primitives",
+      "status": "rejected",
+      "score": 1,
+      "at": "2026-11-11T17:25:19+00:00"
+    },
+    "hn:50442562": {
+      "name": "Glitch/Distorion page transitions with HTML-in-Canvas",
+      "status": "rejected",
+      "score": 2,
+      "at": "2026-11-11T17:25:23+00:00"
+    },
+    "hn:50445758": {
+      "name": "Zeus",
+      "status": "rejected",
+      "score": 6,
+      "at": "2026-11-11T17:25:27+00:00"
+    },
+    "signal:906bae6fce815985": {
+      "name": "Daily Digest: Salesforce makes another billion-dollar buy, bevy of newspapers sue S.F. startup",
+      "status": "rejected",
+      "score": 1,
+      "at": "2026-11-11T17:25:30+00:00"
+    },
+    "job:fee23194eba42990": {
+      "name": "Growth Marketing Intern - Reedsy",
+      "status": "rejected",
+      "score": 1,
+      "at": "2026-11-11T17:25:33+00:00"
+    },
+    "signal:10702ad0c042c149": {
+      "name": "Year-Old Korean Startup NanoForge AI Raises $10 Million to Discover Next-Generation Materials",
+      "status": "rejected",
+      "score": 3,
+      "at": "2026-11-11T17:25:38+00:00"
+    },
+    "signal:c19eaf3a6477795e": {
+      "name": "Alta raises $48 million for its compliance-focused blockchain in Series A round led by Index Ventures",
+      "status": "rejected",
+      "score": 5,
+      "at": "2026-11-11T17:25:42+00:00"
+    },
+    "job:a98d97bcd9a9f775": {
+      "name": "QA Engineer - Neuroscale AI",
+      "status": "rejected",
+      "score": 2,
+      "at": "2026-11-11T17:25:46+00:00"
+    },
+    "signal:66f4b06fb1c8c09e": {
+      "name": "Funding for NYC Startups Hits Monthly High, With Nearly a Quarter of US Total",
+      "status": "rejected",
+      "score": 1,
+      "at": "2026-11-11T17:25:48+00:00"
+    },
+    "signal:c78d3c886e06f095": {
+      "name": "Traversal raises $120M at $1 billion valuation — plus 5 more NYC VC deals to know",
+      "status": "alert_only",
+      "score": 8,
+      "at": "2026-11-11T17:26:04+00:00"
+    },
+    "signal:934392478aaa7ac0": {
+      "name": "News | Freshly funded AI firm Modal Labs expands in New York",
+      "status": "alert_only",
+      "score": 8,
+      "at": "2026-11-11T17:26:20+00:00"
+    },
+    "signal:dbbaeca3ffcc8d81": {
+      "name": "Israeli-founded cybersecurity startup Daylight raises $80 million in Goldman Sachs-led funding round",
+      "status": "rejected",
+      "score": 5,
+      "at": "2026-11-11T17:26:24+00:00"
+    },
+    "signal:c905aa68c785cced": {
+      "name": "The Beat: Startup raises new funding for medtech",
+      "status": "rejected",
+      "score": 5,
+      "at": "2026-11-11T17:26:27+00:00"
+    },
+    "signal:88da97b60fef9542": {
+      "name": "Astral raises $5.5M to make AI-powered tutoring available nationwide",
+      "status": "alert_only",
+      "score": 8,
+      "at": "2026-11-11T17:26:41+00:00"
+    },
+    "signal:2fea0ba737ddbda8": {
+      "name": "Chicago data startup Ocient raises $100M as AI adoption accelerates",
+      "status": "rejected",
+      "score": 5,
+      "at": "2026-11-11T17:26:45+00:00"
+    },
+    "signal:40a74885728c1832": {
+      "name": "Kalepa secures $75m in Series B funding at $470m valuation to expand AI insurance platform",
+      "status": "rejected",
+      "score": 6,
+      "at": "2026-11-11T17:26:49+00:00"
+    },
+    "signal:92b482bd45ba60b2": {
+      "name": "Hardware-testing and engineering startup Nominal raises $240M at $3B valuation",
+      "status": "rejected",
+      "score": 5,
+      "at": "2026-11-11T17:26:54+00:00"
+    },
+    "signal:984c3223da612aa0": {
+      "name": "AI hardware startup Nominal triples valuation to $3B in 8 months",
+      "status": "rejected",
+      "score": 1,
+      "at": "2026-11-11T17:26:58+00:00"
+    },
+    "signal:d699f1bf7af38249": {
+      "name": "Insurtech Kalepa raises $75 mn in Series B at $470 mn valuation to expand insurance AI platform",
+      "status": "rejected",
+      "score": 6,
+      "at": "2026-11-11T17:27:03+00:00"
+    },
+    "signal:4598b4030f6ce64d": {
+      "name": "Fal raises at $16B valuation, Crowdstrike strikes for two deals",
+      "status": "rejected",
+      "score": 5,
+      "at": "2026-11-11T17:27:09+00:00"
+    },
+    "signal:cce83f6b01995737": {
+      "name": "Nominal Raises $240M at $3B Valuation for AI Hardware Engineering",
+      "status": "rejected",
+      "score": 5,
+      "at": "2026-11-11T17:27:14+00:00"
+    },
+    "signal:67b6057cbf7e64ce": {
+      "name": "Kalepa Raises $75M Series B at $470M Valuation to Expand Insurance AI",
+      "status": "rejected",
+      "score": 6,
+      "at": "2026-11-11T17:27:18+00:00"
+    },
+    "signal:ec30176190a280f3": {
+      "name": "Kalepa Raises $75M to Expand AI-Powered Insurance Software",
+      "status": "rejected",
+      "score": 6,
+      "at": "2026-11-11T17:27:23+00:00"
+    },
+    "signal:db3e0ba559551ded": {
+      "name": "Israeli startups raised at least $872 million in October, led by cybersecurity and AI",
+      "status": "rejected",
+      "score": 1,
+      "at": "2026-11-11T17:27:26+00:00"
+    },
+    "signal:928626f6a80f130e": {
+      "name": "Takenos raises $7M seed extension to expand across Latin America",
+      "status": "rejected",
+      "score": 4,
+      "at": "2026-11-11T17:27:32+00:00"
+    },
+    "signal:91ed13d323d92d3f": {
+      "name": "Mighty Capital raises $91m for Fund III, triple the size of second fund",
+      "status": "rejected",
+      "score": 0,
+      "at": "2026-11-11T17:27:34+00:00"
+    },
+    "signal:952571fa21680648": {
+      "name": "Enza Raises $6M to Expand Payments Infrastructure Across African Markets",
+      "status": "rejected",
+      "score": 5,
+      "at": "2026-11-11T17:27:39+00:00"
+    },
+    "signal:967c0279a9d3bdf6": {
+      "name": "Europe’s Startup Week: Hypersonica €100M Tops List [2026]",
+      "status": "rejected",
+      "score": 1,
+      "at": "2026-11-11T17:27:42+00:00"
+    },
+    "signal:72319ffa61009ae6": {
+      "name": "MENA startup funding plunges 96% to $40 million in October 2026 as megadeals dry up",
+      "status": "rejected",
+      "score": 1,
+      "at": "2026-11-11T17:27:45+00:00"
+    },
+    "signal:0051481e8fcb60f8": {
+      "name": "Light Frame Raises US$5.1M to Upgrade Core Systems at Private Banks",
+      "status": "rejected",
+      "score": 5,
+      "at": "2026-11-11T17:27:49+00:00"
+    },
+    "signal:3611339735c949fe": {
+      "name": "IA Capital launches fintech and insurtech fund backed by QBE Insurance",
+      "status": "rejected",
+      "score": 1,
+      "at": "2026-11-11T17:27:52+00:00"
     }
   },
   "contacted_domains": [
