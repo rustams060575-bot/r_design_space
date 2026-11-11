@@ -472,8 +472,7 @@ def run_linkedin(cfg: dict) -> int:
 
 
 def run_weekly(cfg: dict) -> int:
-    """Monday 10:00 ET: lead strategy, reel concepts and linkedin drafts for the week."""
+    """Monday 10:00 ET: lead strategy and linkedin drafts for the week. No reel concepts: the owner makes the reels (content-hub/ar02)."""
     rc = run_strategy(cfg)
-    rc |= run_content(cfg)
     rc |= run_linkedin(cfg)
     return rc

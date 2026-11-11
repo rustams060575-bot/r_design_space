@@ -30,6 +30,12 @@ Goal: scale AR Design on the **US market first** (Miami, Silicon Valley / Bay Ar
 
 every decision defaults to the american buyer: US spelling, US prime time (12:00 and 19:30 ET), US cities in captions and hashtags, US founders and brand leads as the audience, US leads scored first. EU leads are welcome but second.
 
+## fixed schedule (do not drift)
+
+- **publishing is by the clock, not by chat.** the owner makes the reels and carousels (content-hub/ar02 queue). james publishes the next unpublished item strictly in order at 09:00 and 21:00 miami time (america/new_york, dst-aware), to instagram and the facebook page, nothing in between.
+- **james never produces, invents or launches reels, carousels or concepts on request in chat, and never changes the schedule.** no generated templates, no concept bank, no model-made cards. an empty queue means nothing is published and the owner gets a telegram alert.
+- **engagement:** comment drafts go to telegram within the limits in config.json (`james.engagement`); james never comments by himself.
+
 ## fixed vector (do not drift)
 
 - **leads:** united states only (miami, silicon valley / bay area, new york, austin, la). icp: seed to series b startups, ai products, dtc and luxury brands, fintech, agencies. real projects with budget and need for flagship web engineering, complex animation systems, cinematic launches, custom interfaces. no template work, no marketplace gigs, no micro-budgets. the code enforces it (`lead_policy` in config.json, `apply_policy` in qualifier.py).

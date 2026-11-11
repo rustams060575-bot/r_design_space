@@ -31,7 +31,7 @@ COMMANDS = [
     {"command": "remember", "description": "Запомнить заметку"},
     {"command": "forget", "description": "Забыть запись по id"},
     {"command": "strategy", "description": "План поиска лидов US/EU на неделю"},
-    {"command": "content", "description": "3 концепта Reels для Instagram"},
+    {"command": "queue", "description": "Очередь публикаций: 09:00 и 21:00 по Майами"},
     {"command": "help", "description": "Справка"},
 ]
 

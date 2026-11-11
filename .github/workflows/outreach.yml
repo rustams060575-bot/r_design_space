@@ -10,6 +10,12 @@ on:
     - cron: "0 13 * * *"      # 08:00 EST (ignored) / 09:00 EDT (summer)
     - cron: "0 2 * * *"       # 21:00 EST (winter) / 22:00 EDT
     - cron: "0 1 * * *"       # 20:00 EST (ignored) / 21:00 EDT (summer)
+    # github delays scheduled runs by hours, so extra attempts inside both windows (agent/ar02.py does nothing outside a window
+    # and never publishes a slot twice): the first attempt that actually starts in a window publishes.
+    - cron: "*/10 14-15 * * *"   # 09:00-10:30 ET in winter (EST)
+    - cron: "*/10 13-14 * * *"   # 09:00-10:30 ET in summer (EDT)
+    - cron: "*/10 2-3 * * *"     # 21:00-22:30 ET in winter (EST)
+    - cron: "*/10 1-2 * * *"     # 21:00-22:30 ET in summer (EDT)
   # Publishing: GitHub schedule above (self-contained, DST-aware through agent/ar02.py) plus an optional exact-time backup,
   # the external trigger /api/cron?action=autopilot (cron-job.org, timezone America/New_York). Double triggers are harmless.
   workflow_dispatch:         # started by /api/cron, Telegram (api/telegram.js) or by hand
