@@ -41,7 +41,7 @@ FB_MIN_AHEAD, FB_MAX_AHEAD = timedelta(minutes=10), timedelta(days=30)
 PLATFORMS = ("instagram", "facebook")
 KINDS = ("reel", "image", "post", "carousel", "story")
 PUBLISH_SCOPES = ("instagram_basic", "instagram_content_publish", "pages_show_list", "pages_manage_posts", "pages_read_engagement")
-INSIGHTS_SCOPES = ("instagram_manage_insights", "pages_read_engagement")  # reach / views / saves for the stats report
+INSIGHTS_SCOPES = ("instagram_manage_insights", "read_insights", "pages_read_engagement")  # reach / views / saves for the stats report
 STATUS_POLL_SECONDS, STATUS_POLL_TRIES = 6, 30
 
 
