@@ -444,28 +444,18 @@
       "out_dir": "../content-hub/weekly"
     },
     "autopilot": {
-      "posts_per_day": 1,
-      "stories_per_day": 0,
-      "model_generation": true,
       "platforms": [
         "instagram",
         "facebook"
       ],
       "timezone": "America/New_York",
-      "prime_slot_utc": "17:00",
-      "evening_slot_utc": "00:30",
-      "reel_weekdays": [
-        "mon",
-        "tue",
-        "wed",
-        "thu",
-        "fri",
-        "sat",
-        "sun"
-      ],
-      "reels_per_day": 1,
-      "reel_slot": "prime (12:00 ET)",
-      "post_slot": "evening (19:30 ET)"
+      "source": "ar02",
+      "slots": {
+        "morning": "09:00 America/New_York",
+        "evening": "21:00 America/New_York"
+      },
+      "queue": "content-hub/ar02/queue.json",
+      "note": "two slots a day, strictly the next unpublished item of the queue; external trigger /api/cron?action=autopilot (cron-job.org, timezone America/New_York); old templates are disabled"
     },
     "geo": {
       "locations": [

@@ -25,8 +25,8 @@ module.exports = async function handler(req, res) {
   const given = String((req.query && req.query.key) || "");
   if (!expected || !same(expected, given)) return res.status(401).end();
 
-  // ?action=strategy|content starts the weekly james jobs; anything else (or nothing) is the normal lead search.
-  const action = ["strategy", "content", "publish"].includes(String((req.query && req.query.action) || "")) ? req.query.action : "search";
+  // ?action=autopilot publishes the next ar02 queue item (09:00 / 21:00 America/New_York); ?action=strategy|content starts the weekly james jobs; anything else (or nothing) is the normal lead search.
+  const action = ["strategy", "content", "publish", "autopilot"].includes(String((req.query && req.query.action) || "")) ? req.query.action : "search";
   const repo = process.env.GITHUB_REPO || "rustams060575-bot/r_design_space";
   const workflow = process.env.GITHUB_WORKFLOW || "outreach.yml";
   const headers = {

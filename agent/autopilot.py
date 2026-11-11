@@ -232,6 +232,9 @@ def publish(graph: "mp.Graph", item: dict) -> dict:
 
 
 def run_autopilot(cfg: dict) -> int:
+    if cfg["james"].get("autopilot", {}).get("source") == "ar02":  # finished AR_Content_02 queue only; templates / bank are off
+        import ar02
+        return ar02.run(cfg)
     graph = mp.Graph()
     live = graph.live
     now = datetime.now(timezone.utc)

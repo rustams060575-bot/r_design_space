@@ -4,7 +4,8 @@
 
 Reads TELEGRAM_BOT_TOKEN from the environment (or agent/.env). The key is derived from the token (same formula as
 api/cron.js), so it changes when the token is rotated. Treat the URL as a secret.
-Scheduler settings: timezone Europe/Madrid, 09:00 and 21:00 every day, method GET.
+Scheduler settings: timezone America/New_York, 09:00 and 21:00 every day, method GET.
+Publishing jobs append &action=autopilot to the URL; the lead search job keeps the plain URL.
 """
 from __future__ import annotations
 

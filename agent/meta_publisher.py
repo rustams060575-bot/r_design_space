@@ -206,6 +206,11 @@ class Graph:
 
     def publish_facebook(self, item: dict, when: datetime | None = None) -> str:
         self.page_token()
+        item = {**item, "caption": item.get("caption_fb") or item["caption"]}  # ar02: Facebook gets its own caption / media
+        if item.get("media_url_fb"):
+            item["media_url"] = item["media_url_fb"]
+        if item.get("media_urls_fb"):
+            item["media_urls"] = item["media_urls_fb"]
         if item["kind"] == "story":
             return self._call("POST", f"{self.fb_id}/photo_stories", self.fb_token, photo_id=self._fb_photo(item["media_url"]))["post_id"]
         if item["kind"] == "carousel":
