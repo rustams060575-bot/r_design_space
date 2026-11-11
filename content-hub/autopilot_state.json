@@ -96,6 +96,20 @@
         "instagram": "published:17990580933078450",
         "facebook": "published:29663119096628697"
       }
+    },
+    {
+      "date": "2026-11-11",
+      "time": "11:28",
+      "slot": "manual",
+      "kind": "reel",
+      "id": "R01",
+      "source": "ar02",
+      "live": true,
+      "ok": false,
+      "result": {
+        "instagram": "failed: meta 400: Any of the pages_read_engagement, pages_manage_metadata,\n        pages_read_user_content, pages_manage_ads, pages_show_list or\n        pages_messaging permission(s) must be granted before impersonating a\n        user's page. (code 190)",
+        "facebook": "failed: meta 400: Any of the pages_read_engagement, pages_manage_metadata,\n        pages_read_user_content, pages_manage_ads, pages_show_list or\n        pages_messaging permission(s) must be granted before impersonating a\n        user's page. (code 190)"
+      }
     }
   ],
   "reel_i": 4
