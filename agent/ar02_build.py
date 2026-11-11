@@ -1,14 +1,16 @@
-"""james · ar02 queue builder: copies the finished AR_Content_02 deliverables into the repo (so Meta can fetch them by raw https URL)
-and writes content-hub/ar02/queue.json (publication order, slots, per-platform media and captions).
+"""james · ar02 queue builder: copies the finished content into the repo (so Meta can fetch it by raw https URL)
+and writes content-hub/ar02/queue.json (publication order, per-platform media and captions).
 
     python agent/ar02_build.py "C:/Users/ramaz/OneDrive/Desktop/matrix/AR_Content_02"
 
-Only the voice+piano reel masters and the carousel PNGs are published. Piano-only masters stay local.
-Order = the Playbook 02 week plan (R12, C08, R18, R17, R09, C05, R10, C06, R11, C07, R16, R13, R14, C10, R15, C09).
+Sources: matrix/reels R01-R08 and matrix/carousels C01-C04 (first series, one master per reel), AR_Content_02/deliverables R09-R18 and C05-C10
+(second series; only the voice+piano reel masters and the carousel PNGs are published, piano-only masters stay local).
+Order: R01 C01 R02 C02 ... R10 C10 R11 ... R18 (morning slot = reel, evening slot = carousel, strictly by number).
 """
 from __future__ import annotations
 
 import hashlib
+import html as html_lib
 import json
 import re
 import shutil
@@ -18,7 +20,11 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent
 REPO = ROOT.parent
 DEST = REPO / "content-hub" / "ar02"
-ORDER = ["R12", "C08", "R18", "R17", "R09", "C05", "R10", "C06", "R11", "C07", "R16", "R13", "R14", "C10", "R15", "C09"]
+# Day by day: reel in the morning slot, carousel in the evening slot, strictly by number; after C10 only reels remain (two a day).
+REELS = [f"R{i:02d}" for i in range(1, 19)]
+CAROUSELS = [f"C{i:02d}" for i in range(1, 11)]
+ORDER = [x for pair in zip(REELS, CAROUSELS) for x in pair] + REELS[len(CAROUSELS):]
+OLD = Path("C:/Users/ramaz/OneDrive/Desktop/matrix")  # R01-R08 / C01-C04 (first series), never published before
 TAGS = "#webdesign #uxdesign #websitedesign #designagency #uidesign"
 
 
@@ -31,6 +37,17 @@ def captions(src: Path) -> dict:
         if m and i + 1 < len(lines):
             out[(m.group(1), m.group(2).lower())] = lines[i + 1].strip()
     return out
+
+
+def old_reel_caption(n: int) -> str:
+    """R01-R08 have no caption file: use the spoken text of the video itself (its on-screen subtitles), which ends with its CTA."""
+    t = (OLD / "reels" / f"R{n:02d}" / "index.html").read_text(encoding="utf-8")
+    vo = " ".join(html_lib.unescape(x) for x in re.findall(r'class="sub[^"]*"[^>]*><span>(.*?)</span>', t))
+    return vo + "\n\nConcept demo."
+
+
+def fb_cta(text: str) -> str:
+    return re.sub(r"\bDM (?=[\u201c\"]?[A-Z]{3,})", "Message us: ", text)
 
 
 def sha(p: Path) -> str:
@@ -48,7 +65,23 @@ def build(src: Path) -> list[dict]:
     for n, cid in enumerate(ORDER, 1):
         d = DEST / cid
         d.mkdir(parents=True, exist_ok=True)
-        if cid.startswith("R"):
+        num = int(cid[1:])
+        if cid.startswith("R") and num <= 8:  # first series: one master per reel (voice + piano baked in), same file for both platforms
+            f = next((OLD / "reels").glob(f"{cid}_*.mp4"))
+            shutil.copy2(f, d / f.name)
+            item = {"kind": "reel", "files_ig": [rel(d / f.name)], "files_fb": [rel(d / f.name)]}
+            cap = old_reel_caption(num)
+            caps[(cid, "instagram")], caps[(cid, "facebook")] = cap, fb_cta(cap)
+        elif cid.startswith("C") and num <= 4:
+            cdir = next((OLD / "carousels").glob(f"{cid}_*"))
+            files = []
+            for k in range(1, 8):
+                shutil.copy2(cdir / f"slide_{k:02d}.png", d / f"{cid}_{k:02d}.png")
+                files.append(rel(d / f"{cid}_{k:02d}.png"))
+            item = {"kind": "carousel", "files_ig": files, "files_fb": files}
+            cap = (cdir / "caption.txt").read_text(encoding="utf-8").strip()
+            caps[(cid, "instagram")], caps[(cid, "facebook")] = cap, fb_cta(cap)
+        elif cid.startswith("R"):
             ig_src = src / "deliverables" / "reels" / cid / f"{cid}_IG_voice_piano.mp4"
             fb_src = src / "deliverables" / "reels" / cid / f"{cid}_FB_voice_piano.mp4"
             shutil.copy2(ig_src, d / ig_src.name)
