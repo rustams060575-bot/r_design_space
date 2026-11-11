@@ -41,6 +41,7 @@ FB_MIN_AHEAD, FB_MAX_AHEAD = timedelta(minutes=10), timedelta(days=30)
 PLATFORMS = ("instagram", "facebook")
 KINDS = ("reel", "image", "post", "carousel", "story")
 PUBLISH_SCOPES = ("instagram_basic", "instagram_content_publish", "pages_show_list", "pages_manage_posts", "pages_read_engagement")
+INSIGHTS_SCOPES = ("instagram_manage_insights", "pages_read_engagement")  # reach / views / saves for the stats report
 STATUS_POLL_SECONDS, STATUS_POLL_TRIES = 6, 30
 
 
@@ -143,6 +144,7 @@ class Graph:
         return {
             "granted": granted,
             "missing_for_publishing": [s for s in PUBLISH_SCOPES if s not in granted],
+            "missing_for_insights": [s for s in INSIGHTS_SCOPES if s not in granted],
             "pages": [{"page_id": pg["id"], "page_name": pg.get("name"),
                        "ig_user_id": (pg.get("instagram_business_account") or {}).get("id"),
                        "ig_username": (pg.get("instagram_business_account") or {}).get("username")} for pg in pages],

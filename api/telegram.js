@@ -40,7 +40,7 @@ const START_TEXT =
   "• Лидогенерация: ищу стартапы и SaaS по миру, пишу письма на языке фаундера. Письмо уходит только после вашей кнопки.\n" +
   "• Диалог с памятью: пишите мне как ассистенту - я помню проекты, договорённости и интересы, даже спустя недели.\n" +
   "• Голос: отправьте голосовое сообщение - отвечу голосом.\n\n" +
-  "Команды:\n/admin - статистика лидов и источников\n/leads - последние лиды\n/search - поиск лидов сейчас (можно с запросом)\n/strategy - план поиска лидов US/EU на неделю\n/queue - очередь публикаций (09:00 и 21:00 по Майами)\n/memory - что я помню\n/history - хронология\n" +
+  "Команды:\n/admin - статистика лидов и источников\n/leads - последние лиды\n/search - поиск лидов сейчас (можно с запросом)\n/strategy - план поиска лидов US/EU на неделю\n/queue - очередь публикаций (09:00 и 21:00 по Майами)\n/reach - охваты и статистика Instagram и Facebook\n/memory - что я помню\n/history - хронология\n" +
   "/remember <текст> - запомнить\n/forget <id> - забыть запись\n/help - справка";
 
 const HELP_TEXT =
@@ -457,6 +457,13 @@ async function onMessage(msg, updateId) {
     return tg("sendMessage", {
       chat_id: chat,
       text: "Рилсы и карусели делает владелец, James их не производит. Готовая очередь (content-hub/ar02) публикуется сама: 09:00 и 21:00 по Майами, строго по порядку.",
+    });
+  }
+  if (cmd.name === "reach") {  // reach / views / saves of the latest Instagram posts and the Facebook Page (read-only)
+    const ok = await dispatch({ action: "stats", query: "", lead_id: "" });
+    return tg("sendMessage", {
+      chat_id: chat,
+      text: ok ? "📊 Собираю охваты и статистику Instagram и Facebook. Отчёт придёт в этот чат через 1-2 минуты." : "⚠️ Не удалось запустить задачу (GitHub Actions). Проверьте GH_DISPATCH_TOKEN.",
     });
   }
   if (cmd.name === "strategy") {

@@ -616,7 +616,7 @@ def send_pending(cfg: dict, lead_id: str) -> bool:
 
 def main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("--action", choices=["search", "send", "strategy", "content", "publish", "autopilot", "reeltest", "linkedin", "weekly", "audit", "engage"])
+    ap.add_argument("--action", choices=["search", "send", "strategy", "content", "publish", "autopilot", "reeltest", "linkedin", "weekly", "audit", "stats", "engage"])
     ap.add_argument("--query")
     ap.add_argument("--lead-id")
     args = ap.parse_args(argv)
@@ -639,7 +639,7 @@ def main(argv: list[str] | None = None) -> int:
     if action == "engage":  # safe warm-up: comment drafts for the owner (never auto-posted)
         import engage
         return engage.run_engage(cfg)
-    if action == "audit":  # read-only reach diagnostics for Instagram + the Facebook Page
+    if action in ("audit", "stats"):  # read-only reach diagnostics for Instagram + the Facebook Page
         import audit
         return audit.run_audit(cfg)
     if action == "publish":
