@@ -14,6 +14,7 @@ Guardrails:
 from __future__ import annotations
 
 import json
+import os
 import time
 from datetime import datetime, timezone
 from pathlib import Path
@@ -29,9 +30,16 @@ QUEUE = REPO / "content-hub" / "ar02" / "queue.json"
 TZ = "America/New_York"
 
 
-def slot_of(et: datetime) -> str:
-    """09:00 ET trigger -> morning; 21:00 ET trigger -> evening (generous window for delayed starts)."""
-    return "morning" if 5 <= et.hour < 15 else "evening"
+WINDOWS = {"morning": ((9, 0), (10, 30)), "evening": ((21, 0), (22, 30))}  # ET; GitHub cron may start late, never early
+
+
+def slot_of(et: datetime) -> str | None:
+    """Slot whose window contains this US-Eastern time, else None (the run then does nothing)."""
+    t = (et.hour, et.minute)
+    for name, (a, b) in WINDOWS.items():
+        if a <= t < b:
+            return name
+    return None
 
 
 def media_ready(paths: list[str], wait: int = 90) -> bool:
@@ -56,11 +64,16 @@ def make_item(q: dict) -> dict:
     return item
 
 
-def run(cfg: dict) -> int:
+def run(cfg: dict, now: datetime | None = None, force: bool | None = None) -> int:
     graph = mp.Graph()
     live = graph.live
-    et = datetime.now(timezone.utc).astimezone(ZoneInfo(TZ))
-    today, slot = et.strftime("%Y-%m-%d"), slot_of(et)
+    et = (now or datetime.now(timezone.utc)).astimezone(ZoneInfo(TZ))
+    force = (os.getenv("SEARCH_QUERY", "").strip().lower() == "now") if force is None else force  # manual: "now" publishes the next item
+    slot = slot_of(et) or ("manual" if force else None)
+    today = et.strftime("%Y-%m-%d")
+    if slot is None:
+        print(f"[ar02] {et.strftime('%Y-%m-%d %H:%M %Z')}: outside the 09:00 / 21:00 ET windows, nothing to do")
+        return 0
     state = load_state()
     queue = json.loads(QUEUE.read_text(encoding="utf-8"))
     if any(e.get("date") == today and e.get("slot") == slot and e.get("ok") and e.get("source") == "ar02" for e in state["log"]):

@@ -4,8 +4,14 @@ on:
   schedule:                # james autopilot: posts + stories to Instagram and the Facebook Page (UTC)
     - cron: "0 15 * * 1"      # monday 10:00 ET (11:00 EDT): weekly strategy + reel concepts + linkedin drafts
     - cron: "30 14 * * 1-6"   # 10:30 ET mon-sat: comment drafts for the day (engage)
-  # Publishing has NO GitHub schedule: the 09:00 and 21:00 America/New_York slots come from the external trigger
-  # /api/cron?action=autopilot (cron-job.org, timezone America/New_York). GitHub's own schedule is delayed and has no DST-aware zone.
+    # ar02 publishing slots, 09:00 and 21:00 America/New_York. UTC is fixed, New York is not, so each slot has a winter and a
+    # summer UTC hour; agent/ar02.py only acts when the New York clock is inside the slot window and never twice per slot.
+    - cron: "0 14 * * *"      # 09:00 EST (winter) / 10:00 EDT
+    - cron: "0 13 * * *"      # 08:00 EST (ignored) / 09:00 EDT (summer)
+    - cron: "0 2 * * *"       # 21:00 EST (winter) / 22:00 EDT
+    - cron: "0 1 * * *"       # 20:00 EST (ignored) / 21:00 EDT (summer)
+  # Publishing: GitHub schedule above (self-contained, DST-aware through agent/ar02.py) plus an optional exact-time backup,
+  # the external trigger /api/cron?action=autopilot (cron-job.org, timezone America/New_York). Double triggers are harmless.
   workflow_dispatch:         # started by /api/cron, Telegram (api/telegram.js) or by hand
     inputs:
       action:
@@ -66,7 +72,7 @@ jobs:
         run: python agent/scraper.py
         env:
           # Inputs go through env (never interpolated into the shell command) to avoid script injection.
-          ACTION: ${{ inputs.action || (github.event.schedule == '0 15 * * 1' && 'weekly') || (github.event.schedule == '30 14 * * 1-6' && 'engage') || 'search' }}
+          ACTION: ${{ inputs.action || (github.event.schedule == '0 15 * * 1' && 'weekly') || (github.event.schedule == '30 14 * * 1-6' && 'engage') || (github.event_name == 'schedule' && 'autopilot') || 'search' }}
           SEARCH_QUERY: ${{ inputs.query }}
           LEAD_ID: ${{ inputs.lead_id }}
           SCHEDULED: ${{ inputs.scheduled }}
