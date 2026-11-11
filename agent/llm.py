@@ -49,7 +49,7 @@ def available(cfg: dict) -> bool:
 
 _dead: set[str] = set()  # providers that failed with a billing / auth error in this run: not retried for every lead
 _calls = 0
-MAX_CALLS_PER_RUN = 120  # hard stop for runaway loops: 25 leads x (qualify + pitch) is the normal maximum
+MAX_CALLS_PER_RUN = 260  # hard stop for runaway loops: 25 leads x (qualify + pitch) is the normal maximum
 
 
 def complete(system: str, prompt: str, cfg: dict, max_tokens: int | None = None, model: str | None = None) -> str | None:

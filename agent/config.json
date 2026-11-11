@@ -262,7 +262,7 @@
   },
   "qualification": {
     "min_score": 8,
-    "max_per_run": 25,
+    "max_per_run": 60,
     "enrich_site": true,
     "accepted_intents": [
       "explicit_request",
@@ -276,7 +276,7 @@
   },
   "limits": {
     "max_age_days": 7,
-    "max_leads_per_run": 10,
+    "max_leads_per_run": 30,
     "max_emails_per_run": 2,
     "request_timeout": 15
   },
@@ -289,7 +289,7 @@
   },
   "job_boards": {
     "enabled": true,
-    "per_source": 25,
+    "per_source": 50,
     "feeds": [
       {
         "name": "We Work Remotely",
@@ -587,12 +587,20 @@
       "min_gap_minutes": 8,
       "window_et": "10:00-20:00",
       "targets_note": "edit this list: us design / web / startup accounts that are professional (business or creator) instagram accounts"
+    },
+    "leads_report": {
+      "enabled": true,
+      "slots": "09:00 and 21:00 Miami, right after the post of the slot (same run, same gate as the publishing)",
+      "near_miss_min_score": 6,
+      "near_miss_max": 8,
+      "board_postings_max": 12,
+      "threads": true
     }
   },
   "signals": {
     "enabled": true,
     "max_age_days": 10,
-    "per_query": 6,
+    "per_query": 10,
     "region": {
       "name": "USA signals",
       "hl": "en-US",

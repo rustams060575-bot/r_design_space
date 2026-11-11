@@ -497,7 +497,7 @@ def site_blurb(website: str, timeout: int) -> str:
 
 # ---------------------------------------------------------------- pipeline: search
 
-def run_search(cfg: dict, query: str | None = None) -> dict:
+def run_search(cfg: dict, query: str | None = None, quiet: bool = False) -> dict:
     tracker = load_tracker()
     pending = load_json(PENDING_PATH, {})
     timeout = cfg["limits"]["request_timeout"]
@@ -511,10 +511,10 @@ def run_search(cfg: dict, query: str | None = None) -> dict:
 
     fresh = [l for l in collect_leads(cfg, query) if l["id"] not in tracker["processed"]]
     print(f"[agent] {len(fresh)} new candidates")
-    if not query and is_scheduled_run():
+    if not query and is_scheduled_run() and not quiet:
         send_digest(fresh)  # morning header: what was scanned today
 
-    stats = {"candidates": len(fresh), "checked": 0, "rejected": 0, "approved": 0, "emails": 0}
+    stats = {"candidates": len(fresh), "checked": 0, "rejected": 0, "approved": 0, "emails": 0, "found": []}
     for lead in fresh[: qcfg.get("max_per_run", 25)]:
         if stats["approved"] >= cfg["limits"]["max_leads_per_run"]:
             break
@@ -525,6 +525,11 @@ def run_search(cfg: dict, query: str | None = None) -> dict:
             lead["site_info"] = site_blurb(lead["website"], timeout)
         lead["analysis"] = qualify(lead, cfg)
         stats["checked"] += 1
+        an = lead["analysis"]
+        record = {"name": lead["name"][:110], "url": lead["url"], "source": lead["source"], "score": an["score"], "intent": an.get("intent"),
+                  "need": an.get("need_type"), "pain": an.get("pain_en", ""), "reason": an.get("reject_reason_ru", ""), "approved": bool(an["relevant"]),
+                  "region": lead.get("region")}
+        stats["found"].append(record)
         if not lead["analysis"]["relevant"]:
             stats["rejected"] += 1
             tracker["processed"][lead["id"]] = {"name": lead["name"], "status": "rejected",
@@ -560,6 +565,12 @@ def run_search(cfg: dict, query: str | None = None) -> dict:
                     status = "email_failed"
 
         send_alert(lead, pitch, status)
+        if cfg.get("james", {}).get("leads_report", {}).get("threads"):  # conversation drafts: opener, follow-up, price / timing answer
+            from pitch_writer import write_thread
+            thread = write_thread(lead, cfg)
+            if thread:
+                send_text(f"💬 Черновик переписки · {lead['name'][:70]}\n\n{thread}")
+        record["status"] = status
         stats["approved"] += 1
         # Failed emails stay unprocessed so the next run retries them; everything else is final.
         if status != "email_failed":
@@ -570,7 +581,7 @@ def run_search(cfg: dict, query: str | None = None) -> dict:
 
     save_json(PENDING_PATH, pending)
     # Scheduled runs stay quiet when there is nothing to say; manual runs always answer.
-    if stats["checked"] or not is_scheduled_run():
+    if (stats["checked"] or not is_scheduled_run()) and not quiet:
         send_report(stats, query)
     print(f"[agent] done: {stats}")
     return stats

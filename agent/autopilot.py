@@ -238,7 +238,15 @@ def run_autopilot(cfg: dict) -> int:
     cards were removed on purpose (owner's decision, 2026-11-11).
     """
     import ar02
-    return ar02.run(cfg)
+    import leads_report
+    from datetime import datetime as _dt, timezone as _tz
+    rc = ar02.run(cfg)  # the post first: a long lead search never delays it
+    et = _dt.now(_tz.utc).astimezone(ar02.ZoneInfo(ar02.TZ))
+    try:
+        leads_report.run_if_due(cfg, ar02.slot_of(et))
+    except Exception as exc:  # noqa: BLE001 - the lead report must never break the publishing run
+        print(f"[leads] failed: {type(exc).__name__}: {str(exc)[:160]}")
+    return rc
 
 
 def run_reel_test() -> int:
