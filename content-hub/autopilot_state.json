@@ -110,7 +110,22 @@
         "instagram": "failed: meta 400: Any of the pages_read_engagement, pages_manage_metadata,\n        pages_read_user_content, pages_manage_ads, pages_show_list or\n        pages_messaging permission(s) must be granted before impersonating a\n        user's page. (code 190)",
         "facebook": "failed: meta 400: Any of the pages_read_engagement, pages_manage_metadata,\n        pages_read_user_content, pages_manage_ads, pages_show_list or\n        pages_messaging permission(s) must be granted before impersonating a\n        user's page. (code 190)"
       }
+    },
+    {
+      "date": "2026-11-11",
+      "time": "11:53",
+      "slot": "manual",
+      "kind": "reel",
+      "id": "R01",
+      "source": "ar02",
+      "live": true,
+      "ok": true,
+      "result": {
+        "instagram": "published:18138191803634391",
+        "facebook": "published:1473655461567128"
+      }
     }
   ],
-  "reel_i": 4
+  "reel_i": 4,
+  "ar02_i": 1
 }
