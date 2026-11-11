@@ -627,6 +627,9 @@ def main(argv: list[str] | None = None) -> int:
         return 1
 
     action = args.action or os.getenv("ACTION") or "search"
+    if action in ("content", "reeltest"):  # generation is permanently off: reels and carousels are made by the owner
+        print(f"[agent] action '{action}' is disabled: james never generates content (see content-hub/ar02/queue.json)")
+        return 0
     if action == "reeltest":  # renders one reel on this machine (no publishing) and prints audio/video stats
         import autopilot
         return autopilot.run_reel_test()

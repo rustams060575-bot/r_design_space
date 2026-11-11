@@ -232,102 +232,13 @@ def publish(graph: "mp.Graph", item: dict) -> dict:
 
 
 def run_autopilot(cfg: dict) -> int:
-    if cfg["james"].get("autopilot", {}).get("source") == "ar02":  # finished AR_Content_02 queue only; templates / bank are off
-        import ar02
-        return ar02.run(cfg)
-    graph = mp.Graph()
-    live = graph.live
-    now = datetime.now(timezone.utc)
-    et = now.astimezone(ZoneInfo(cfg["james"]["autopilot"].get("timezone", "America/New_York")))
-    today = et.strftime("%Y-%m-%d")  # quotas count per US-eastern day
-    evening = et.hour >= 17  # evening slot (about 19:30 ET): stories only; the prime slot (about 12:00 ET) does reel/post/story
-    state = load_state()
-    geo = cfg["james"].get("geo", {}).get("locations", [])
-    loc = geo[len(state["log"]) % len(geo)] if geo else {"name": "", "tags": []}
-    jobs = []
-    query = os.getenv("SEARCH_QUERY", "").strip().lower().split()  # manual run: "reel [concept-id] [light|dark] [track-slug]"
-    forced = "reel" if query[:1] == ["reel"] else ""
-    options = {w: True for w in query[1:]}
-    reel_theme = "light" if "light" in options else "dark"
-    reel_concept = next((c for c in CONCEPT_BANK if c["id"] in options), None)
-    reel_music = next((w for w in query[1:] if w not in ("light", "dark") and not any(c["id"] == w for c in CONCEPT_BANK)), None)
-    if not evening and (forced == "reel" or (et.weekday() in REEL_WEEKDAYS and done_today(state, "reel", today) < MAX_REELS_PER_DAY)):
-        jobs.append("reel")
-    if evening and done_today(state, "post", today) < MAX_POSTS_PER_DAY:  # carousel goes out in the evening slot, 7+ hours after the reel
-        jobs.append("post")
-    if MAX_STORIES_PER_DAY and done_today(state, "story", today) < MAX_STORIES_PER_DAY:
-        jobs.append("story")
-    if not jobs:
-        print("[autopilot] daily quota reached")
-        return 0
-    print(f"[autopilot] {today} live={live} jobs={jobs}")
-    platforms = [p for p in mp.PLATFORMS if graph.has(p)] or list(mp.PLATFORMS)
-    report = []
+    """The ONLY publishing path: the owner's finished queue (content-hub/ar02/queue.json) at 09:00 / 21:00 Miami.
 
-    for job in jobs:
-        used = [e["id"] for e in state["log"] if e["kind"] == job]
-        if job == "reel":
-            c, source = reel_concept or CONCEPT_BANK[state["reel_i"] % len(CONCEPT_BANK)], "bank"
-            stem = f"{c['id']}-{now.strftime('%H%M')}"
-            try:
-                paths = [reels.render_reel(c, MEDIA_DIR / today / f"{stem}.mp4", footer=f"{cards.HANDLE} · {loc['name']}", theme=reel_theme, music=reel_music)]
-            except (RuntimeError, OSError) as exc:
-                print(f"[autopilot] reel render failed: {exc}")
-                report.append(f"⚠️ reel {c['id']}: render failed, skipped")
-                continue
-            all_geo = geo or [loc]
-            tags = " ".join(dict.fromkeys(CORE_TAGS + c["hashtags"] + [t for g in all_geo for t in g["tags"]]))
-            places = " / ".join(g["name"] for g in all_geo)
-            item = {"kind": "reel", "platforms": platforms, "media_url": "", "caption": f"{c['caption'].strip()}\n\n{c['cta']}\n\n{places}\n\n{tags}", "publish_at": now.isoformat()}
-        elif job == "post":
-            c = model_carousel(cfg, used) if llm.available(cfg) and cfg["james"].get("autopilot", {}).get("model_generation", True) else None
-            source = "model"
-            if not c:
-                c, source = CAROUSELS[state["carousel_i"] % len(CAROUSELS)], "bank"
-            stem = f"{c['id']}-{now.strftime('%H%M')}"
-            paths = cards.render_carousel(c["slides"], MEDIA_DIR / today, stem, footer=f"{cards.HANDLE} · {loc['name']}")
-            item = {"kind": "carousel", "platforms": platforms, "media_urls": [], "caption": f"{c['caption'].strip()}\n\n{CTA}\n\n{loc['name']}\n\n{hashtags(cfg, state['carousel_i'], loc['tags'])}", "publish_at": now.isoformat()}
-        else:
-            s = STORIES[state["story_i"] % len(STORIES)]
-            c, source = s, "bank"
-            stem = f"{s['id']}-{now.strftime('%H%M')}"
-            paths = [cards.render_story(s, MEDIA_DIR / today, stem, footer=f"{cards.HANDLE} · {loc['name']}")]
-            item = {"kind": "story", "platforms": platforms, "media_url": "", "caption": "", "publish_at": now.isoformat()}
-
-        entry = {"date": today, "time": now.strftime("%H:%M"), "geo": loc["name"], "kind": job, "id": c["id"], "source": source, "live": live, "ok": False}
-        if not live:
-            entry["result"] = {"dry_run": [str(p.name) for p in paths]}
-            print(f"[autopilot] DRY RUN {job} {c['id']} ({source}): rendered {len(paths)} card(s), nothing pushed or published")
-            report.append(f"dry run · {job}: {c['id']}")
-            continue
-        if not host(paths, today):
-            entry["result"] = {"error": "could not host media"}
-            state["log"].append(entry)
-            report.append(f"⚠️ {job} {c['id']}: media hosting failed, nothing published")
-            continue
-        urls = [raw_url(p) for p in paths]
-        if job == "post":
-            item["media_urls"] = urls
-        else:
-            item["media_url"] = urls[0]
-        problems = mp.validate_item(item)
-        if problems:
-            entry["result"] = {"error": "; ".join(problems)}
-            state["log"].append(entry)
-            report.append(f"⚠️ {job} {c['id']}: invalid ({'; '.join(problems)})")
-            continue
-        result = publish(graph, item)
-        entry["result"], entry["ok"] = result, any(v.startswith("published") for v in result.values())
-        state["log"].append(entry)
-        if entry["ok"]:
-            state[{"post": "carousel_i", "story": "story_i", "reel": "reel_i"}[job]] += 1
-        report.append(f"{'✅' if entry['ok'] else '⚠️'} {job} · {c['id']} · " + ", ".join(f"{k}: {v.split(':')[0]}" for k, v in result.items()))
-        print(f"[autopilot] {job} {c['id']}: {result}")
-
-    if live:
-        save_state(state)
-    send_report("james autopilot · " + today + "\n" + "\n".join(report))
-    return 0
+    There is no generation here and none can be switched on by config: templates, the concept bank and model-written
+    cards were removed on purpose (owner's decision, 2026-11-11).
+    """
+    import ar02
+    return ar02.run(cfg)
 
 
 def run_reel_test() -> int:
