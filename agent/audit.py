@@ -61,7 +61,7 @@ def media_insights(g: Graph, media_id: str) -> dict | str:
 def instagram(g: Graph) -> dict:
     out: dict = {}
     out["account"] = safe(g._call, "GET", g.ig_id, g.ig_token,
-                          fields="username,name,followers_count,follows_count,media_count,biography")
+                          fields="username,name,followers_count,follows_count,media_count,biography,website")
     out["publishing_limit"] = safe(g._call, "GET", f"{g.ig_id}/content_publishing_limit", g.ig_token,
                                    fields="quota_usage,config")
     media = safe(g._call, "GET", f"{g.ig_id}/media", g.ig_token,
@@ -82,7 +82,7 @@ def instagram(g: Graph) -> dict:
 def facebook(g: Graph) -> dict:
     out: dict = {}
     token = g.fb_token or g.user_token
-    out["page"] = safe(g._call, "GET", g.fb_id, token, fields="name,fan_count,followers_count,is_published,verification_status")
+    out["page"] = safe(g._call, "GET", g.fb_id, token, fields="name,username,link,website,fan_count,followers_count,is_published,verification_status")
     posts = safe(g._call, "GET", f"{g.fb_id}/posts", token, fields="id,created_time,permalink_url,is_published", limit=10)
     items = []
     for p in posts.get("data", []) if isinstance(posts, dict) else []:
