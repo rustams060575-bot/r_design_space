@@ -138,8 +138,22 @@
         "instagram": "published:17953598187313381",
         "facebook": "published:1542301175627947_122108867721535097"
       }
+    },
+    {
+      "date": "2026-11-12",
+      "time": "09:27",
+      "slot": "morning",
+      "kind": "reel",
+      "id": "R02",
+      "source": "ar02",
+      "live": true,
+      "ok": true,
+      "result": {
+        "instagram": "published:18143780461622993",
+        "facebook": "published:39973480115630342"
+      }
     }
   ],
   "reel_i": 4,
-  "ar02_i": 2
+  "ar02_i": 3
 }

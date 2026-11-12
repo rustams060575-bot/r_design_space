@@ -2632,6 +2632,366 @@
       "status": "rejected",
       "score": 1,
       "at": "2026-11-11T17:27:52+00:00"
+    },
+    "job:93bcf23c74049c97": {
+      "name": "Frontend Engineer React and AWS - Numentica",
+      "status": "rejected",
+      "score": 7,
+      "at": "2026-11-12T14:29:00+00:00"
+    },
+    "job:ad850be9d2e820da": {
+      "name": "Axiamatic is hiring for a position of Head of Design in Menlo Park, CA",
+      "status": "rejected",
+      "score": 6,
+      "at": "2026-11-12T14:29:03+00:00"
+    },
+    "job:049a58de08c3ae5a": {
+      "name": "Senior React Full-stack Developer - Lemon.io",
+      "status": "rejected",
+      "score": 4,
+      "at": "2026-11-12T14:29:09+00:00"
+    },
+    "job:2a3a8fafc215c15c": {
+      "name": "Senior Product Designer - dscout",
+      "status": "rejected",
+      "score": 6,
+      "at": "2026-11-12T14:29:14+00:00"
+    },
+    "hn:50466670": {
+      "name": "Closed,Mechanical Mould Design AI Agent",
+      "status": "rejected",
+      "score": 5,
+      "at": "2026-11-12T14:29:19+00:00"
+    },
+    "signal:6d6cfc656e380595": {
+      "name": "Graphon Raises $35M for AI Agent Memory",
+      "status": "rejected",
+      "score": 6,
+      "at": "2026-11-12T14:29:24+00:00"
+    },
+    "hn:50458889": {
+      "name": "Platform-Capitalism on Steroids",
+      "status": "rejected",
+      "score": 0,
+      "at": "2026-11-12T14:29:26+00:00"
+    },
+    "hn:50463270": {
+      "name": "9+Y ago created DragSelect, 0 deps, today a React wrapper lulz",
+      "status": "rejected",
+      "score": 2,
+      "at": "2026-11-12T14:29:30+00:00"
+    },
+    "signal:5b41ea4eaf20452f": {
+      "name": "Mercor raises $750M at $20B valuation to take AI agent evaluation to enterprises",
+      "status": "rejected",
+      "score": 2,
+      "at": "2026-11-12T14:29:36+00:00"
+    },
+    "hn:50467717": {
+      "name": "Tell HN: I'm working on practical implementations of tag-based file organization",
+      "status": "rejected",
+      "score": 1,
+      "at": "2026-11-12T14:29:40+00:00"
+    },
+    "hn:50464693": {
+      "name": "Mu Dashboard",
+      "status": "rejected",
+      "score": 2,
+      "at": "2026-11-12T14:29:43+00:00"
+    },
+    "job:fc1d1a602de70322": {
+      "name": "AllFeams is hiring for a position of Graphic & Motion Designer (AI + remote) in Remote",
+      "status": "rejected",
+      "score": 2,
+      "at": "2026-11-12T14:29:47+00:00"
+    },
+    "hn:50461645": {
+      "name": "Just Dashboard, an open-source VPS management dashboard",
+      "status": "rejected",
+      "score": 2,
+      "at": "2026-11-12T14:29:50+00:00"
+    },
+    "hn:50458841": {
+      "name": "Version History for Your Synced Notes (AI Agent Safety)",
+      "status": "rejected",
+      "score": 5,
+      "at": "2026-11-12T14:29:55+00:00"
+    },
+    "hn:50466659": {
+      "name": "Leafpress- a static site generator for digital gardens",
+      "status": "rejected",
+      "score": 2,
+      "at": "2026-11-12T14:30:00+00:00"
+    },
+    "signal:0089f12b5aa127ee": {
+      "name": "Multibrand Ecommerce: Strategy for Shopify Stores (2025) - Shopify India",
+      "status": "rejected",
+      "score": 1,
+      "at": "2026-11-12T14:30:03+00:00"
+    },
+    "hn:50456349": {
+      "name": "Now Get cited your SaaS or website",
+      "status": "rejected",
+      "score": 5,
+      "at": "2026-11-12T14:30:08+00:00"
+    },
+    "signal:8ec11ff9f83e80d5": {
+      "name": "Automation startup Rox raises $100 million at $1.3 billion valuation",
+      "status": "rejected",
+      "score": 6,
+      "at": "2026-11-12T14:30:13+00:00"
+    },
+    "hn:50462023": {
+      "name": "Motion Debugger",
+      "status": "rejected",
+      "score": 2,
+      "at": "2026-11-12T14:30:17+00:00"
+    },
+    "signal:2f7888982b96e026": {
+      "name": "55 North Gold Qualifies for Trading on the OTCQB Venture Market and Launches New Corporate Website",
+      "status": "rejected",
+      "score": 3,
+      "at": "2026-11-12T14:30:23+00:00"
+    },
+    "hn:50465098": {
+      "name": "Open-source animated UI icons your coding agent can add to",
+      "status": "rejected",
+      "score": 2,
+      "at": "2026-11-12T14:30:26+00:00"
+    },
+    "job:5f9dfe59464854a2": {
+      "name": "Product Designer II - Deepgram",
+      "status": "rejected",
+      "score": 7,
+      "at": "2026-11-12T14:30:31+00:00"
+    },
+    "hn:50457867": {
+      "name": "A free CRM with AI tools for independent insurance agencies",
+      "status": "rejected",
+      "score": 6,
+      "at": "2026-11-12T14:30:35+00:00"
+    },
+    "hn:50467222": {
+      "name": "Upstar, GitHub projects ranked by velocity in each topics",
+      "status": "rejected",
+      "score": 3,
+      "at": "2026-11-12T14:30:41+00:00"
+    },
+    "hn:50466798": {
+      "name": "IIoTjob",
+      "status": "rejected",
+      "score": 2,
+      "at": "2026-11-12T14:30:45+00:00"
+    },
+    "hn:50463725": {
+      "name": "Minimal and self-hosted website monitoring",
+      "status": "rejected",
+      "score": 3,
+      "at": "2026-11-12T14:30:49+00:00"
+    },
+    "signal:801dddfa70d3cced": {
+      "name": "This startup says AI agents suffer from 'amnesia.' It raised $35 million to solve that with this pitch deck.",
+      "status": "rejected",
+      "score": 5,
+      "at": "2026-11-12T14:30:53+00:00"
+    },
+    "job:43a86ee0ff2b7493": {
+      "name": "Growth Marketing Manager (Studio) - Reedsy",
+      "status": "rejected",
+      "score": 1,
+      "at": "2026-11-12T14:30:56+00:00"
+    },
+    "hn:50459255": {
+      "name": "Zumungo",
+      "status": "rejected",
+      "score": 6,
+      "at": "2026-11-12T14:31:00+00:00"
+    },
+    "signal:f45b32bccbbcfac8": {
+      "name": "Mondrio Raises $3.75 Million Seed Round to Connect AI Pricing Strategy With Deal Execution",
+      "status": "rejected",
+      "score": 6,
+      "at": "2026-11-12T14:31:04+00:00"
+    },
+    "job:3853acde9f0c6fc0": {
+      "name": "Drafting Career Coach - CourseCareers",
+      "status": "rejected",
+      "score": 1,
+      "at": "2026-11-12T14:31:06+00:00"
+    },
+    "hn:50464162": {
+      "name": "Builderoom",
+      "status": "rejected",
+      "score": 5,
+      "at": "2026-11-12T14:31:13+00:00"
+    },
+    "signal:7e8f3a69bab5d363": {
+      "name": "Meet Rox, the $1.3 billion AI sales startup betting it can take on Salesforce",
+      "status": "rejected",
+      "score": 3,
+      "at": "2026-11-12T14:31:19+00:00"
+    },
+    "job:d4f4d97919f41477": {
+      "name": "Staff Conversational Designer - Deepgram",
+      "status": "rejected",
+      "score": 6,
+      "at": "2026-11-12T14:31:23+00:00"
+    },
+    "hn:50458986": {
+      "name": "Move more with short random exercise challenges",
+      "status": "rejected",
+      "score": 5,
+      "at": "2026-11-12T14:31:28+00:00"
+    },
+    "job:5de68ecc2b14d697": {
+      "name": "Content Marketing Intern - Reedsy",
+      "status": "rejected",
+      "score": 1,
+      "at": "2026-11-12T14:31:30+00:00"
+    },
+    "signal:9db2eb7eb886c03e": {
+      "name": "Mosaic Exits Stealth With $47M Seed to Build Surgical Robots That Navigate Blood Vessels",
+      "status": "rejected",
+      "score": 5,
+      "at": "2026-11-12T14:31:34+00:00"
+    },
+    "signal:6845f7d3186b1983": {
+      "name": "AI training startup Mercor valued at $20 billion in latest funding round",
+      "status": "rejected",
+      "score": 5,
+      "at": "2026-11-12T14:31:39+00:00"
+    },
+    "signal:3b0b3ab59eb6b5f0": {
+      "name": "Legal AI Startup Athena Raises $2.5M Pre-Seed Funding",
+      "status": "rejected",
+      "score": 6,
+      "at": "2026-11-12T14:31:44+00:00"
+    },
+    "signal:0db71b04c69115cf": {
+      "name": "College Football Playoff Rankings Raise Miami-Notre Dame Game Stakes",
+      "status": "rejected",
+      "score": 0,
+      "at": "2026-11-12T14:31:46+00:00"
+    },
+    "signal:bc13261484135ec4": {
+      "name": "AI hardware startup Nominal triples valuation to $3B in 8 months",
+      "status": "rejected",
+      "score": 2,
+      "at": "2026-11-12T14:31:51+00:00"
+    },
+    "signal:190ce96252555eca": {
+      "name": "Rox Raises $100M Series B at $1.3B Valuation to Advance AI Research",
+      "status": "rejected",
+      "score": 6,
+      "at": "2026-11-12T14:31:56+00:00"
+    },
+    "signal:da534f58d823668f": {
+      "name": "Rox raises $100 million at $1.3 billion valuation to challenge Salesforce with AI agents",
+      "status": "rejected",
+      "score": 6,
+      "at": "2026-11-12T14:32:02+00:00"
+    },
+    "signal:155496f03f57fe8a": {
+      "name": "SignalPulse: Weekly Signals, Startups & Deals To Watch Alert",
+      "status": "rejected",
+      "score": 1,
+      "at": "2026-11-12T14:32:05+00:00"
+    },
+    "signal:ee9d74cd20f2a335": {
+      "name": "Alta raises USD 47.5 mln Series A for institutional blockchain",
+      "status": "rejected",
+      "score": 5,
+      "at": "2026-11-12T14:32:09+00:00"
+    },
+    "signal:0d9278d4a82b8668": {
+      "name": "Multimedia Update - Pathfinder Raises $12 Million Series A to Simplify How Families Use Education Savings Account Funds",
+      "status": "alert_only",
+      "score": 8,
+      "at": "2026-11-12T14:32:23+00:00"
+    },
+    "signal:7774a99d15970d06": {
+      "name": "Flower Mound Startup Turns Real Veterans Into Made-in-USA Toy Soldiers",
+      "status": "rejected",
+      "score": 5,
+      "at": "2026-11-12T14:32:28+00:00"
+    },
+    "signal:671ad21bccb17c44": {
+      "name": "How India’s Fintech Growth Hinges On Bridging The Series A Gap",
+      "status": "rejected",
+      "score": 1,
+      "at": "2026-11-12T14:32:31+00:00"
+    },
+    "signal:b4b75bd0461d0d0f": {
+      "name": "Precision Medicine Launches New Way to Package Medication for Telehealth Brands",
+      "status": "rejected",
+      "score": 5,
+      "at": "2026-11-12T14:32:37+00:00"
+    },
+    "signal:d31835d5ca32738c": {
+      "name": "Your DTC Packaging Will Fail on a Retail Shelf Until You Fix This 1 Thing",
+      "status": "rejected",
+      "score": 1,
+      "at": "2026-11-12T14:32:40+00:00"
+    },
+    "signal:a3ce333cf5f6e569": {
+      "name": "SupportNinja Acquires Aventus For AI-Native Ecommerce CX",
+      "status": "rejected",
+      "score": 2,
+      "at": "2026-11-12T14:32:44+00:00"
+    },
+    "signal:91009cce1f548f8d": {
+      "name": "Dermata Therapeutics Provides Corporate Update and Reports Financial Results for the Third Quarter 2026",
+      "status": "rejected",
+      "score": 1,
+      "at": "2026-11-12T14:32:47+00:00"
+    },
+    "signal:df62c8e74e9444e5": {
+      "name": "Grizzl-E launches free EV charger trade-in program with cashback rewards",
+      "status": "rejected",
+      "score": 3,
+      "at": "2026-11-12T14:32:52+00:00"
+    },
+    "signal:9d59a41e7598b19e": {
+      "name": "Argentina Metals Announces Electronic Clearing and Settlement by Depository Trust Company",
+      "status": "rejected",
+      "score": 0,
+      "at": "2026-11-12T14:32:56+00:00"
+    },
+    "signal:da33c8b596764934": {
+      "name": "Jaecoo ET will be Chery’s first Canadian EV next spring: Report",
+      "status": "rejected",
+      "score": 1,
+      "at": "2026-11-12T14:32:59+00:00"
+    },
+    "signal:eedb7f33a7400071": {
+      "name": "FinPrime Named Best Trading Infrastructure Provider at the Finance Magnates Awards 2026, Unveils Refreshed Brand",
+      "status": "rejected",
+      "score": 5,
+      "at": "2026-11-12T14:33:03+00:00"
+    },
+    "signal:e3040fcf50c2cbb8": {
+      "name": "Exclusive: Lyra Systems Emerges from Stealth to Solve the Valley of Death",
+      "status": "rejected",
+      "score": 5,
+      "at": "2026-11-12T14:33:07+00:00"
+    },
+    "signal:cbf2336c5b278b49": {
+      "name": "Dreeze Emerges From Stealth With $33M Seed Round for Cloud Application Recovery",
+      "status": "rejected",
+      "score": 6,
+      "at": "2026-11-12T14:33:12+00:00"
+    },
+    "signal:b8320a8533497b01": {
+      "name": "Mosaic Emerges From Stealth With $47M to Develop AI-Powered Surgical Robots",
+      "status": "rejected",
+      "score": 6,
+      "at": "2026-11-12T14:33:17+00:00"
+    },
+    "signal:9da7ee89d5519993": {
+      "name": "Bay emerges from stealth with $50M to secure AI agents",
+      "status": "rejected",
+      "score": 6,
+      "at": "2026-11-12T14:33:21+00:00"
     }
   },
   "contacted_domains": [
