@@ -124,8 +124,22 @@
         "instagram": "published:18138191803634391",
         "facebook": "published:1473655461567128"
       }
+    },
+    {
+      "date": "2026-11-12",
+      "time": "00:16",
+      "slot": "manual",
+      "kind": "post",
+      "id": "C01",
+      "source": "ar02",
+      "live": true,
+      "ok": true,
+      "result": {
+        "instagram": "published:17953598187313381",
+        "facebook": "published:1542301175627947_122108867721535097"
+      }
     }
   ],
   "reel_i": 4,
-  "ar02_i": 1
+  "ar02_i": 2
 }
