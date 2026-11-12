@@ -58,6 +58,46 @@ def media_insights(g: Graph, media_id: str) -> dict | str:
     return out or (first_error or "нет данных")
 
 
+def _try(label, fn):
+    """Full Meta error (code + message, never a token) or the result."""
+    try:
+        return {label: fn()}
+    except Exception as exc:  # noqa: BLE001
+        return {label: {"error": re.sub(r"\s+", " ", str(exc))[:600]}}
+
+
+def diagnose(g: Graph) -> dict:
+    """Read-only: which identities and permissions the CI secrets carry and which IG/FB account is the publishing target.
+    Prints names, usernames, permission names and match flags only: no token and no secret value."""
+    out: dict = {"secrets_present": {
+        "IG_USER_ID": bool(g.ig_id), "FB_PAGE_ID": bool(g.fb_id), "ACCESS_TOKEN": bool(g.user_token),
+        "IG_ACCESS_TOKEN": bool(os.getenv("IG_ACCESS_TOKEN")), "FB_PAGE_TOKEN": bool(g.fb_token),
+        "META_PUBLISH_LIVE": os.getenv("META_PUBLISH_LIVE") == "1"}}
+    tokens = {"ACCESS_TOKEN": g.user_token, "IG_ACCESS_TOKEN": os.getenv("IG_ACCESS_TOKEN", ""), "FB_PAGE_TOKEN": g.fb_token}
+    for name, tok in tokens.items():
+        if not tok:
+            continue
+        out.update(_try(f"{name}.me", lambda t=tok: {k: v for k, v in g._call("GET", "me", t, fields="id,name").items() if k == "name"}))
+        out.update(_try(f"{name}.permissions", lambda t=tok: sorted(
+            f"{p['permission']}:{p['status']}" for p in g._call("GET", "me/permissions", t).get("data", []))))
+    # which Page / IG account sit behind the user token
+    out.update(_try("discover", g.discover) if g.user_token or g.ig_token else {})
+    # the target: Facebook Page behind FB_PAGE_ID and the Instagram account linked to it
+    if g.fb_id and g.fb_token:
+        def page():
+            r = g._call("GET", g.fb_id, g.fb_token, fields="name,link,username,instagram_business_account{id,username}")
+            ig = r.get("instagram_business_account") or {}
+            return {"page_name": r.get("name"), "page_username": r.get("username"), "page_link": r.get("link"),
+                    "linked_ig_username": ig.get("username"), "IG_USER_ID_matches_linked_ig": bool(ig.get("id")) and ig.get("id") == g.ig_id}
+        out.update(_try("target_page", page))
+    if g.ig_id:
+        for name in ("IG_ACCESS_TOKEN", "FB_PAGE_TOKEN"):
+            if tokens.get(name):
+                out.update(_try(f"ig_account_via_{name}", lambda t=tokens[name]: {
+                    k: v for k, v in g._call("GET", g.ig_id, t, fields="username,name,website").items() if k != "id"}))
+    return out
+
+
 def instagram(g: Graph) -> dict:
     out: dict = {}
     out["account"] = safe(g._call, "GET", g.ig_id, g.ig_token,
@@ -121,6 +161,7 @@ def run_audit(cfg: dict | None = None) -> int:
     report = {"at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
               "instagram": instagram(g) if g.has("instagram") else {"error": "no instagram credentials"},
               "facebook": facebook(g) if g.has("facebook") else {"error": "no facebook credentials"}}
+    report["diagnose"] = diagnose(g)
     text = json.dumps(report, ensure_ascii=False, indent=1)
     print(re.sub(r"access_token=[^&\"\s]+", "access_token=***", text))
     try:
