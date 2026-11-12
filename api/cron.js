@@ -27,7 +27,7 @@ module.exports = async function handler(req, res) {
   const accepted = [env.get("CRON_URL_KEY"), cronKey(env.get("TELEGRAM_BOT_TOKEN"))].filter((k) => k && k.length >= 24);
   if (!given || !accepted.some((k) => same(k, given))) return res.status(401).end();
 
-  // ?action=autopilot publishes the next ar02 queue item (09:00 / 21:00 America/New_York); ?action=strategy|content starts the weekly james jobs; anything else (or nothing) is the normal lead search.
+  // ?action=autopilot publishes the next ar02 queue item (09:00 carousel / 21:00 reel America/Chicago); ?action=strategy|content starts the weekly james jobs; anything else (or nothing) is the normal lead search.
   const action = ["strategy", "content", "publish", "autopilot"].includes(String((req.query && req.query.action) || "")) ? req.query.action : "search";
   const repo = process.env.GITHUB_REPO || "rustams060575-bot/r_design_space";
   const workflow = process.env.GITHUB_WORKFLOW || "outreach.yml";
