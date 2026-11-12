@@ -35,22 +35,29 @@ module.exports = async function handler(req, res) {
     "X-GitHub-Api-Version": "2022-11-28",
     "User-Agent": "ar-design-cron",
   };
-  try {
-    const out = await fetch(`https://api.github.com/repos/${repo}/actions/workflows/${workflow}/dispatches`, {
-      method: "POST",
-      headers: { ...headers, "content-type": "application/json" },
-      body: JSON.stringify({ ref: process.env.GITHUB_REF || "main", inputs: { action, query: "", lead_id: "", scheduled: action === "search" ? "true" : "" } }),
-      signal: AbortSignal.timeout(15000),
-    });
-    if (out.status !== 204) {
-      console.error(`cron dispatch -> ${out.status}`);
-      return res.status(502).json({ ok: false, github: out.status });
+  // The ping is the reliable backup for GitHub's best-effort schedule, so a transient GitHub API error is retried
+  // (3 attempts, 2 s apart) before answering 502; a 502 makes cron-job.org flag the run and retry/alert on its side.
+  const body = JSON.stringify({ ref: process.env.GITHUB_REF || "main", inputs: { action, query: "", lead_id: "", scheduled: action === "search" ? "true" : "" } });
+  let last = 0;
+  for (let attempt = 1; attempt <= 3; attempt++) {
+    try {
+      const out = await fetch(`https://api.github.com/repos/${repo}/actions/workflows/${workflow}/dispatches`, {
+        method: "POST",
+        headers: { ...headers, "content-type": "application/json" },
+        body,
+        signal: AbortSignal.timeout(5000),
+      });
+      last = out.status;
+      if (out.status === 204) return res.status(200).json({ ok: true, started: action, attempt });
+      console.error(`cron dispatch attempt ${attempt} -> ${out.status}`);
+      if (out.status === 401 || out.status === 403 || out.status === 404 || out.status === 422) break; // retrying cannot fix these
+    } catch (err) {
+      last = 0;
+      console.error(`cron dispatch attempt ${attempt} error:`, err && err.message);
     }
-    return res.status(200).json({ ok: true, started: action });
-  } catch (err) {
-    console.error("cron dispatch error:", err && err.message);
-    return res.status(502).json({ ok: false });
+    if (attempt < 3) await new Promise((r) => setTimeout(r, 2000));
   }
+  return res.status(502).json({ ok: false, github: last });
 };
 
 module.exports.cronKey = cronKey;
