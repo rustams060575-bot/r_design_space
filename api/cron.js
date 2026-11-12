@@ -21,9 +21,11 @@ function cronKey(token) {
 const same = (a, b) => a.length === b.length && crypto.timingSafeEqual(Buffer.from(a), Buffer.from(b));
 
 module.exports = async function handler(req, res) {
-  const expected = cronKey(env.get("TELEGRAM_BOT_TOKEN"));
+  // Two accepted keys: the dedicated CRON_URL_KEY (independent of the bot token, preferred) or the legacy key derived
+  // from TELEGRAM_BOT_TOKEN (agent/cron_key.py). Either one authorises the call.
   const given = String((req.query && req.query.key) || "");
-  if (!expected || !same(expected, given)) return res.status(401).end();
+  const accepted = [env.get("CRON_URL_KEY"), cronKey(env.get("TELEGRAM_BOT_TOKEN"))].filter((k) => k && k.length >= 24);
+  if (!given || !accepted.some((k) => same(k, given))) return res.status(401).end();
 
   // ?action=autopilot publishes the next ar02 queue item (09:00 / 21:00 America/New_York); ?action=strategy|content starts the weekly james jobs; anything else (or nothing) is the normal lead search.
   const action = ["strategy", "content", "publish", "autopilot"].includes(String((req.query && req.query.action) || "")) ? req.query.action : "search";
