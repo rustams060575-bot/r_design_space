@@ -78,13 +78,26 @@
   {
     "kind": "reel",
     "files_ig": [
+      "content-hub/ar02/R19/R19_IG_voice_piano.mp4"
+    ],
+    "files_fb": [
+      "content-hub/ar02/R19/R19_FB_voice_piano.mp4"
+    ],
+    "id": "R19",
+    "order": 5,
+    "caption_ig": "Your next buyer should be able to see what the product does before the sales call. Concept demo. This concept turns one workflow into an interactive product story. DM DEMO + your URL and the task your product solves. Let’s discuss what is worth demonstrating.\n\n#webdesign #uxdesign #websitedesign #designagency #uidesign",
+    "caption_fb": "Your next buyer should be able to see what the product does before the sales call. Concept demo. This concept turns one workflow into an interactive product story. Message us: DEMO + your URL and the task your product solves. Let’s discuss what is worth demonstrating."
+  },
+  {
+    "kind": "reel",
+    "files_ig": [
       "content-hub/ar02/R03/R03_before-you-buy-more-traffic.mp4"
     ],
     "files_fb": [
       "content-hub/ar02/R03/R03_before-you-buy-more-traffic.mp4"
     ],
     "id": "R03",
-    "order": 5,
+    "order": 6,
     "caption_ig": "Your ad offers a kitchen renovation consultation. Your homepage talks about everything else. Keep the promise consistent: the same service, a clear process, and one obvious way to get in touch. DM MATCH with your landing page.\n\nConcept demo.\n\n#webdesign #uxdesign #websitedesign #designagency #uidesign",
     "caption_fb": "Your ad offers a kitchen renovation consultation. Your homepage talks about everything else. Keep the promise consistent: the same service, a clear process, and one obvious way to get in touch. Message us: MATCH with your landing page.\n\nConcept demo."
   },
@@ -109,7 +122,7 @@
       "content-hub/ar02/C03/C03_07.png"
     ],
     "id": "C03",
-    "order": 6,
+    "order": 7,
     "caption_ig": "The before and after use the same content and imagery. The changes are hierarchy, grouping, and emphasis.\n\n#webdesign #uxdesign #websitedesign #designagency #uidesign",
     "caption_fb": "The before and after use the same content and imagery. The changes are hierarchy, grouping, and emphasis."
   },
@@ -122,7 +135,7 @@
       "content-hub/ar02/R04/R04_the-mobile-booking-test.mp4"
     ],
     "id": "R04",
-    "order": 7,
+    "order": 8,
     "caption_ig": "Desktop can hide a mobile problem. Here, a pop-up covers the booking button. Give the form room, label every field, and only ask what you need at this stage. Test the whole journey on your phone.\n\nConcept demo.\n\n#webdesign #uxdesign #websitedesign #designagency #uidesign",
     "caption_fb": "Desktop can hide a mobile problem. Here, a pop-up covers the booking button. Give the form room, label every field, and only ask what you need at this stage. Test the whole journey on your phone.\n\nConcept demo."
   },
@@ -147,7 +160,7 @@
       "content-hub/ar02/C04/C04_07.png"
     ],
     "id": "C04",
-    "order": 8,
+    "order": 9,
     "caption_ig": "These are review questions, not universal conversion rules. Use them to find what needs closer testing on your own site.\n\n#webdesign #uxdesign #websitedesign #designagency #uidesign",
     "caption_fb": "These are review questions, not universal conversion rules. Use them to find what needs closer testing on your own site."
   },
@@ -160,7 +173,7 @@
       "content-hub/ar02/R05/R05_a-pretty-page-still-needs-answers.mp4"
     ],
     "id": "R05",
-    "order": 9,
+    "order": 10,
     "caption_ig": "A beautiful page can still leave a buyer guessing. What do I get? Is it for a business like mine? What happens after I click? Before adding another animation, make those three answers easy to find.\n\nConcept demo.\n\n#webdesign #uxdesign #websitedesign #designagency #uidesign",
     "caption_fb": "A beautiful page can still leave a buyer guessing. What do I get? Is it for a business like mine? What happens after I click? Before adding another animation, make those three answers easy to find.\n\nConcept demo."
   },
@@ -185,7 +198,7 @@
       "content-hub/ar02/C05/C05_07_FB.png"
     ],
     "id": "C05",
-    "order": 10,
+    "order": 11,
     "caption_ig": "Package names are only the beginning. Give buyers a useful basis for choosing. Concept examples. DM REVIEW with your service page for three brief observations.\n\n#webdesign #uxdesign #websitedesign #designagency #uidesign",
     "caption_fb": "Package names are only the beginning. Give buyers a useful basis for choosing. Concept examples. Message us: REVIEW with your service page for three brief observations."
   },
@@ -198,7 +211,7 @@
       "content-hub/ar02/R06/R06_the-animation-that-gets-in-the-way.mp4"
     ],
     "id": "R06",
-    "order": 11,
+    "order": 12,
     "caption_ig": "Motion can make a website memorable. But this intro hides the offer. Show the useful content first. Then use movement to guide attention. The animation should help the experience.\n\nConcept demo.\n\n#webdesign #uxdesign #websitedesign #designagency #uidesign",
     "caption_fb": "Motion can make a website memorable. But this intro hides the offer. Show the useful content first. Then use movement to guide attention. The animation should help the experience.\n\nConcept demo."
   },
@@ -223,7 +236,7 @@
       "content-hub/ar02/C06/C06_07_FB.png"
     ],
     "id": "C06",
-    "order": 12,
+    "order": 13,
     "caption_ig": "A portfolio image shows the finish. A case study makes the work understandable. Use this structure with your real projects. DM PROJECT + your portfolio to discuss its presentation.\n\n#webdesign #uxdesign #websitedesign #designagency #uidesign",
     "caption_fb": "A portfolio image shows the finish. A case study makes the work understandable. Use this structure with your real projects. Message us: PROJECT + your portfolio to discuss its presentation."
   },
@@ -236,7 +249,7 @@
       "content-hub/ar02/R07/R07_what-a-homepage-review-looks-like.mp4"
     ],
     "id": "R07",
-    "order": 13,
+    "order": 14,
     "caption_ig": "When I review a homepage, I start with three things: what you offer, what supports the claim, and what happens next. These are observations, not a conversion forecast. Send REVIEW, your website, and the action you want visitors to take.\n\nConcept demo.\n\n#webdesign #uxdesign #websitedesign #designagency #uidesign",
     "caption_fb": "When I review a homepage, I start with three things: what you offer, what supports the claim, and what happens next. These are observations, not a conversion forecast. Send REVIEW, your website, and the action you want visitors to take.\n\nConcept demo."
   },
@@ -261,7 +274,7 @@
       "content-hub/ar02/C07/C07_07.png"
     ],
     "id": "C07",
-    "order": 14,
+    "order": 15,
     "caption_ig": "Review the complete interaction, not only the empty form. These are demonstration states. Save the sequence and test your real form, including backend delivery.\n\n#webdesign #uxdesign #websitedesign #designagency #uidesign",
     "caption_fb": "Review the complete interaction, not only the empty form. These are demonstration states. Save the sequence and test your real form, including backend delivery."
   },
@@ -274,7 +287,7 @@
       "content-hub/ar02/R08/R08_a-redesign-has-to-solve-something.mp4"
     ],
     "id": "R08",
-    "order": 15,
+    "order": 16,
     "caption_ig": "A redesign needs a job. Start with the action the visitor should take. Build the path, review it on mobile, then refine the visual identity. That gives the design a purpose. DM PROJECT with your website and what needs to change.\n\nConcept demo.\n\n#webdesign #uxdesign #websitedesign #designagency #uidesign",
     "caption_fb": "A redesign needs a job. Start with the action the visitor should take. Build the path, review it on mobile, then refine the visual identity. That gives the design a purpose. Message us: PROJECT with your website and what needs to change.\n\nConcept demo."
   },
@@ -299,7 +312,7 @@
       "content-hub/ar02/C08/C08_07.png"
     ],
     "id": "C08",
-    "order": 16,
+    "order": 17,
     "caption_ig": "A smaller screen changes composition. Check crops, reading order, and the interaction itself. Concept demo. Send this to your website team.\n\n#webdesign #uxdesign #websitedesign #designagency #uidesign",
     "caption_fb": "A smaller screen changes composition. Check crops, reading order, and the interaction itself. Concept demo. Send this to your website team."
   },
@@ -312,7 +325,7 @@
       "content-hub/ar02/R09/R09_FB_voice_piano.mp4"
     ],
     "id": "R09",
-    "order": 17,
+    "order": 18,
     "caption_ig": "Can a visitor explain the difference between your packages? This is a concept demo. DM REVIEW with your service page for three brief observations.\n\n#webdesign #uxdesign #websitedesign #designagency #uidesign",
     "caption_fb": "Can a visitor explain the difference between your packages? This is a concept demo. Message us: REVIEW with your service page for three brief observations."
   },
@@ -337,7 +350,7 @@
       "content-hub/ar02/C09/C09_07_FB.png"
     ],
     "id": "C09",
-    "order": 18,
+    "order": 19,
     "caption_ig": "Product photos create interest. Useful details help people decide. Use real product and store policies; these examples are illustrative. DM REVIEW + your store URL for a visual review.\n\n#webdesign #uxdesign #websitedesign #designagency #uidesign",
     "caption_fb": "Product photos create interest. Useful details help people decide. Use real product and store policies; these examples are illustrative. Message us: REVIEW + your store URL for a visual review."
   },
@@ -350,7 +363,7 @@
       "content-hub/ar02/R10/R10_FB_voice_piano.mp4"
     ],
     "id": "R10",
-    "order": 19,
+    "order": 20,
     "caption_ig": "Let a buyer understand the thinking behind the work. Demonstration concept, not a built client project. DM PROJECT with your portfolio and what you want to improve.\n\n#webdesign #uxdesign #websitedesign #designagency #uidesign",
     "caption_fb": "Let a buyer understand the thinking behind the work. Demonstration concept, not a built client project. Message us: PROJECT with your portfolio and what you want to improve."
   },
@@ -375,7 +388,7 @@
       "content-hub/ar02/C10/C10_07_FB.png"
     ],
     "id": "C10",
-    "order": 20,
+    "order": 21,
     "caption_ig": "A redesign is a scope decision. Diagnose the problem before replacing the whole website. DM PROJECT with your URL, goal, and the issue you want to solve.\n\n#webdesign #uxdesign #websitedesign #designagency #uidesign",
     "caption_fb": "A redesign is a scope decision. Diagnose the problem before replacing the whole website. Message us: PROJECT with your URL, goal, and the issue you want to solve."
   },
@@ -388,7 +401,7 @@
       "content-hub/ar02/R11/R11_IG_voice_piano.mp4"
     ],
     "id": "R11",
-    "order": 21,
+    "order": 22,
     "caption_ig": "A small mistake should not erase someone’s effort. Concept demo. Save this and test an invalid email on your own form.\n\n#webdesign #uxdesign #websitedesign #designagency #uidesign",
     "caption_fb": "A small mistake should not erase someone’s effort. Concept demo. Save this and test an invalid email on your own form."
   },
@@ -401,7 +414,7 @@
       "content-hub/ar02/R12/R12_IG_voice_piano.mp4"
     ],
     "id": "R12",
-    "order": 22,
+    "order": 23,
     "caption_ig": "Responsive design includes composition. Same source image; a different crop and text placement. Concept demo. Send this to whoever manages your website.\n\n#webdesign #uxdesign #websitedesign #designagency #uidesign",
     "caption_fb": "Responsive design includes composition. Same source image; a different crop and text placement. Concept demo. Send this to whoever manages your website."
   },
@@ -414,7 +427,7 @@
       "content-hub/ar02/R13/R13_IG_voice_piano.mp4"
     ],
     "id": "R13",
-    "order": 23,
+    "order": 24,
     "caption_ig": "Quiet luxury can still be easy to read. Concept demo. Check actual text contrast and phone-size legibility before publishing.\n\n#webdesign #uxdesign #websitedesign #designagency #uidesign",
     "caption_fb": "Quiet luxury can still be easy to read. Concept demo. Check actual text contrast and phone-size legibility before publishing."
   },
@@ -427,7 +440,7 @@
       "content-hub/ar02/R14/R14_FB_voice_piano.mp4"
     ],
     "id": "R14",
-    "order": 24,
+    "order": 25,
     "caption_ig": "Creative language needs context. Test whether new visitors can find your services without explanation. Concept demo. DM REVIEW + your URL.\n\n#webdesign #uxdesign #websitedesign #designagency #uidesign",
     "caption_fb": "Creative language needs context. Test whether new visitors can find your services without explanation. Concept demo. Message us: REVIEW + your URL."
   },
@@ -440,7 +453,7 @@
       "content-hub/ar02/R15/R15_FB_voice_piano.mp4"
     ],
     "id": "R15",
-    "order": 25,
+    "order": 26,
     "caption_ig": "Concept demo with illustrative amounts. Make estimates explicit; show confirmed costs when known. DM REVIEW + your store URL. A clearer checkout does not guarantee a sale.\n\n#webdesign #uxdesign #websitedesign #designagency #uidesign",
     "caption_fb": "Concept demo with illustrative amounts. Make estimates explicit; show confirmed costs when known. Message us: REVIEW + your store URL. A clearer checkout does not guarantee a sale."
   },
@@ -453,7 +466,7 @@
       "content-hub/ar02/R16/R16_IG_voice_piano.mp4"
     ],
     "id": "R16",
-    "order": 26,
+    "order": 27,
     "caption_ig": "The interaction continues after the button. Concept demo. Test successful submission and failure separately; a success message alone does not prove backend delivery.\n\n#webdesign #uxdesign #websitedesign #designagency #uidesign",
     "caption_fb": "The interaction continues after the button. Concept demo. Test successful submission and failure separately; a success message alone does not prove backend delivery."
   },
@@ -466,7 +479,7 @@
       "content-hub/ar02/R17/R17_IG_voice_piano.mp4"
     ],
     "id": "R17",
-    "order": 27,
+    "order": 28,
     "caption_ig": "A for Akbar, my father. R for Rustam. I chose this order out of respect. This is the story behind AR Design.\n\n#webdesign #uxdesign #websitedesign #designagency #uidesign",
     "caption_fb": "A for Akbar, my father. R for Rustam. I chose this order out of respect. This is the story behind AR Design."
   },
@@ -479,7 +492,7 @@
       "content-hub/ar02/R18/R18_FB_voice_piano.mp4"
     ],
     "id": "R18",
-    "order": 28,
+    "order": 29,
     "caption_ig": "Not every website needs rebuilding. DM PROJECT with your URL, your goal, and what isn’t working. We’ll discuss whether the task is focused or structural.\n\n#webdesign #uxdesign #websitedesign #designagency #uidesign",
     "caption_fb": "Not every website needs rebuilding. Message us: PROJECT with your URL, your goal, and what isn’t working. We’ll discuss whether the task is focused or structural."
   }
