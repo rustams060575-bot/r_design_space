@@ -2992,6 +2992,312 @@
       "status": "rejected",
       "score": 6,
       "at": "2026-11-12T14:33:21+00:00"
+    },
+    "hn:50482285": {
+      "name": "Sorleed",
+      "status": "rejected",
+      "score": 2,
+      "at": "2026-11-13T14:02:39+00:00"
+    },
+    "hn:50472636": {
+      "name": "A Slack-like GitHub client for managing PRs",
+      "status": "rejected",
+      "score": 5,
+      "at": "2026-11-13T14:02:44+00:00"
+    },
+    "job:66c75a76c157cede": {
+      "name": "Trackhouse Racing is hiring for a position of Digital Graphic Designer in Concord, NC",
+      "status": "rejected",
+      "score": 3,
+      "at": "2026-11-13T14:02:48+00:00"
+    },
+    "hn:50479690": {
+      "name": "Trip Analytics and Telemetry Dashboard for BYD DiLink 3 and 5 Vehicles",
+      "status": "rejected",
+      "score": 2,
+      "at": "2026-11-13T14:02:51+00:00"
+    },
+    "job:101bcbe5ce73e5ca": {
+      "name": "24 Seven Talent is hiring for a position of Web3 Graphic Designer & Content Creator in Dallas, TX",
+      "status": "rejected",
+      "score": 2,
+      "at": "2026-11-13T14:02:55+00:00"
+    },
+    "hn:50469123": {
+      "name": "A self-hosted PHP platform combining CMS, e-commerce and more, built-in",
+      "status": "rejected",
+      "score": 5,
+      "at": "2026-11-13T14:03:02+00:00"
+    },
+    "signal:10b9c8f1e4c3142f": {
+      "name": "How Metagenics rebuilt B2B and DTC commerce in six months on Shopify",
+      "status": "rejected",
+      "score": 3,
+      "at": "2026-11-13T14:03:07+00:00"
+    },
+    "job:100a3a547227059a": {
+      "name": "CRH Medical Corporation is hiring for a position of Graphic Designer in Remote",
+      "status": "rejected",
+      "score": 2,
+      "at": "2026-11-13T14:03:10+00:00"
+    },
+    "hn:50479186": {
+      "name": "Chap",
+      "status": "rejected",
+      "score": 5,
+      "at": "2026-11-13T14:03:14+00:00"
+    },
+    "job:bad304a5074104fb": {
+      "name": "Tech Lead - React & Python - Nearform",
+      "status": "rejected",
+      "score": 5,
+      "at": "2026-11-13T14:03:19+00:00"
+    },
+    "hn:50468886": {
+      "name": "Senku, an AI agent that can control your phone in background",
+      "status": "rejected",
+      "score": 5,
+      "at": "2026-11-13T14:03:23+00:00"
+    },
+    "job:1dcc058fa05424c4": {
+      "name": "Senior Software Engineer - React & Python - Nearform",
+      "status": "rejected",
+      "score": 5,
+      "at": "2026-11-13T14:03:28+00:00"
+    },
+    "signal:a8e252c54058214d": {
+      "name": "55 North Gold Qualifies for Trading on the OTCQB Venture Market and Launches New Corporate Website",
+      "status": "rejected",
+      "score": 2,
+      "at": "2026-11-13T14:03:33+00:00"
+    },
+    "hn:50482279": {
+      "name": "Carton Clock",
+      "status": "rejected",
+      "score": 1,
+      "at": "2026-11-13T14:03:37+00:00"
+    },
+    "hn:50469832": {
+      "name": "Jigsaw",
+      "status": "rejected",
+      "score": 1,
+      "at": "2026-11-13T14:03:40+00:00"
+    },
+    "hn:50475982": {
+      "name": "Agentview Chat",
+      "status": "rejected",
+      "score": 3,
+      "at": "2026-11-13T14:03:44+00:00"
+    },
+    "signal:b8c9b4f086bf65c7": {
+      "name": "This Startup Raised $1 Billion to Build AI Faster and With Fewer Humans",
+      "status": "rejected",
+      "score": 5,
+      "at": "2026-11-13T14:03:48+00:00"
+    },
+    "hn:50471284": {
+      "name": "I built an enhanced AI chat using the new Generative UI from CopilotKit",
+      "status": "rejected",
+      "score": 3,
+      "at": "2026-11-13T14:03:51+00:00"
+    },
+    "signal:a62e9f0c6c3454fc": {
+      "name": "Mount Thor Raises $45M in Funding to Expand AI Cloud Infrastructure on Apple Hardware",
+      "status": "rejected",
+      "score": 5,
+      "at": "2026-11-13T14:03:56+00:00"
+    },
+    "hn:50473650": {
+      "name": "Socratui",
+      "status": "rejected",
+      "score": 1,
+      "at": "2026-11-13T14:03:59+00:00"
+    },
+    "hn:50473419": {
+      "name": "Mudroom",
+      "status": "rejected",
+      "score": 6,
+      "at": "2026-11-13T14:04:03+00:00"
+    },
+    "hn:50469560": {
+      "name": "Lumin",
+      "status": "rejected",
+      "score": 5,
+      "at": "2026-11-13T14:04:08+00:00"
+    },
+    "signal:8cf7e2e7ae39b4eb": {
+      "name": "This week: Snapp raises $4.6M to build sports AI for teams and fans",
+      "status": "rejected",
+      "score": 6,
+      "at": "2026-11-13T14:04:12+00:00"
+    },
+    "hn:50479411": {
+      "name": "Wonderchat",
+      "status": "rejected",
+      "score": 6,
+      "at": "2026-11-13T14:04:17+00:00"
+    },
+    "hn:50474106": {
+      "name": "Cerulion",
+      "status": "rejected",
+      "score": 2,
+      "at": "2026-11-13T14:04:20+00:00"
+    },
+    "signal:f7ccd3cd93e18f60": {
+      "name": "Nyquis Raises $6.3 Million in Seed Funding to Advance AI-Powered Electric Grid Monitoring",
+      "status": "rejected",
+      "score": 6,
+      "at": "2026-11-13T14:04:24+00:00"
+    },
+    "signal:91c0c2b4b934ae98": {
+      "name": "Inkbox Raises $5.3 Million to Bring Persistent AI Agents to Communication Channels",
+      "status": "rejected",
+      "score": 5,
+      "at": "2026-11-13T14:04:29+00:00"
+    },
+    "signal:fa6491807c516e08": {
+      "name": "Dallas’ Triplemoon Raises $4M to Bring Mental Healthcare to More Pediatric Practices",
+      "status": "rejected",
+      "score": 5,
+      "at": "2026-11-13T14:04:33+00:00"
+    },
+    "signal:1a2e6714677607b8": {
+      "name": "Ex-Unit 8200 commander's Sentra raises $150 million to secure corporate data as AI agents proliferate",
+      "status": "rejected",
+      "score": 5,
+      "at": "2026-11-13T14:04:37+00:00"
+    },
+    "signal:8d2c5816684955d6": {
+      "name": "Tech Giants Invest in German Robotics Start-Up at $8.5 Billion Valuation",
+      "status": "rejected",
+      "score": 2,
+      "at": "2026-11-13T14:04:42+00:00"
+    },
+    "signal:903dc49291177375": {
+      "name": "Bioliberty raises €2.95 million to bring its AI-powered rehabilitation technology into the home",
+      "status": "rejected",
+      "score": 3,
+      "at": "2026-11-13T14:04:47+00:00"
+    },
+    "signal:f74aa50100323ade": {
+      "name": "Daylight Raises $80M to Scale AI-Agent Cybersecurity Platform",
+      "status": "rejected",
+      "score": 6,
+      "at": "2026-11-13T14:04:51+00:00"
+    },
+    "signal:d48c1fe27ac8ba59": {
+      "name": "AI Evals and Post-Training Company Mercor Raises $750M Series D at $20B Valuation",
+      "status": "rejected",
+      "score": 5,
+      "at": "2026-11-13T14:04:55+00:00"
+    },
+    "signal:b522aba365cee3fa": {
+      "name": "Alta raises $48 million for its compliance-focused blockchain in Series A round led by Index Ventures",
+      "status": "rejected",
+      "score": 5,
+      "at": "2026-11-13T14:04:59+00:00"
+    },
+    "signal:c2500a22a343dd1d": {
+      "name": "Why Quince is bringing on more third-party brands",
+      "status": "rejected",
+      "score": 1,
+      "at": "2026-11-13T14:05:02+00:00"
+    },
+    "signal:f07de7d064da6323": {
+      "name": "The Vogue Business AI Tracker",
+      "status": "rejected",
+      "score": 1,
+      "at": "2026-11-13T14:05:04+00:00"
+    },
+    "signal:7420af11ac092418": {
+      "name": "Tesla Opens New Illinois Megacharger as Network Nearly Doubles",
+      "status": "rejected",
+      "score": 1,
+      "at": "2026-11-13T14:05:07+00:00"
+    },
+    "signal:aa913b929c59cf19": {
+      "name": "Most Reliable Influencer Marketing Platforms for Global Campaigns",
+      "status": "rejected",
+      "score": 1,
+      "at": "2026-11-13T14:05:09+00:00"
+    },
+    "signal:c74aa77e89884adf": {
+      "name": "Dallas AI Startup 4Minds Raises $15M Series A at $500M Valuation",
+      "status": "alert_only",
+      "score": 9,
+      "at": "2026-11-13T14:05:24+00:00"
+    },
+    "signal:6fca7c981942976a": {
+      "name": "Ex-Seattle startup DeltaGen acquired by new AI company backed by Veeam co-founder",
+      "status": "rejected",
+      "score": 2,
+      "at": "2026-11-13T14:05:27+00:00"
+    },
+    "signal:33bc4a01a7ae1b6a": {
+      "name": "OwlO Cloud emerges from stealth promising European scalable orbital compute & AI",
+      "status": "rejected",
+      "score": 5,
+      "at": "2026-11-13T14:05:32+00:00"
+    },
+    "signal:6c537195f1291a42": {
+      "name": "Exclusive: Bay secures $50M to secure AI",
+      "status": "rejected",
+      "score": 6,
+      "at": "2026-11-13T14:05:37+00:00"
+    },
+    "signal:12bf04e0c8e4db45": {
+      "name": "Dreeze Emerges From Stealth With $33M to Rebuild Cloud Apps After Cyberattacks",
+      "status": "rejected",
+      "score": 5,
+      "at": "2026-11-13T14:05:40+00:00"
+    },
+    "signal:8701a85b02e916bc": {
+      "name": "geniosAI Emerges From Stealth With $19.1 Million in Funding Led by FactSet",
+      "status": "rejected",
+      "score": 6,
+      "at": "2026-11-13T14:05:44+00:00"
+    },
+    "signal:1d54092ec6d61457": {
+      "name": "Voice AI Startup ThunderPhone Launches v3 Architecture and Zeus, an Agentic Harness for Phone Agents",
+      "status": "rejected",
+      "score": 6,
+      "at": "2026-11-13T14:05:49+00:00"
+    },
+    "signal:6b095fc9a8e41e2f": {
+      "name": "Indian American founder launches Lampkey.ai, an AI-powered project management platform",
+      "status": "rejected",
+      "score": 6,
+      "at": "2026-11-13T14:05:55+00:00"
+    },
+    "signal:7cea460efc4001db": {
+      "name": "AI Tracker: Mayo Clinic Platform rolls out AI tool for clinicians",
+      "status": "rejected",
+      "score": 1,
+      "at": "2026-11-13T14:05:59+00:00"
+    },
+    "signal:b4970ededac72f3f": {
+      "name": "Ex-Revolut Product Chief Dmitry Zlokazov Joins AI Startup Murphy as CPO",
+      "status": "rejected",
+      "score": 3,
+      "at": "2026-11-13T14:06:03+00:00"
+    },
+    "signal:e002be074d20fc17": {
+      "name": "From Supersonic Jets to Powering AI Data Centers｜Y Combinator Startup Podcast",
+      "status": "rejected",
+      "score": 1,
+      "at": "2026-11-13T14:06:06+00:00"
+    },
+    "signal:6be1a51270249808": {
+      "name": "Upcoming IPOs 2026: 40+ Startups in the IPO Pipeline",
+      "status": "rejected",
+      "score": 1,
+      "at": "2026-11-13T14:06:10+00:00"
+    },
+    "signal:1449c2e874f7f3d2": {
+      "name": "Inkbox raises $5.3 million and launches cloud-hosted AI agents with persistent computers",
+      "status": "rejected",
+      "score": 6,
+      "at": "2026-11-13T14:06:14+00:00"
     }
   },
   "contacted_domains": [
