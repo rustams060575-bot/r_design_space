@@ -4,20 +4,20 @@ on:
   schedule:                # james autopilot: posts + stories to Instagram and the Facebook Page (UTC)
     - cron: "0 15 * * 1"      # monday 10:00 ET (11:00 EDT): weekly strategy + reel concepts + linkedin drafts
     - cron: "30 14 * * 1-6"   # 10:30 ET mon-sat: comment drafts for the day (engage)
-    # ar02 publishing slots, 09:00 (carousel) and 21:00 (reel) America/Chicago. UTC is fixed, Chicago is not, so each slot has a winter and a
-    # summer UTC hour; agent/ar02.py only acts when the Chicago clock is inside the slot window and never twice per slot.
-    - cron: "0 15 * * *"      # 09:00 CST (winter) / 10:00 CDT
-    - cron: "0 14 * * *"      # 08:00 CST (ignored) / 09:00 CDT (summer)
-    - cron: "0 3 * * *"       # 21:00 CST (winter) / 22:00 CDT
-    - cron: "0 2 * * *"       # 20:00 CST (ignored) / 21:00 CDT (summer)
+    # ar02 publishing slots, 09:00 (carousel) and 21:00 (reel) America/New_York. UTC is fixed, New York is not, so each slot has a winter and a
+    # summer UTC hour; agent/ar02.py only acts when the New York clock is inside the slot window and never twice per slot.
+    - cron: "0 14 * * *"      # 09:00 EST (winter) / 10:00 EDT
+    - cron: "0 13 * * *"      # 08:00 EST (ignored) / 09:00 EDT (summer)
+    - cron: "0 2 * * *"       # 21:00 EST (winter) / 22:00 EDT
+    - cron: "0 1 * * *"       # 20:00 EST (ignored) / 21:00 EDT (summer)
     # github delays scheduled runs by hours, so extra attempts inside both windows (agent/ar02.py does nothing outside a window
     # and never publishes a slot twice): the first attempt that actually starts in a window publishes.
-    - cron: "*/10 15-16 * * *"   # 09:00-10:30 CT in winter (CST)
-    - cron: "*/10 14-15 * * *"   # 09:00-10:30 CT in summer (CDT)
-    - cron: "*/10 3-4 * * *"     # 21:00-22:30 CT in winter (CST)
-    - cron: "*/10 2-3 * * *"     # 21:00-22:30 CT in summer (CDT)
+    - cron: "*/10 14-15 * * *"   # 09:00-10:30 ET in winter (EST)
+    - cron: "*/10 13-14 * * *"   # 09:00-10:30 ET in summer (EDT)
+    - cron: "*/10 2-3 * * *"     # 21:00-22:30 ET in winter (EST)
+    - cron: "*/10 1-2 * * *"     # 21:00-22:30 ET in summer (EDT)
   # Publishing: GitHub schedule above (self-contained, DST-aware through agent/ar02.py) plus an optional exact-time backup,
-  # the external trigger /api/cron?action=autopilot (cron-job.org, timezone America/Chicago). Double triggers are harmless.
+  # the external trigger /api/cron?action=autopilot (cron-job.org, timezone America/New_York). Double triggers are harmless.
   workflow_dispatch:         # started by /api/cron, Telegram (api/telegram.js) or by hand
     inputs:
       action:

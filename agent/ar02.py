@@ -1,13 +1,13 @@
-"""james · ar02 autopilot: publishes the finished AR_Content_02 queue (Reels R09–R18, carousels C05–C10) at two fixed US-Central (Chicago) slots: carousels in the morning, reels in the evening.
+"""james · ar02 autopilot: publishes the finished AR_Content_02 queue (Reels R09–R18, carousels C05–C10) at two fixed US-Eastern (Miami / New York) slots: carousels in the morning, reels in the evening.
 
     python agent/scraper.py --action autopilot        # started by the external trigger (cron-job.org -> /api/cron?action=autopilot)
 
-Slots (America/Chicago, daylight saving handled by the zone): morning 09:00 = carousel, evening 21:00 = reel. The run takes the NEXT unpublished
+Slots (America/New_York, daylight saving handled by the zone): morning 09:00 = carousel, evening 21:00 = reel. The run takes the NEXT unpublished
 item OF THAT KIND from content-hub/ar02/queue.json (queue order inside each kind; a manual run takes the next item of any kind), publishes it to Instagram and the Facebook Page, logs it and reports to Telegram.
 
 Guardrails:
   * old templates / concept bank / model-generated cards are NOT used in this mode;
-  * at most one item per slot per Chicago day (a double trigger or a re-run does nothing);
+  * at most one item per slot per New York day (a double trigger or a re-run does nothing);
   * kill switch: META_PUBLISH_LIVE != "1" is a dry run (nothing is published, state is not advanced);
   * a failed publish is reported and not retried in a loop; the item stays at the head of the queue for the next slot.
 """
@@ -27,15 +27,15 @@ from autopilot import load_state, raw_url, save_state, send_report
 
 REPO = Path(__file__).resolve().parent.parent
 QUEUE = REPO / "content-hub" / "ar02" / "queue.json"
-TZ = "America/Chicago"
+TZ = "America/New_York"
 SLOT_KIND = {"morning": "carousel", "evening": "reel"}
 
 
-WINDOWS = {"morning": ((9, 0), (10, 30)), "evening": ((21, 0), (22, 30))}  # America/Chicago; GitHub cron may start late, never early
+WINDOWS = {"morning": ((9, 0), (10, 30)), "evening": ((21, 0), (22, 30))}  # America/New_York; GitHub cron may start late, never early
 
 
 def slot_of(et: datetime) -> str | None:
-    """Slot whose window contains this Chicago time, else None (the run then does nothing)."""
+    """Slot whose window contains this New York time, else None (the run then does nothing)."""
     t = (et.hour, et.minute)
     for name, (a, b) in WINDOWS.items():
         if a <= t < b:
@@ -83,7 +83,12 @@ def run(cfg: dict, now: datetime | None = None, force: bool | None = None) -> in
     slot = slot_of(et) or ("manual" if force else None)
     today = et.strftime("%Y-%m-%d")
     if slot is None:
-        print(f"[ar02] {et.strftime('%Y-%m-%d %H:%M %Z')}: outside the 09:00 / 21:00 Chicago windows, nothing to do")
+        print(f"[ar02] {et.strftime('%Y-%m-%d %H:%M %Z')}: outside the 09:00 / 21:00 New York windows, nothing to do")
+        # The exact-time external trigger (cron-job.org -> /api/cron) is a workflow_dispatch. If one lands outside both windows the
+        # timezone of the trigger and of this script disagree: say so loudly instead of silently skipping the slot.
+        if os.getenv("GITHUB_EVENT_NAME") == "workflow_dispatch" and os.getenv("SEARCH_QUERY", "").strip().lower() != "now":
+            send_report(f"⚠️ james ar02 · trigger arrived at {et.strftime('%H:%M %Z')} ({TZ}), outside the 09:00 / 21:00 windows: nothing published. "
+                        f"If this was the cron-job.org slot job, its timezone must be {TZ}.")
         return 0
     state = load_state()
     queue = json.loads(QUEUE.read_text(encoding="utf-8"))

@@ -448,14 +448,14 @@
         "instagram",
         "facebook"
       ],
-      "timezone": "America/Chicago",
+      "timezone": "America/New_York",
       "source": "ar02",
       "slots": {
-        "morning": "09:00 America/Chicago (carousel)",
-        "evening": "21:00 America/Chicago (reel)"
+        "morning": "09:00 America/New_York (carousel)",
+        "evening": "21:00 America/New_York (reel)"
       },
       "queue": "content-hub/ar02/queue.json",
-      "note": "two slots a day: morning = next unpublished carousel, evening = next unpublished reel of the queue; external trigger /api/cron?action=autopilot (cron-job.org, timezone America/Chicago); old templates are disabled"
+      "note": "two slots a day: morning = next unpublished carousel, evening = next unpublished reel of the queue; external trigger /api/cron?action=autopilot (cron-job.org, timezone America/New_York); old templates are disabled"
     },
     "geo": {
       "locations": [
