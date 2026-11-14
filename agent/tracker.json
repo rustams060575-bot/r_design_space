@@ -3298,6 +3298,150 @@
       "status": "rejected",
       "score": 6,
       "at": "2026-11-13T14:06:14+00:00"
+    },
+    "hn:50491776": {
+      "name": "Anvil builds premium websites at lower cost",
+      "status": "rejected",
+      "score": 2,
+      "at": "2026-11-14T02:02:20+00:00"
+    },
+    "job:17cb282ed4efb8f1": {
+      "name": "Senior Data Engineer - Lemon.io",
+      "status": "rejected",
+      "score": 1,
+      "at": "2026-11-14T02:02:23+00:00"
+    },
+    "job:2c26b581f8c7f2cc": {
+      "name": "Waveguard USA is hiring for a position of Brand & Marketing Designer in Remote",
+      "status": "rejected",
+      "score": 2,
+      "at": "2026-11-14T02:02:27+00:00"
+    },
+    "hn:50485592": {
+      "name": "Dodaiso",
+      "status": "rejected",
+      "score": 2,
+      "at": "2026-11-14T02:02:30+00:00"
+    },
+    "hn:50489574": {
+      "name": "Copper-KiCad",
+      "status": "rejected",
+      "score": 1,
+      "at": "2026-11-14T02:02:33+00:00"
+    },
+    "signal:f712669ce9f97f51": {
+      "name": "Multibrand Ecommerce: Strategy for Shopify Stores (2025)",
+      "status": "rejected",
+      "score": 2,
+      "at": "2026-11-14T02:02:35+00:00"
+    },
+    "hn:50484902": {
+      "name": "Leetsys",
+      "status": "rejected",
+      "score": 5,
+      "at": "2026-11-14T02:02:40+00:00"
+    },
+    "hn:50487027": {
+      "name": "Newly Startup",
+      "status": "rejected",
+      "score": 2,
+      "at": "2026-11-14T02:02:43+00:00"
+    },
+    "hn:50492269": {
+      "name": "Light control for MacBook charger status light (open-source)",
+      "status": "rejected",
+      "score": 1,
+      "at": "2026-11-14T02:02:45+00:00"
+    },
+    "hn:50489784": {
+      "name": "Replicate, turn Webflow website into a GitHub project (free)",
+      "status": "rejected",
+      "score": 2,
+      "at": "2026-11-14T02:02:50+00:00"
+    },
+    "job:94e368e9020e14ca": {
+      "name": "Senior Full Stack .NET Developer - Orion Innovation",
+      "status": "rejected",
+      "score": 2,
+      "at": "2026-11-14T02:02:53+00:00"
+    },
+    "hn:50489193": {
+      "name": "Host a site, content, or stream from a browser tab, served over WebRTC",
+      "status": "rejected",
+      "score": 2,
+      "at": "2026-11-14T02:02:57+00:00"
+    },
+    "job:17f25e74792d1336": {
+      "name": "Product Designer - Gather AI",
+      "status": "rejected",
+      "score": 7,
+      "at": "2026-11-14T02:03:01+00:00"
+    },
+    "hn:50484682": {
+      "name": "Langfuse AI Gateway, open source rust gateway to trace every LLM call",
+      "status": "rejected",
+      "score": 3,
+      "at": "2026-11-14T02:03:06+00:00"
+    },
+    "hn:50484264": {
+      "name": "TriageLab",
+      "status": "rejected",
+      "score": 5,
+      "at": "2026-11-14T02:03:10+00:00"
+    },
+    "signal:452d191a3e87a109": {
+      "name": "AI Funding + M&A Tracker",
+      "status": "rejected",
+      "score": 0,
+      "at": "2026-11-14T02:03:13+00:00"
+    },
+    "signal:8c78937a105a11bc": {
+      "name": "Proximal Ventures raises debut fund to back startups bringing AI to drug development",
+      "status": "rejected",
+      "score": 1,
+      "at": "2026-11-14T02:03:15+00:00"
+    },
+    "signal:183cb6eafd46b785": {
+      "name": "With $3.5M in funding, Betterness wants to turn Miami neighborhoods into wellness networks",
+      "status": "alert_only",
+      "score": 8,
+      "at": "2026-11-14T02:03:29+00:00"
+    },
+    "signal:07610eaf132acd35": {
+      "name": "A Running Timeline of Legal Tech Funding and M&A",
+      "status": "rejected",
+      "score": 1,
+      "at": "2026-11-14T02:03:32+00:00"
+    },
+    "signal:154f4dec66bffc51": {
+      "name": "Omani Fintech Mamun Raises USD 3M Seed Funding to Expand Gulf-Asia Trade Finance",
+      "status": "rejected",
+      "score": 4,
+      "at": "2026-11-14T02:03:37+00:00"
+    },
+    "signal:17c303ecf5e0f988": {
+      "name": "Factory-Built AI Data Center Startup Mavria Raises $100 Million Seed At $1 Billion Valuation",
+      "status": "rejected",
+      "score": 5,
+      "at": "2026-11-14T02:03:42+00:00"
+    },
+    "signal:b47f97e0cbf8cb30": {
+      "name": "European company launches DTC brand in U.S., debuts vacuum-packed sofa bed",
+      "status": "rejected",
+      "score": 5,
+      "at": "2026-11-14T02:03:46+00:00"
+    },
+    "signal:928be490cf0595c5": {
+      "name": "YC’s Archgen Says AI Model Maps 3D Chip Heat 5,000x Faster",
+      "status": "rejected",
+      "score": 5,
+      "at": "2026-11-14T02:03:51+00:00"
+    },
+    "signal:132f0674074dba92": {
+      "name": "OpenAI acquires AI travel agent Odessia and hires ex-Sonder co-founder Francis Davidson",
+      "status": "rejected",
+      "score": 1,
+      "at": "2026-11-14T02:03:55+00:00"
     }
   },
   "contacted_domains": [

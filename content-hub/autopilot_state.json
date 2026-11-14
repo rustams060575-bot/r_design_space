@@ -166,8 +166,22 @@
         "instagram": "published:18114536540588043",
         "facebook": "published:1542301175627947_122109627747535097"
       }
+    },
+    {
+      "date": "2026-11-13",
+      "time": "21:00",
+      "slot": "evening",
+      "kind": "reel",
+      "id": "R19",
+      "source": "ar02",
+      "live": true,
+      "ok": true,
+      "result": {
+        "instagram": "published:18121059283772196",
+        "facebook": "published:1122204747391031"
+      }
     }
   ],
   "reel_i": 4,
-  "ar02_i": 4
+  "ar02_i": 5
 }
